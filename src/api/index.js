@@ -15,7 +15,7 @@ const db = mysql.createConnection({
 });
 
 app.get("/testing", (req,res) => {
-res.send("success");
+  res.send("success");
 });
 
 // // Sending data to the database
