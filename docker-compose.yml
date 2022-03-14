@@ -22,11 +22,11 @@ services:
     depends_on:
       - mysql
     working_dir: /app
-    #command: bash -c "nodemon index.js" 
+    command: bash -c "python http_server.py" 
     #command: tail -F /dev/null
-    command: bash -c "yarn add nodemon && yarn start"
     restart: unless-stopped
-    image: node:latest
+    #build: ./dockerfiles/engine
+    image: python:latest
     ports:
       - 9696:8080
     volumes:
@@ -44,7 +44,7 @@ services:
       - frontend
 
   quoridor-client:
-    build: ./django
+    build: ./dockerfiles/django
     depends_on:
       - quoridor-api
     restart: unless-stopped
