@@ -1,10 +1,12 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
+import json
 
 hostName = "0.0.0.0"
 hostPort = 8080
 
 class MyServer(BaseHTTPRequestHandler):
+    # Client wants data from the game engine
     def do_GET(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
@@ -16,14 +18,11 @@ class MyServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes("<p>You accessed path: %s</p>" % self.path, "utf-8"))
         self.wfile.write(bytes("</body></html>", "utf-8"))
     
+    # Client gives data to the game engine
     def do_POST(self):
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
         content_len = int(self.headers.get('Content-Length'))
-        post_body = self.rfile.read(content_len)
-        self.wfile.write(bytes("%s" % post_body, "utf-8"))
-        self.wfile.write(bytes("</body></html>", "utf-8")) 
+        post_body = json.loads(self.rfile.read(content_len))
+        print("I have detected that 'name' is "+post_body['name'])
 
 
 myServer = HTTPServer((hostName, hostPort), MyServer)
