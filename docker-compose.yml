@@ -24,7 +24,7 @@ services:
     working_dir: /app
     #command: bash -c "nodemon index.js" 
     #command: tail -F /dev/null
-    command: yarn start
+    command: bash -c "yarn add nodemon && yarn start"
     restart: unless-stopped
     image: node:latest
     ports:
