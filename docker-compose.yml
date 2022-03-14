@@ -16,6 +16,7 @@ services:
     container_name: db
     networks:
       - backend
+      - frontend
 
   quoridor-api:
     depends_on:
