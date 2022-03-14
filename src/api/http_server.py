@@ -9,10 +9,22 @@ class MyServer(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        self.wfile.write(bytes("<html><head><title>Title goes here.</title></head>", "utf-8"))
-        self.wfile.write(bytes("<body><p>This is a test.</p>", "utf-8"))
+        match self.path:
+            # each endpoint can be a case here
+            case "/testing":
+                self.wfile.write(bytes("<body><p>You got to Testing!</p>", "utf-8"))
         self.wfile.write(bytes("<p>You accessed path: %s</p>" % self.path, "utf-8"))
         self.wfile.write(bytes("</body></html>", "utf-8"))
+    
+    def do_POST(self):
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        content_len = int(self.headers.get('Content-Length'))
+        post_body = self.rfile.read(content_len)
+        self.wfile.write(bytes("%s" % post_body, "utf-8"))
+        self.wfile.write(bytes("</body></html>", "utf-8")) 
+
 
 myServer = HTTPServer((hostName, hostPort), MyServer)
 print(time.asctime(), "Server Starts - %s:%s" % (hostName, hostPort))
