@@ -22,6 +22,8 @@ def state_to_array(shorthand):
   gameOut.get(5,9).val = 2
   print(shorthand)
   temp = shorthand.split('/')
+
+  # Horizontal Walls
   temp[0]=temp[0].strip()
   for i in range(5):
     print(temp[i])
@@ -31,6 +33,18 @@ def state_to_array(shorthand):
     x = ord(i[0])-ord('`')
     y = int(i[1])
     gameOut.get(x,y).set_wall_h()
+
+  # Vertical Walls
+  temp[1]=temp[1].strip()
+  for i in range(5):
+    print(temp[i])
+  print("["+temp[1]+"]")
+  hori = [temp[1][i:i+2] for i in range(0, len(temp[1]), 2)]
+  for i in hori:
+    x = ord(i[0])-ord('`')
+    y = int(i[1])
+    gameOut.get(x,y).set_wall_v()
+
 
   gameOut.draw()
     
