@@ -1,7 +1,6 @@
 # https://quoridorstrats.wordpress.com/notation/
 import pprint
 
-pp = pprint.PrettyPrinter(width=500,depth = 3,compact=False)
 
 def full_game_to_array(shorthand):
   print(shorthand)  
@@ -17,11 +16,26 @@ def full_game_to_array(shorthand):
   print(moves) 
 
 def state_to_array(shorthand):
-  board = []
   test()
-  for i in shorthand.split('/'):
-    if i[1] == '.': 
-      count += 1
+  gameOut = game(9,2)
+  gameOut.get(5,1).val = 1
+  gameOut.get(5,9).val = 2
+  print(shorthand)
+  temp = shorthand.split('/')
+  temp[0]=temp[0].strip()
+  for i in range(5):
+    print(temp[i])
+  print("["+temp[0]+"]")
+  hori = [temp[0][i:i+2] for i in range(0, len(temp[0]), 2)]
+  for i in hori:
+    x = ord(i[0])-ord('`')
+    y = int(i[1])
+    gameOut.get(x,y).set_wall_h()
+
+  gameOut.draw()
+    
+
+  
 
 
 class tile:
@@ -57,6 +71,7 @@ class tile:
     self.get_east().get_north().w_south = True
     self.get_east().w_north = True
   def set_wall_v(self):
+    print(self)
     self.get_north().get_east().w_west = True
     self.get_north().w_east = True
     self.get_east().w_west = True
@@ -83,6 +98,16 @@ class game:
     self.board = [[tile(1+x,size-y,self) for x in range(size)] for y in range(size)]
   def get(self,x,y): # 3 4
     return self.board[self.size-y][x-1] # 5 3
+  def draw(self):
+    print("------------------------------------------------------------------------------------------------------------------------------------------")
+    print()
+    for y in range(self.size):
+      for x in range(self.size):
+        print(self.get(x+1,self.size-y) , end = '      \t')
+      print()
+      print()
+    
+    print("------------------------------------------------------------------------------------------------------------------------------------------")
 
     
 def test():
@@ -91,19 +116,7 @@ def test():
   game1.get(7,2).set_wall_v()
   game1.get(5,1).val = 1
   game1.get(5,9).val = 2
-  # pp.pprint(game1.board)
-  print("------------------------------------------------------------------------------------------------------------------------------------------")
-
-  print()
-  for y in range(game1.size):
-    for x in range(game1.size):
-      # 0,0 1,0 2,0
-      #print("("+(x+1).__str__()+","+(game1.size-y).__str__()+")", end = '      \t')
-      print(game1.get(x+1,game1.size-y) , end = '      \t')
-    print()
-    print()
-
-  print("------------------------------------------------------------------------------------------------------------------------------------------")
+  game1.draw()
   print(game1.get(3,4).get_coor()+":")
   print()
   print("                "+game1.get(3,4).get_north().get_coor())
