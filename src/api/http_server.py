@@ -31,7 +31,8 @@ myServer = HTTPServer((hostName, hostPort), MyServer)
 print(time.asctime(), "Server Starts - %s:%s" % (hostName, hostPort))
 
 print("Testing Engine conversion from shorthand to array...")
-game_engine.sh_to_array("1. e2 e8 2. e3 e7")  
+game_engine.full_game_to_array("1. e2 e8 2. e3 e7 3. e4 e6 4. e3h g6v")  
+game_engine.state_to_array("d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3")
 
 try:
     myServer.serve_forever()

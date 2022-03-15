@@ -23,5 +23,6 @@ while true; do
   inotifywait -q -e modify -e move -e create -e delete -e attrib `pwd`
   [[ $(jobs -pr) == "" ]] || kill $(jobs -pr)
   kill $PID
-  echo "Restarting API"
+  echo "Restarting API (5s delay)"
+  sleep 5
 done
