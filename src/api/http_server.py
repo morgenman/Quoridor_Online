@@ -27,9 +27,12 @@ class MyServer(BaseHTTPRequestHandler):
 
 
 myServer = HTTPServer((hostName, hostPort), MyServer)
+
 print(time.asctime(), "Server Starts - %s:%s" % (hostName, hostPort))
+
 print("Testing Engine conversion from shorthand to array...")
-game_engine.sh_to_array("1. e2 e8 2. e3 e7")
+game_engine.sh_to_array("1. e2 e8 2. e3 e7")  
+
 try:
     myServer.serve_forever()
 except KeyboardInterrupt:
