@@ -29,6 +29,7 @@ body{
 
 .custom_button:hover{
     filter: brightness(80%);
+    transform: scale(0.9);
 }
 .custom_button:active{
     filter: brightness(120%);
