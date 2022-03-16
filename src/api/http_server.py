@@ -23,6 +23,10 @@ class MyServer(BaseHTTPRequestHandler):
     def do_POST(self):
         content_len = int(self.headers.get('Content-Length'))
         post_body = json.loads(self.rfile.read(content_len))
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        self.wfile.write(bytes("I have detected that 'name' is " + post_body['name']+'\n',"utf-8"))
         print("I have detected that 'name' is " + post_body['name'])
 
 
