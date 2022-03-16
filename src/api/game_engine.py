@@ -16,8 +16,6 @@ def full_game_to_array(shorthand):
 
 def state_to_array(shorthand):
   gameOut = game(9,2)
-  gameOut.get(5,1).val = 1
-  gameOut.get(5,9).val = 2
   walls = [0,0,0,0]
   print(shorthand)
   temp = shorthand.split('/')
