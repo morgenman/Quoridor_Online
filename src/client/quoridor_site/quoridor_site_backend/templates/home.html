@@ -3,10 +3,12 @@
 <body>
     <h1>Quoridor Online</h1>
     
-    <games>
+    <div class="flex-container">
         <div>
-            <a href = "{% url 'getUser' %}"><img class = "custom_button" src="../static/css/StartGameButton.png" height ="25%" align="left"/></a>
-            <a  href = "{% url 'getUser' %}"><img class = "custom_button" src="../static/css/JoinGameButton.png" height ="25%" align="right"/></a> 
+            <a href = "{% url 'getUser' %}"><img class = "custom_button" src="../static/css/StartGameButton.png" height ="25%" /></a>
         </div>
-    </games>
+        <div>
+            <a  href = "{% url 'getUser' %}"><img class = "custom_button" src="../static/css/JoinGameButton.png" height ="25%" /></a> 
+        </div>
+    </div>
 </body>

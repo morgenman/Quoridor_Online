@@ -7,15 +7,17 @@ h1 {
     font-weight: bold;
 }
 
-.games {
-    margin: auto;
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
 }
 
-
 div {
-    padding-left: 20%;
-    padding-right: 20%;
-    padding-top: 75px;
+    /*padding-left: 20%;
+    padding-right: 20%;*/
+    padding-top: 50px;
 }
 
 body{
