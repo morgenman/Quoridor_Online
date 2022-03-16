@@ -1,0 +1,9 @@
+<body>
+    <b> Write your name and click Submit</b>
+    <p>
+        <form action="showName" method="POST">
+            {% csrf_token %}
+            Name: <input name="name"> <p>
+            <p><button type="submit">Submit </button>
+        </form>
+</body>
