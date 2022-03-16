@@ -1,5 +1,4 @@
 # https://quoridorstrats.wordpress.com/notation/
-import pprint
 
 
 def full_game_to_array(shorthand):
@@ -13,7 +12,7 @@ def full_game_to_array(shorthand):
     else:
       moves[count].append(i)
   print("This game has",count+1,"rounds")
-  print(moves) 
+  print(moves)  
 
 def state_to_array(shorthand):
   gameOut = game(9,2)
@@ -101,9 +100,6 @@ class tile:
     self.get_north().w_east = True
     self.get_east().w_west = True
     self.w_east = True
-
-    
-
   def get_char(self):
     if self.w_north: return '﹋'+self.get_val()+'﹋' 
     if self.w_east: return ' ' + self.get_val()+'⏐'
@@ -114,6 +110,7 @@ class tile:
     return  self.get_coor()
   def get_coor(self): 
     return "("+chr(ord('`')+self.x)+self.get_char()+self.y.__str__()+")"
+  
   
 class game:
   def __init__(self,size,players):

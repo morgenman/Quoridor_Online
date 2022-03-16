@@ -26,3 +26,10 @@ body{
     background-size: cover;
     overflow:auto;
 }
+
+.custom_button:hover{
+    filter: brightness(80%);
+}
+.custom_button:active{
+    filter: brightness(120%);
+}
