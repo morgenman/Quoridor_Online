@@ -55,7 +55,7 @@ services:
     #command: ["chmod -x /app/wait-for-it.sh","/app/wait-for-it.sh", "db:${DJANGO_PORT}", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     #command: tail -F /dev/null
     # ./migrate.sh &&  
-    command: bash -c "./migrate.sh && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "pip3 install requests && ./migrate.sh && python manage.py runserver 0.0.0.0:8000"
 
     container_name: web
     ports:
