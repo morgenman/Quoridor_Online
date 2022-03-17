@@ -29,4 +29,4 @@ def showName(request):
     {"name": "Cole"} 
     """
     x = requests.post(url, headers = headers,data = data)
-    return x
+    return HttpResponse(x)
