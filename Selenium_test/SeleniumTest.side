@@ -1,0 +1,161 @@
+{
+  "id": "e4345b18-f925-45ee-95f6-7610c31977a0",
+  "version": "2.0",
+  "name": "SeleniumTest",
+  "url": "http://localhost:8000/user/",
+  "tests": [{
+    "id": "f58c49c0-a092-49ca-9c3e-7321dab44bba",
+    "name": "Test01",
+    "commands": [{
+      "id": "fd8d203e-18d3-4b58-a610-cb717685b93d",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8000/user/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "997db376-7371-406b-b33c-a600ca94531a",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1200x761",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e1c25dd6-f4a8-40f7-925e-812c62ce1759",
+      "comment": "",
+      "command": "click",
+      "target": "css=h1",
+      "targets": [
+        ["css=h1", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'Quoridor Online')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a8d2b87b-7b27-4b18-8174-4627c95461e6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.flex-container",
+      "targets": [
+        ["css=.flex-container", "css:finder"],
+        ["xpath=//div", "xpath:position"],
+        ["xpath=//div[contains(.,' ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4114561d-ebed-4419-a622-67a89d0c0cd5",
+      "comment": "",
+      "command": "click",
+      "target": "css=a:nth-child(1) > .custom_button",
+      "targets": [
+        ["css=a:nth-child(1) > .custom_button", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bd0a2f53-22c1-4bad-b841-7791318e3e60",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0e06fe9f-bf7b-49d8-9b38-9684d6499fe4",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Enter a Name",
+      "targets": [
+        ["linkText=Enter a Name", "linkText"],
+        ["css=a", "css:finder"],
+        ["xpath=//a[contains(text(),'Enter a Name')]", "xpath:link"],
+        ["xpath=//a[contains(@href, 'getName')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Enter a Name')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3fe81935-0f5b-4b4e-8d86-76e1fd7c1d40",
+      "comment": "",
+      "command": "click",
+      "target": "name=name",
+      "targets": [
+        ["name=name", "name"],
+        ["css=input:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='name']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6a183c88-ddc3-4b3c-a233-2d33925c233e",
+      "comment": "",
+      "command": "type",
+      "target": "name=name",
+      "targets": [
+        ["name=name", "name"],
+        ["css=input:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='name']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "jackMurphy"
+    }, {
+      "id": "997a7ebf-5129-445d-95cd-5a1604ba3ba0",
+      "comment": "",
+      "command": "type",
+      "target": "name=name",
+      "targets": [
+        ["name=name", "name"],
+        ["css=input:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='name']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "Kyle"
+    }, {
+      "id": "9111eab5-4745-4e71-9405-faa152d2a12c",
+      "comment": "",
+      "command": "click",
+      "target": "css=p:nth-child(4)",
+      "targets": [
+        ["css=p:nth-child(4)", "css:finder"],
+        ["xpath=//p[2]", "xpath:position"],
+        ["xpath=//p[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "756ccfe1-67e2-4146-a72c-693115c08df1",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3aefdd12-c922-4cf0-8945-a44f10a01208",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"],
+        ["xpath=//body[contains(.,'Your Name is Kyle')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "39b86e07-598f-44ae-8671-7d715058877d",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": [],
+  "plugins": []
+}
