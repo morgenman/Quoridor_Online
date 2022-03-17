@@ -8,11 +8,6 @@ import requests, json
 def home(request):
     return render(request, 'home.html')
 
-
-def getUser(request):
-    return render(request, 'get_user.html')
-
-
 def getName(request):
     return render(request, 'get_name.html')
     
