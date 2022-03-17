@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+import requests
 
 # Create your views here.
 
@@ -8,8 +9,7 @@ def home(request):
 
 
 def getUser(request):
-    html = "Click here to <a href=getName> Enter a Name </a>"
-    return HttpResponse(html)
+    return render(request, 'get_user.html')
 
 
 def getName(request):
@@ -18,4 +18,6 @@ def getName(request):
 
 def showName(request):
     name = request.POST['name']
-    return render(request, 'show_name.html', {'name': name})    
+    response = requests.post('http://api:8080', data = {'name': name}, headers = {'Content-Type': 'application/json'})
+    result = render(response, 'show_name.html', {'name': response.name}) 
+    return HttpResponse(result)
