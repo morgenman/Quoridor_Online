@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import requests
-from requests.structures import CaseInsensitiveDict
 
 
 # Create your views here.
@@ -23,7 +22,7 @@ def showName(request):
     # data_to_be_sent = "{'name': 'somevalue'}"
     # response = requests.post('http://api:8080', data = data_to_be_sent)
     # result = render(response, 'show_name.html', {'name': response.name}) 
-    headers = CaseInsensitiveDict()
+    headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
     url = 'http://api:8080'
     data = """
