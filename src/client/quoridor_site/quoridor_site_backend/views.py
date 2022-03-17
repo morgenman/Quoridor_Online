@@ -22,7 +22,6 @@ def showName(request):
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
     url = 'http://api:8080'
-    data = {'name': name}
-    response = requests.post(url, headers = headers,data = data)
-    result = render(response, 'show_name.html', {'name': response.name}) 
-    return HttpResponse(result)
+    data = {"name": name}
+    x = requests.post(url, headers = headers,data = json.dumps(data))
+    return HttpResponse(x)
