@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import requests
+from requests.structures import CaseInsensitiveDict
+
 
 # Create your views here.
 
@@ -18,6 +20,14 @@ def getName(request):
 
 def showName(request):
     name = request.POST['name']
-    response = requests.post('http://api:8080', data = {'name': name}, headers = {'Content-Type': 'application/json'})
-    result = render(response, 'show_name.html', {'name': response.name}) 
-    return HttpResponse(result)
+    # data_to_be_sent = "{'name': 'somevalue'}"
+    # response = requests.post('http://api:8080', data = data_to_be_sent)
+    # result = render(response, 'show_name.html', {'name': response.name}) 
+    headers = CaseInsensitiveDict()
+    headers["Content-Type"] = "application/json"
+    url = 'http://api:8080'
+    data = """
+    {"name": "Cole"} 
+    """
+    x = requests.post(url, headers = headers,data = data)
+    return x

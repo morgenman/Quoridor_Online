@@ -21,8 +21,10 @@ class MyServer(BaseHTTPRequestHandler):
     
     # Client gives data to the game engine
     def do_POST(self):
+        print(self.rfile) 
         content_len = int(self.headers.get('Content-Length'))
         post_body = json.loads(self.rfile.read(content_len))
+        
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
