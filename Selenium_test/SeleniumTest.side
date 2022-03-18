@@ -5,7 +5,7 @@
   "url": "http://localhost:8000/user/",
   "tests": [{
     "id": "f58c49c0-a092-49ca-9c3e-7321dab44bba",
-    "name": "Test01",
+    "name": "Test01 - Home Page Displays",
     "commands": [{
       "id": "fd8d203e-18d3-4b58-a610-cb717685b93d",
       "comment": "",
@@ -147,6 +147,70 @@
       ],
       "value": ""
     }]
+  }, {
+    "id": "5ad12386-f7d1-4f60-89f5-c55ddd8d2e33",
+    "name": "Test02 - API submit and receive",
+    "commands": [{
+      "id": "f6c3d506-9383-4180-a84d-df8011200e33",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8000/user/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "cdbe894d-3ead-45a8-a0c1-b7a5925095af",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1001x1188",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "064d1eb4-dd82-4f1c-af3e-d99bba3f09a1",
+      "comment": "",
+      "command": "click",
+      "target": "css=a:nth-child(1) > .custom_button",
+      "targets": [
+        ["css=a:nth-child(1) > .custom_button", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5444e654-c0bc-4a57-9af8-8d07a199855f",
+      "comment": "",
+      "command": "click",
+      "target": "name=name",
+      "targets": [
+        ["name=name", "name"],
+        ["css=input:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='name']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1b1c5f49-748b-4898-99db-826d2fd1e595",
+      "comment": "",
+      "command": "type",
+      "target": "name=name",
+      "targets": [
+        ["name=name", "name"],
+        ["css=input:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='name']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "Cole"
+    }, {
+      "id": "d28f4041-bc6c-4e96-b153-198b7c4e56d7",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "39b86e07-598f-44ae-8671-7d715058877d",
@@ -156,6 +220,6 @@
     "timeout": 300,
     "tests": []
   }],
-  "urls": [],
+  "urls": ["http://localhost:8000/user/"],
   "plugins": []
 }
