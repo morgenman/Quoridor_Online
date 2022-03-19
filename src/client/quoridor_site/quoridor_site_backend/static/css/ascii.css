@@ -1,6 +1,7 @@
 table {
   border: 1px solid;
-  
+  border-collapse: separate; /* the default option */
+  border-spacing: 0; /* remove border gaps */
 }
 
 td{
