@@ -1,6 +1,8 @@
 # https://quoridorstrats.wordpress.com/notation/
 
 
+# Example of a game record, each number referring to a round. 
+# 1. e2 e8 2. e3 e7 3. e4 e6 4. e3h g6v 
 def full_game_to_array(shorthand):
   print(shorthand)  
   count = -1
@@ -14,6 +16,9 @@ def full_game_to_array(shorthand):
   print("This game has",count+1,"rounds")
   print(moves)  
 
+# Example of board state
+# d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3
+# horzontal walls / vertical walls / player pieces / walls remaining by player / which player's turn?
 def state_to_array(shorthand):
   gameOut = game(9,2)
   walls = [0,0,0,0]
@@ -52,12 +57,11 @@ def state_to_array(shorthand):
 
   print("It is Player "+temp[4]+"'s turn.")
 
-  gameOut.draw()
+  return gameOut.__repr__()
     
 
-  
-
-
+## Game Engine Data Structures
+# Tile Class is equivalent to a 'node' data structure.
 class tile:
   def __init__(self, x, y,parent):
     self.x = x
@@ -109,7 +113,7 @@ class tile:
   def get_coor(self): 
     return "("+chr(ord('`')+self.x)+self.get_char()+self.y.__str__()+")"
   
-  
+# Game stores 
 class game:
   def __init__(self,size,players):
     assert (players > 1 & players < 5),  f"{players} is an invalid number of players"
@@ -118,6 +122,18 @@ class game:
     self.board = [[tile(1+x,size-y,self) for x in range(size)] for y in range(size)]
   def get(self,x,y): # 3 4
     return self.board[self.size-y][x-1] # 5 3
+  def __repr__(self):
+    #out = '<link rel="stylesheet" href="{% static "css/ascii.css" %}" />'
+    out = "<table><tbody>"
+    for y in range(self.size):
+      out += "<tr>"
+      for x in range(self.size):
+        out +="<td>"
+        out += self.get(x+1,self.size-y).__repr__() 
+        out += "</td>"
+      out +='</tr>'
+    out +="</tbody></table>"
+    return out
   def draw(self):
     print("------------------------------------------------------------------------------------------------------------------------------------------")
     print()
@@ -126,7 +142,6 @@ class game:
         print(self.get(x+1,self.size-y) , end = '      \t')
       print()
       print()
-    
     print("------------------------------------------------------------------------------------------------------------------------------------------")
 
     

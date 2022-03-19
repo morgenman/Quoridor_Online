@@ -24,12 +24,19 @@ class MyServer(BaseHTTPRequestHandler):
         print(self.rfile) 
         content_len = int(self.headers.get('Content-Length'))
         post_body = json.loads(self.rfile.read(content_len))
-        
         self.send_response(200)
-        self.send_header("Content-type", "text/html")
+        self.send_header("Content-type", "text/html; charset=utf-8")
         self.end_headers()
-        self.wfile.write(bytes("I have detected that 'name' is " + post_body['name']+'\n',"utf-8"))
-        print("I have detected that 'name' is " + post_body['name'])
+        match self.path:
+            # each endpoint can be a case here
+            case "/decode":
+                self.wfile.write(bytes(game_engine.state_to_array(post_body['state']), "utf-8"))
+            case _: 
+                self.wfile.write(bytes("I have detected that 'name' is " + post_body['name']+'\n',"utf-8"))
+                print("I have detected that 'name' is " + post_body['name'])
+
+        
+        
 
 
 myServer = HTTPServer((hostName, hostPort), MyServer)

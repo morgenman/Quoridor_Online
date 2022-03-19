@@ -20,3 +20,17 @@ def showName(request):
     data = {"name": name}
     x = requests.post(url, headers = headers,data = json.dumps(data))
     return HttpResponse(x)
+
+
+def game_state(request):
+    return render(request, 'game_state_demo.html')
+
+def ascii_state(request):
+    state = request.POST['state']
+    url = 'http://api:8080/decode'
+    headers = requests.structures.CaseInsensitiveDict()
+    headers["Content-Type"] = "application/json"
+    headers["charset"] = "UTF-8"
+    data = {"state": state}
+    x = requests.post(url, headers = headers,data = json.dumps(data))
+    return render(request, "ascii.html", {"ascii" : x.text })
