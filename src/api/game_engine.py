@@ -110,6 +110,22 @@ class tile:
     return ' '+self.get_val()+' '
   def __repr__(self,):
     return  self.get_coor()
+  def html(self,):
+    out = "<td style='"
+    if self.w_north:  out +="border-top: 2px solid;"
+    if self.w_east: out +="border-right: 2px solid;"
+    if self.w_south: out +="border-bottom: 2px solid;"
+    if self.w_west: out +="border-left: 2px solid;"
+    if self.val == 1: out += 'background-color:#bae1ff;'
+    elif self.val == 2: out += 'background-color:#baffc9;'
+    elif self.val == 3: out += 'background-color:#ffffba;'
+    elif self.val == 4: out += 'background-color:#ffdfba;'
+    out += "'>"
+    out += chr(ord('`')+self.x)
+    out += self.y.__str__()
+    out+="</td>"
+    return out
+    
   def get_coor(self): 
     return "("+chr(ord('`')+self.x)+self.get_char()+self.y.__str__()+")"
   
@@ -124,15 +140,18 @@ class game:
     return self.board[self.size-y][x-1] # 5 3
   def __repr__(self):
     #out = '<link rel="stylesheet" href="{% static "css/ascii.css" %}" />'
-    out = "<table><tbody>"
+    out = "<div id='wrapper'><h1>Converted Game Board:</h1>\
+      <section id='left'><table><tbody>"
     for y in range(self.size):
       out += "<tr>"
       for x in range(self.size):
-        out +="<td>"
-        out += self.get(x+1,self.size-y).__repr__() 
-        out += "</td>"
+        out += self.get(x+1,self.size-y).html() 
       out +='</tr>'
-    out +="</tbody></table>"
+    out +="</tbody></table></section>"
+    out +="<section id='right'><table>\
+      <tr><td style = 'background-color:#bae1ff;'>Player 1</td><td style = 'background-color:#baffc9;'>Player 2</td></tr>\
+      <tr><td style = 'background-color:#ffffba;'>Player 3</td><td style = 'background-color:#ffdfba;'>Player 4</td></tr>\
+      </table></section>"
     return out
   def draw(self):
     print("------------------------------------------------------------------------------------------------------------------------------------------")

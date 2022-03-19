@@ -1,8 +1,7 @@
-{% block title %}Board: {% endblock %}
 {% block content %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/ascii.css' %}" />
 <meta charset="utf-8">
-</br>
+
   {{ ascii|safe }}
 {% endblock %}
