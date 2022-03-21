@@ -13,7 +13,7 @@
   
   <h2>Demo</h2>
   <p>
-      <form action="{% url 'ascii_state' %}" method="POST">
+      <form action="{% url 'game_board' %}" method="POST">
           {% csrf_token %}
           Game State: <input name="state" value="/ / e1 e9 / 10 10 / 1"> <p>
           <p><button type="submit">Submit </button>

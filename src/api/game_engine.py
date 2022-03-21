@@ -192,7 +192,6 @@ class game:
   # an alternative to the __str__ function. 
   # Basically when board is expected to be the string type, return the html equivalent
   def __repr__(self):
-    #out = '<link rel="stylesheet" href="{% static "css/ascii.css" %}" />'
     out = "<div id='wrapper'><h1>Converted Game Board:</h1>\
       <section id='left'><table><tbody>"
     for y in range(self.size):

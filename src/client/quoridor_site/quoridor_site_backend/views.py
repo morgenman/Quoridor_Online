@@ -21,11 +21,12 @@ def showName(request):
     x = requests.post(url, headers = headers,data = json.dumps(data))
     return HttpResponse(x)
 
-
 def game_state(request):
     return render(request, 'game_state_demo.html')
 
-def ascii_state(request):
+# get_board pushes the game state string to the api and passes through 
+# the returned html to the board.html template page
+def get_board(request):
     state = request.POST['state']
     url = 'http://api:8080/decode'
     headers = requests.structures.CaseInsensitiveDict()
@@ -33,4 +34,4 @@ def ascii_state(request):
     headers["charset"] = "UTF-8"
     data = {"state": state}
     x = requests.post(url, headers = headers,data = json.dumps(data))
-    return render(request, "ascii.html", {"ascii" : x.text })
+    return render(request, "board.html", {"board" : x.text })
