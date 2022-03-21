@@ -6,6 +6,8 @@ import game_engine
 hostName = "0.0.0.0"
 hostPort = 8080
 
+# MyServer hosts the game engine
+# Manual routing is in the match functions (match is switch statement for Python) 
 class MyServer(BaseHTTPRequestHandler):
     # Client wants data from the game engine
     def do_GET(self):
@@ -16,6 +18,7 @@ class MyServer(BaseHTTPRequestHandler):
             # each endpoint can be a case here
             case "/testing":
                 self.wfile.write(bytes("<body><p>You got to Testing!</p>", "utf-8"))
+
         self.wfile.write(bytes("<p>You accessed path: %s</p>" % self.path, "utf-8"))
         self.wfile.write(bytes("</body></html>", "utf-8"))
     
@@ -36,13 +39,12 @@ class MyServer(BaseHTTPRequestHandler):
                 print("I have detected that 'name' is " + post_body['name'])
 
         
-        
-
-
+# Host the Server
 myServer = HTTPServer((hostName, hostPort), MyServer)
 
-print(time.asctime(), "Server Starts - %s:%s" % (hostName, hostPort))
+print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 
+# Test Cases
 print("Testing Engine conversion from shorthand to array...")
 game_engine.full_game_to_array("1. e2 e8 2. e3 e7 3. e4 e6 4. e3h g6v")  
 game_engine.state_to_array("d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3")
