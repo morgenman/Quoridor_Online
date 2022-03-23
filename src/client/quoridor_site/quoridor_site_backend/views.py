@@ -5,33 +5,37 @@ import requests, json
 
 # Create your views here.
 
+
 def home(request):
-    return render(request, 'home.html')
+    return render(request, "home.html")
+
 
 def getName(request):
-    return render(request, 'get_name.html')
-    
+    return render(request, "get_name.html")
+
 
 def showName(request):
-    name = request.POST['name']
+    name = request.POST["name"]
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
-    url = 'http://api:8080'
+    url = "http://api:8080"
     data = {"name": name}
-    x = requests.post(url, headers = headers,data = json.dumps(data))
+    x = requests.post(url, headers=headers, data=json.dumps(data))
     return HttpResponse(x)
 
-def game_state(request):
-    return render(request, 'game_state_demo.html')
 
-# get_board pushes the game state string to the api and passes through 
+def game_state(request):
+    return render(request, "game_state_demo.html")
+
+
+# get_board pushes the game state string to the api and passes through
 # the returned html to the board.html template page
 def get_board(request):
-    state = request.POST['state']
-    url = 'http://api:8080/decode'
+    state = request.POST["state"]
+    url = "http://api:8080/decode"
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
     headers["charset"] = "UTF-8"
     data = {"state": state}
-    x = requests.post(url, headers = headers,data = json.dumps(data))
-    return render(request, "board.html", {"board" : x.text })
+    x = requests.post(url, headers=headers, data=json.dumps(data))
+    return render(request, "board.html", {"board": x.text})
