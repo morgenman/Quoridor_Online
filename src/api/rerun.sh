@@ -19,10 +19,10 @@ trap sigint_handler SIGINT
 
 while true; do
   $* &
-  PID=$!
+  #PID=$!
   inotifywait -q -e modify -e move -e create -e delete -e attrib `pwd`
   [[ $(jobs -pr) == "" ]] || kill $(jobs -pr)
-  kill $PID
+  #kill $PID
   echo "Restarting API (5s delay)"
   sleep 5
 done

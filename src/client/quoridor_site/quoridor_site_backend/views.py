@@ -38,15 +38,22 @@ def get_board(request):
     headers["charset"] = "UTF-8"
     data = {"state": state}
     x = requests.post(url, headers=headers, data=json.dumps(data))
-    return render(request, "board.html", {"board": x.text})
+    return render(request, "board.html", {"board": x.text, "state": state})
 
 
 def make_move(request):
-    move = request.POST["move"]
-    url = "http://api:8080/decode/move"
+    tile = request.POST["tile"]
+    state = request.POST["state"]
+    player = request.POST["player"]
+    temp = state.split("/")
+
+    move = "p" + player + tile
+    url = "http://api:8080/move"
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
     headers["charset"] = "UTF-8"
-    data = {"move": move}
+    data = {"move": move, "state": state}
     x = requests.post(url, headers=headers, data=json.dumps(data))
-    return render(request, "board.html", {"board": x.text})
+    # Cole will explain this cryptic line later
+    state = state.replace(temp[2].strip().split(" ")[int(player) - 1][0:2], tile)
+    return render(request, "board.html", {"board": x.text, "state": state})

@@ -1,12 +1,20 @@
-{% block content %}
-{% load static %}
+{% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'css/board.css' %}" />
-<meta charset="utf-8">
+<meta charset="utf-8" />
+<p>{{state}}</p>
 {{ board|safe }}
 <form action="{% url 'move' %}" method="POST">
-  {% csrf_token %}
-  Make a Move: <input name="move">
-  <p>
-  <p><button type="submit">Submit </button>
+  <select name="player"> 
+    <option value="1">Player 1</option>
+    <option value="2">Player 2</option>
+    <option value="3">Player 3</option>
+    <option value="4">Player 4</option>
+  </select>
+</br></br>  
+  {% csrf_token %} Make a Move: <input name="tile" />
+  <input name="state" value="{{state}}" type="hidden" />
+  <p></p>
+  <p><button type="submit" pattern="[a-z]{1}[1-9]{1}" size="2">Submit</button></p>
 </form>
+
 {% endblock %}
