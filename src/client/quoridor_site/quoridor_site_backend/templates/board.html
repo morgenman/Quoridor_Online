@@ -2,6 +2,11 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/board.css' %}" />
 <meta charset="utf-8">
-
-  {{ board|safe }}
+{{ board|safe }}
+<form action="{% url 'move' %}" method="POST">
+  {% csrf_token %}
+  Make a Move: <input name="move">
+  <p>
+  <p><button type="submit">Submit </button>
+</form>
 {% endblock %}
