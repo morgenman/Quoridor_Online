@@ -40,8 +40,9 @@ def get_board(request):
     x = requests.post(url, headers=headers, data=json.dumps(data))
     return render(request, "board.html", {"board": x.text})
 
+
 def make_move(request):
-    state = request.POST["move"]
+    move = request.POST["move"]
     url = "http://api:8080/decode/move"
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
