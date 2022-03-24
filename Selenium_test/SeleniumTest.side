@@ -10,7 +10,7 @@
       "id": "fd8d203e-18d3-4b58-a610-cb717685b93d",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8000/user/",
+      "target": "http://localhost:8000",
       "targets": [],
       "value": ""
     }, {
@@ -66,14 +66,12 @@
       "id": "0e06fe9f-bf7b-49d8-9b38-9684d6499fe4",
       "comment": "",
       "command": "click",
-      "target": "linkText=Enter a Name",
+      "target": "name=name",
       "targets": [
-        ["linkText=Enter a Name", "linkText"],
-        ["css=a", "css:finder"],
-        ["xpath=//a[contains(text(),'Enter a Name')]", "xpath:link"],
-        ["xpath=//a[contains(@href, 'getName')]", "xpath:href"],
-        ["xpath=//a", "xpath:position"],
-        ["xpath=//a[contains(.,'Enter a Name')]", "xpath:innerText"]
+        ["name=name", "name"],
+        ["css=input:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='name']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -154,7 +152,7 @@
       "id": "f6c3d506-9383-4180-a84d-df8011200e33",
       "comment": "",
       "command": "open",
-      "target": "http://localhost:8000/user/",
+      "target": "http://localhost:8000",
       "targets": [],
       "value": ""
     }, {
@@ -210,6 +208,130 @@
         ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
       ],
       "value": ""
+    }]
+  }, {
+    "id": "2d9e2c01-2a51-4f5f-acd7-9c831cb3e79d",
+    "name": "Test03 - Join Game",
+    "commands": [{
+      "id": "8e556c79-05e1-4bc4-a46b-ccefa45a7b75",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fd2f5da0-3719-4c2c-b96f-5067a27a3905",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1200x761",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "35c77010-ba60-494d-b374-e0a02f5a9478",
+      "comment": "",
+      "command": "click",
+      "target": "css=a:nth-child(2) > .custom_button",
+      "targets": [
+        ["css=a:nth-child(2) > .custom_button", "css:finder"],
+        ["xpath=//a[2]/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6c207a93-db79-4c84-93d3-ac07f46d7f45",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "09ff38f3-e0e3-447d-8e5d-2a93e8fed6d5",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=tr:nth-child(9) > td:nth-child(5)",
+      "targets": [
+        ["css=tr:nth-child(9) > td:nth-child(5)", "css:finder"],
+        ["xpath=//section[@id='left']/table/tbody/tr[9]/td[5]", "xpath:idRelative"],
+        ["xpath=//tr[9]/td[5]", "xpath:position"],
+        ["xpath=//td[contains(.,'e1')]", "xpath:innerText"]
+      ],
+      "value": "300"
+    }, {
+      "id": "6a1cebf1-b2c5-49cb-aa50-bdc72e22efcb",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f0b2026c-30c5-4e21-9e62-361148cda078",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1200x761",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "24dcd130-749e-4a65-a77c-c64f7537656f",
+      "comment": "",
+      "command": "click",
+      "target": "css=a:nth-child(2) > .custom_button",
+      "targets": [
+        ["css=a:nth-child(2) > .custom_button", "css:finder"],
+        ["xpath=//a[2]/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e9074ee4-8e14-4621-bbc7-3a91c040a450",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "name=state",
+      "targets": [
+        ["name=state", "name"],
+        ["css=input:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='state']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bbf28f62-4221-4e7f-9403-8ffa0b770081",
+      "comment": "",
+      "command": "type",
+      "target": "name=state",
+      "targets": [
+        ["name=state", "name"],
+        ["css=input:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='state']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3"
+    }, {
+      "id": "a96a6370-3f54-43ba-8e33-e1502879e228",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d892e88c-25ba-4a8f-bb00-218d87b41c6f",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=tr:nth-child(9) > td:nth-child(5)",
+      "targets": [
+        ["css=tr:nth-child(9) > td:nth-child(5)", "css:finder"],
+        ["xpath=//section[@id='left']/table/tbody/tr[9]/td[5]", "xpath:idRelative"],
+        ["xpath=//tr[9]/td[5]", "xpath:position"],
+        ["xpath=//td[contains(.,'e1')]", "xpath:innerText"]
+      ],
+      "value": "300"
     }]
   }],
   "suites": [{
