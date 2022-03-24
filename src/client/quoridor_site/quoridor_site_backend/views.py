@@ -40,6 +40,16 @@ def get_board(request):
     x = requests.post(url, headers=headers, data=json.dumps(data))
     return render(request, "board.html", {"board": x.text, "state": state})
 
+def new_game(request):
+    state = "/ / e1 e9 / 10 10 / 1"
+    url = "http://api:8080/decode"
+    headers = requests.structures.CaseInsensitiveDict()
+    headers["Content-Type"] = "application/json"
+    headers["charset"] = "UTF-8"
+    data = {"state": state}
+    x = requests.post(url, headers=headers, data=json.dumps(data))
+    return render(request, "board.html", {"board": x.text, "state": state})
+
 
 def make_move(request):
     tile = request.POST["tile"]
