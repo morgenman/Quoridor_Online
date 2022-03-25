@@ -112,15 +112,16 @@ def move_by_player(move):
 
 @dispatch(str, str)
 def move_by_player(move, shorthand):
+    print("MOVE sent:", move)
     game = state_to_array(shorthand)
     assert len(move) == 4  # move should be four char
     assert move[0] == "p"  # move should start with p prefix indicating player
-    assert int(move[1]) in range(1, 4)  # player number should be 1,2,3
+    assert int(move[1]) in range(1, 5)  # player number should be 1,2,3
     assert ord(move[2]) in range(
         ord("a"), ord("a") + game.size
     )  # x coordinate should be a->(a+board size)
     assert int(move[3]) in range(1, game.size)  # y coordinate should be 1->board size
-    players = [game.get_player(i) for i in range(1, 3)]
+    players = [game.get_player(i) for i in range(1, game.get_num_players() + 1)]
     for i in range(len(players)):
         assert players[i] != None  # all players should exist
 
@@ -289,6 +290,14 @@ class game:
         self.board = [
             [tile(1 + x, size - y, self) for x in range(size)] for y in range(size)
         ]
+
+    # """returns the number of players"""
+    def get_num_players(self):
+        for i in range(1, 6, 1):
+            print(i)
+            if self.get_player(i) == None:
+                return i - 1
+        return None
 
     # overloaded version of get which allows string form ie: "a1" -> (1,1)
     @dispatch(str)
