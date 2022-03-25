@@ -37,7 +37,7 @@ class TestGameEngine(unittest.TestCase):
         self.assertEqual(game2.get_player(1).x,5) # e  
         self.assertEqual(game2.get_player(1).y,2) # 2
         self.assertEqual(game2.get_player(2).x,5) # e  
-        self.assertEqual(game2.get_player(1).y,9) # 9
+        self.assertEqual(game2.get_player(2).y,9) # 9
 
 if __name__ == "__main__":
     unittest.main()
