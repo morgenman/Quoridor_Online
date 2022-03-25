@@ -2,10 +2,10 @@
   "id": "e4345b18-f925-45ee-95f6-7610c31977a0",
   "version": "2.0",
   "name": "SeleniumTest",
-  "url": "http://localhost:8000/user/",
+  "url": "http://localhost:8000",
   "tests": [{
     "id": "f58c49c0-a092-49ca-9c3e-7321dab44bba",
-    "name": "Test01 - Home Page Displays",
+    "name": "*Irrelevant* Test01 - Home Page Displays",
     "commands": [{
       "id": "fd8d203e-18d3-4b58-a610-cb717685b93d",
       "comment": "",
@@ -147,7 +147,7 @@
     }]
   }, {
     "id": "5ad12386-f7d1-4f60-89f5-c55ddd8d2e33",
-    "name": "Test02 - API submit and receive",
+    "name": "*Irrelevant* Test02 - API submit and receive",
     "commands": [{
       "id": "f6c3d506-9383-4180-a84d-df8011200e33",
       "comment": "",
@@ -261,6 +261,53 @@
       ],
       "value": "300"
     }, {
+      "id": "3e66584f-ae68-4884-9f46-36772f692cb9",
+      "comment": "",
+      "command": "type",
+      "target": "name=tile",
+      "targets": [],
+      "value": "e2"
+    }, {
+      "id": "f61e78e2-768e-4b40-a4c1-2b48862315ad",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='wrapper']/form/p[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f8b9a884-eca2-48db-b6c2-84095cce77a1",
+      "comment": "",
+      "command": "type",
+      "target": "name=tile",
+      "targets": [],
+      "value": "f2"
+    }, {
+      "id": "213259c0-4fa1-45df-aba2-4a026bf9e6d9",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='wrapper']/form/p[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a0812953-e1fb-46b3-b7c8-fa0d266b7deb",
+      "comment": "",
+      "command": "click",
+      "target": "name=player",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "6a1cebf1-b2c5-49cb-aa50-bdc72e22efcb",
       "comment": "",
       "command": "open",
@@ -333,6 +380,125 @@
       ],
       "value": "300"
     }]
+  }, {
+    "id": "f84443b3-1166-4ced-8642-00e2894a394e",
+    "name": "Test04 - Known Issue",
+    "commands": [{
+      "id": "f3b0b351-49f1-4172-ada8-de9b535ea17d",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "43a0da94-28dd-43aa-b4bc-0e134e001f6b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1200x761",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "918d3004-a630-4869-98bd-307fdb7af1bd",
+      "comment": "",
+      "command": "click",
+      "target": "css=a:nth-child(2) > .custom_button",
+      "targets": [
+        ["css=a:nth-child(2) > .custom_button", "css:finder"],
+        ["xpath=//a[2]/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f239a5b1-90dd-4642-923d-bdc21d4005be",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "28d76451-8116-46fe-91df-41a1b838fd4b",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=tr:nth-child(9) > td:nth-child(5)",
+      "targets": [
+        ["css=tr:nth-child(9) > td:nth-child(5)", "css:finder"],
+        ["xpath=//section[@id='left']/table/tbody/tr[9]/td[5]", "xpath:idRelative"],
+        ["xpath=//tr[9]/td[5]", "xpath:position"],
+        ["xpath=//td[contains(.,'e1')]", "xpath:innerText"]
+      ],
+      "value": "300"
+    }, {
+      "id": "f0099c3f-8273-435b-889c-2d12ec9f785a",
+      "comment": "Location player can move",
+      "command": "type",
+      "target": "name=tile",
+      "targets": [],
+      "value": "e2"
+    }, {
+      "id": "84f99639-5429-461c-ad1f-ee236c2da14c",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='wrapper']/form/p[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "70744967-e68f-49f2-93a6-8e2ce84d9e32",
+      "comment": "Location player can't move",
+      "command": "type",
+      "target": "name=tile",
+      "targets": [],
+      "value": "d7"
+    }, {
+      "id": "9a86c88d-1317-4bd2-abee-ee34e22a872d",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='wrapper']/form/p[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fc9d5d1f-194c-4996-a53c-e13c0e96a604",
+      "comment": "Where the error occurs, a correct move is sent but player is moved to previous incorrect move",
+      "command": "type",
+      "target": "name=tile",
+      "targets": [],
+      "value": "f2"
+    }, {
+      "id": "482f9183-4127-44a8-8783-386c21e3b5ae",
+      "comment": "",
+      "command": "click",
+      "target": "css=button",
+      "targets": [
+        ["css=button", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='wrapper']/form/p[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Submit')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6e95ac83-be89-4e8f-ad73-c561e4079a72",
+      "comment": "",
+      "command": "click",
+      "target": "name=player",
+      "targets": [],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "39b86e07-598f-44ae-8671-7d715058877d",
@@ -342,6 +508,6 @@
     "timeout": 300,
     "tests": []
   }],
-  "urls": ["http://localhost:8000/user/"],
+  "urls": ["http://localhost:8000/user/", "http://localhost:8000/"],
   "plugins": []
 }
