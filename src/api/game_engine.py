@@ -38,7 +38,7 @@ def test():
 # Example of a game record, each number referring to a round.
 # 1. e2 e8 2. e3 e7 3. e4 e6 4. e3h g6v
 def full_game_to_array(shorthand):
-    print(shorthand)
+    #print(shorthand)
     count = -1
     moves = []
     for i in shorthand.split(" "):
@@ -47,8 +47,9 @@ def full_game_to_array(shorthand):
             moves.append([])
         else:
             moves[count].append(i)
-    print("This game has", count + 1, "rounds")
-    print(moves)
+    # print("This game has", count + 1, "rounds")
+    # print(moves)
+    return moves
 
 
 # state_to_array converts a game state to a game object
@@ -57,9 +58,8 @@ def full_game_to_array(shorthand):
 # d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3
 # horzontal walls / vertical walls / player pieces / walls remaining by player / which player's turn?
 def state_to_array(shorthand):
-
     walls = [0, 0, 0, 0]
-    print(shorthand)
+    #print(shorthand)
     temp = shorthand.split("/")
     temp[0] = temp[0].strip()
     temp[1] = temp[1].strip()
@@ -93,14 +93,14 @@ def state_to_array(shorthand):
         gameOut.get(x, y).val = i + 1
 
     walls = temp[3].split(" ")
-    for i in range(len(walls)):
-        print(
-            "Player "
-            + (i + 1).__str__()
-            + " has "
-            + walls[i].__str__()
-            + " walls remaining."
-        )
+    # for i in range(len(walls)):
+    #     print(
+    #         "Player "
+    #         + (i + 1).__str__()
+    #         + " has "
+    #         + walls[i].__str__()
+    #         + " walls remaining."
+    #     )
 
     # print("It is Player " + temp[4] + "'s turn.")
 
@@ -205,7 +205,7 @@ class tile:
     # first is a wall north of this tile
     # second is a wall north of the tile east to this wall
     def set_wall_h(self):
-        print("Horizontal wall at " + self.__repr__())
+        #print("Horizontal wall at " + self.__repr__())
         self.get_north().w_south = True
         self.w_north = True
         self.get_east().get_north().w_south = True
@@ -216,7 +216,7 @@ class tile:
     # first is a wall east of this tile
     # second is a wall east of the tile north to this wall
     def set_wall_v(self):
-        print("Vertical wall at " + self.__repr__())
+        #print("Vertical wall at " + self.__repr__())
         self.get_north().get_east().w_west = True
         self.get_north().w_east = True
         self.get_east().w_west = True
