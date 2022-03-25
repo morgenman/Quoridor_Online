@@ -57,7 +57,7 @@ def full_game_to_array(shorthand):
 # d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3
 # horzontal walls / vertical walls / player pieces / walls remaining by player / which player's turn?
 def state_to_array(shorthand):
-    gameOut = game(9, 2)
+
     walls = [0, 0, 0, 0]
     print(shorthand)
     temp = shorthand.split("/")
@@ -66,6 +66,10 @@ def state_to_array(shorthand):
     temp[2] = temp[2].strip()
     temp[3] = temp[3].strip()
     temp[4] = temp[4].strip()
+
+    num_players = temp[2].split(" ").__len__()
+    assert num_players in range(1, 5)  # Python range is not inclusive.
+    gameOut = game(9, num_players)
 
     # Horizontal Walls
     hori = [temp[0][i : i + 2] for i in range(0, len(temp[0]), 2)]
@@ -149,11 +153,9 @@ class tile:
     def move(self, move):
         destination = self.parent.get(move)
         assert destination != None  # destination should exist
-        if self.distance(destination) > 1:
-            print("Invalid move!")
-        else:
-            destination.val = self.val
-            self.val = 0
+        assert self.distance(destination) == 1  # destination should be adjacent
+        destination.val = self.val
+        self.val = 0
 
     def distance(self, tile):
         # a^2 + b^2 = c^2
@@ -290,14 +292,11 @@ class game:
         self.board = [
             [tile(1 + x, size - y, self) for x in range(size)] for y in range(size)
         ]
+        self.num_players = players
 
     # """returns the number of players"""
     def get_num_players(self):
-        for i in range(1, 6, 1):
-            print(i)
-            if self.get_player(i) == None:
-                return i - 1
-        return None
+        return self.num_players
 
     # overloaded version of get which allows string form ie: "a1" -> (1,1)
     @dispatch(str)

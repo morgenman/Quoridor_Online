@@ -40,6 +40,7 @@ def get_board(request):
     x = requests.post(url, headers=headers, data=json.dumps(data))
     return render(request, "board.html", {"board": x.text, "state": state})
 
+
 def new_game(request):
     state = "/ / e1 e9 / 10 10 / 1"
     url = "http://api:8080/decode"
@@ -52,7 +53,7 @@ def new_game(request):
 
 
 def make_move(request):
-    tile = request.POST["tile"]
+    tile = request.POST["tile"].lower()
     state = request.POST["state"]
     player = request.POST["player"]
     temp = state.split("/")
@@ -64,6 +65,12 @@ def make_move(request):
     headers["charset"] = "UTF-8"
     data = {"move": move, "state": state}
     x = requests.post(url, headers=headers, data=json.dumps(data))
-    # Cole will explain this cryptic line later
-    state = state.replace(temp[2].strip().split(" ")[int(player) - 1][0:2], tile)
-    return render(request, "board.html", {"board": x.text, "state": state})
+    # if x.text is empty return the same board
+    if (x.text == None) | (x.text == ""):
+        return render(
+            request, "board.html", {"board": request.POST["board"], "state": state}
+        )
+    if x.text != None:
+        # Cole will explain this cryptic line later
+        state = state.replace(temp[2].strip().split(" ")[int(player) - 1][0:2], tile)
+        return render(request, "board.html", {"board": x.text, "state": state})
