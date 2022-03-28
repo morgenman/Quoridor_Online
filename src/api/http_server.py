@@ -23,37 +23,44 @@ class MyServer(BaseHTTPRequestHandler):
 
     # Client gives data to the game engine
     def do_POST(self):
-        print(self.rfile)
-        content_len = int(self.headers.get("Content-Length"))
-        post_body = json.loads(self.rfile.read(content_len))
-        self.send_response(200)
-        self.send_header("Content-type", "text/html; charset=utf-8")
-        self.end_headers()
-        match self.path:
-            # each endpoint can be a case here
-            case "/decode":
-                self.wfile.write(
-                    bytes(
-                        game_engine.state_to_array(post_body["state"]).__repr__(),
-                        "utf-8",
+        try:
+            content_len = int(self.headers.get("Content-Length"))
+            post_body = json.loads(self.rfile.read(content_len))
+            self.send_response(200)
+            self.send_header("Content-type", "text/html; charset=utf-8")
+            self.end_headers()
+            match self.path:
+                # each endpoint can be a case here
+                case "/decode":
+                    self.wfile.write(
+                        bytes(
+                            game_engine.state_to_array(post_body["state"]).__repr__(),
+                            "utf-8",
+                        )
                     )
-                )
-            case "/move":
-                self.wfile.write(
-                    bytes(
-                        game_engine.move_by_player(
-                            post_body["move"], post_body["state"]
-                        ).__repr__(),
-                        "utf-8",
+                case "/move":
+                    self.wfile.write(
+                        bytes(
+                            game_engine.move_by_player(
+                                post_body["move"], post_body["state"]
+                            ).__repr__(),
+                            "utf-8",
+                        )
                     )
-                )
-            case _:
-                self.wfile.write(
-                    bytes(
-                        "Error, invalid URL for POST request\n",
-                        "utf-8",
+                case _:
+                    self.wfile.write(
+                        bytes(
+                            "Error, invalid URL for POST request\n",
+                            "utf-8",
+                        )
                     )
+        except:
+            self.wfile.write(
+                bytes(
+                    "Error: Something went wrong",
+                    "utf-8",
                 )
+            )
 
 
 # Host the Server

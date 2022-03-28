@@ -69,7 +69,7 @@ def make_move(request):
     data = {"move": move, "state": state}
     x = requests.post(url, headers=headers, data=json.dumps(data))
     # if x.text is empty return the same board
-    if (x.text == None) | (x.text == ""):
+    if (x.text == None) | (x.text == "") | (x.text == "Error: Something went wrong"):
         return render(
             request, "board.html", {"board": request.POST["board"], "state": state}
         )
