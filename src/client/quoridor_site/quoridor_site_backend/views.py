@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import requests, json
 
+# import utils.py
+from . import utils
 
 # Create your views here.
 
@@ -49,7 +51,8 @@ def new_game(request):
     headers["charset"] = "UTF-8"
     data = {"state": state}
     x = requests.post(url, headers=headers, data=json.dumps(data))
-    return render(request, "board.html", {"board": x.text, "state": state})
+    game = utils.state_to_array(state)
+    return render(request, "board.html", {"board": game, "state": state})
 
 
 def make_move(request):
