@@ -14,13 +14,12 @@ class MyServer(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        match self.path:
-            # each endpoint can be a case here
-            case "/testing":
-                self.wfile.write(bytes("<body><p>You got to Testing!</p>", "utf-8"))
-
-        self.wfile.write(bytes("<p>You accessed path: %s</p>" % self.path, "utf-8"))
-        self.wfile.write(bytes("</body></html>", "utf-8"))
+        self.wfile.write(
+            bytes(
+                "<body><p>Error: Nothing is hosted on this server.</p></body></html>",
+                "utf-8",
+            )
+        )
 
     # Client gives data to the game engine
     def do_POST(self):
@@ -51,11 +50,10 @@ class MyServer(BaseHTTPRequestHandler):
             case _:
                 self.wfile.write(
                     bytes(
-                        "I have detected that 'name' is " + post_body["name"] + "\n",
+                        "Error, invalid URL for POST request\n",
                         "utf-8",
                     )
                 )
-                print("I have detected that 'name' is " + post_body["name"])
 
 
 # Host the Server
@@ -66,7 +64,7 @@ print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 # Test Cases
 # print("Testing Engine conversion from shorthand to array...")
 # game_engine.full_game_to_array("1. e2 e8 2. e3 e7 3. e4 e6 4. e3h g6v")
-game_engine.state_to_array("d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3")
+# game_engine.state_to_array("d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3")
 # game_engine.move_by_player("p1e3")
 # game_engine.move_by_player("p1e2")
 
