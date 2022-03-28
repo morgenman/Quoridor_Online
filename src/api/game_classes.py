@@ -1,8 +1,6 @@
 import math
 from multipledispatch import dispatch
 
-
-
 # ----Data Structures----------------------------------------------
 
 # Tile Class is equivalent to a 'node' data structure.
@@ -22,6 +20,8 @@ class tile:
     def move(self, move):
         destination = self.parent.get(move)
         assert destination != None  # destination should exist
+        if self.distance(destination) >= 1:
+            print("Invalid move")
         assert self.distance(destination) == 1  # destination should be adjacent
         destination.val = self.val
         self.val = 0
@@ -74,7 +74,7 @@ class tile:
     # first is a wall north of this tile
     # second is a wall north of the tile east to this wall
     def set_wall_h(self):
-        #print("Horizontal wall at " + self.__repr__())
+        # print("Horizontal wall at " + self.__repr__())
         self.get_north().w_south = True
         self.w_north = True
         self.get_east().get_north().w_south = True
@@ -85,7 +85,7 @@ class tile:
     # first is a wall east of this tile
     # second is a wall east of the tile north to this wall
     def set_wall_v(self):
-        #print("Vertical wall at " + self.__repr__())
+        # print("Vertical wall at " + self.__repr__())
         self.get_north().get_east().w_west = True
         self.get_north().w_east = True
         self.get_east().w_west = True

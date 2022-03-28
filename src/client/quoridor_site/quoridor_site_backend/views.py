@@ -73,7 +73,7 @@ def make_move(request):
         return render(
             request, "board.html", {"board": request.POST["board"], "state": state}
         )
-    if x.text != None:
+    else:
         # Cole will explain this cryptic line later
         state = state.replace(temp[2].strip().split(" ")[int(player) - 1][0:2], tile)
         return render(request, "board.html", {"board": x.text, "state": state})

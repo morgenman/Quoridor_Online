@@ -1,3 +1,7 @@
+# these are copied from API, a few unecessary functions have been removed
+# TODO: Clean this up a bit
+
+
 def state_to_array(shorthand):
     walls = [0, 0, 0, 0]
     # print(shorthand)
