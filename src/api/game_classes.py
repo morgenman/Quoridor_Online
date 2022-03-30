@@ -150,9 +150,10 @@ class tile:
 # stores the board, dimensions
 class game:
     # initializes, verifies players and size are valid
-    def __init__(self, size, players):
+    def __init__(self, id, size, players):
         assert players > 1 & players < 5, f"{players} is an invalid number of players"
         assert size > 1 & size < 10, f"{size} is an invalid board size"
+        self.id = id
         self.size = size
         # this board is very confusing to look at.
         # it is a 2d array of tile objects, arranged so the first tile
@@ -224,3 +225,36 @@ class game:
         print(
             "------------------------------------------------------------------------------------------------------------------------------------------"
         )
+
+
+# Active Games class stores all the currently active games
+class active_games:
+
+    # initialize active_games with an empty games array
+    @dispatch()
+    def __init__(self):
+        self.games = []
+        self.size = 0
+
+    # initialize active_games with the given games array
+    @dispatch(list)
+    def __init__(self, games):
+        self.games = games
+        self.size = len(self.games)
+
+    # adds a game to the games array
+    def add(self, game):
+        self.games.append(game)
+        size += 1
+
+    # removes game with given id from games array
+    def remove(self, id):
+        game = self.get(id)
+        self.games.remove(game)
+        self.size -= 1
+
+    # returns game in array with given id
+    def get(self, id):
+        for x in range(self.size):
+            if self.games[x].id == id:
+                return self.games[x]
