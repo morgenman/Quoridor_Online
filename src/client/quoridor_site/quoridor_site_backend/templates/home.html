@@ -1,15 +1,14 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
 <body>
-  <h1>Quoridor Online</h1>
+  <a href="{% url 'user' %}">
+    <h1>Quoridor Online</h1>
+  </a>
 
   <div class="flex-container">
-    <a href="{% url 'new_game' %}"
-      ><img class="custom_button" src="../static/css/StartGameButton.png"
-    /></a>
+    <a href="{% url 'new_game' %}"><img class="custom_button" src="../static/css/StartGameButton.png" /></a>
 
-    <a href="{% url 'game_state' %}"
-      ><img class="custom_button" src="../static/css/JoinGameButton.png"
-    /></a>
+    <a href="{% url 'game_state' %}"><img class="custom_button" src="../static/css/JoinGameButton.png" /></a>
   </div>
 </body>

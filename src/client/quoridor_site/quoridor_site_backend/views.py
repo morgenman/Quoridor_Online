@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import requests, json
+from django.views import generic
+from .models import Profile
 
 # import utils.py
 from . import utils
@@ -77,3 +79,22 @@ def make_move(request):
         # Cole will explain this cryptic line later
         state = state.replace(temp[2].strip().split(" ")[int(player) - 1][0:2], tile)
         return render(request, "board.html", {"board": x.text, "state": state})
+
+
+def user(request):
+    """View function for user page of site."""
+
+    num_wins = Profile.wins
+    num_losses = Profile.losses
+    context = {
+        "num_wins": num_wins,
+        "num_losses": num_losses,
+    }
+    # Profile.wins += 1
+    # Profile.save()
+    # Render the HTML template user.html with the data in the context variable
+    return render(request, "user.html", context=context)
+
+
+class ProfileDetailView(generic.DetailView):
+    model = Profile
