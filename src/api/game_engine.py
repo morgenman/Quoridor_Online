@@ -107,6 +107,65 @@ def state_to_array(shorthand):
     return gameOut
 
 
+#
+# array_to_state converts a game object to a game state
+# to_do: return state
+# Example of board state
+# d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3
+# horzontal walls / vertical walls / player pieces / walls remaining by player / which player's turn?
+def array_to_state(game):
+    count = 0
+    bd = game.board
+    size = len(bd)
+    game
+    h_walls = []
+    v_walls = []
+    player_listNum = []
+    player_piece = []
+    for r in range(size):
+        for c in range(size):
+            t = bd[r][c]
+            if t.w_north is True:
+                letter = "abcdefghi"[c]
+                num = str(size - r)
+                code = letter + num
+                h_walls.append(code)
+            elif t.w_east is True:
+                letter = "abcdefghi"[c]
+                num = str(size - r)
+                code = letter + num
+                v_walls.append(code)
+            if t.val == 1 or t.val == 2 or t.val == 3 or t.val == 4:
+                count = count + 1
+                letter = "abcdefghi"[c]
+                num = str(size - r)
+                code = letter + num
+                player_piece.append(code)
+    h_walls = h_walls[::2]
+    v_walls = v_walls[1::2]
+
+    for s in range(count):
+        player_listNum.append("10")
+
+    hwStr = " ".join([str(element) for element in h_walls])
+    vwStr = " ".join([str(element) for element in v_walls])
+    piece = " ".join([str(element) for element in player_piece])
+    endCount = " ".join([str(element) for element in player_listNum])
+
+    # End hold the final String
+    end = (
+        (hwStr)
+        + " / "
+        + (vwStr)
+        + " / "
+        + (piece)
+        + " / "
+        + (endCount)
+        + " / (players turn)"
+    )
+    return end
+
+
 # dispatch allows function overloading
 @dispatch(str)
 def move_by_player(move):
