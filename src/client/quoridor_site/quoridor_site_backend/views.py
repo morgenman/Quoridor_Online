@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import requests, json
 from django.views import generic
 from .models import Profile
+from .admin import *
 
 # import utils.py
 from . import utils
