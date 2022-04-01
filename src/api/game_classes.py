@@ -163,10 +163,41 @@ class game:
             [tile(1 + x, size - y, self) for x in range(size)] for y in range(size)
         ]
         self.num_players = players
+        self.players = [None for i in range(players)]
+        self.walls = []
+        self.turn = 1
+
+    def set_walls(self, walls):
+        self.walls = walls
+
+    def get_walls(self):
+        return self.walls
+
+    def set_turn(self, turn):
+        self.turn = turn
+
+    def next(self):
+        if self.turn == self.num_players:
+            self.turn = 1
+        else:
+            self.turn += 1
+
+    def get_turn(self):
+        return self.turn
 
     # """returns the number of players"""
     def get_num_players(self):
         return self.num_players
+
+    def set_two_player(self, player1, player2):
+        self.players[0] = player1
+        self.players[1] = player2
+
+    def set_four_player(self, player1, player2, player3, player4):
+        self.players[0] = player1
+        self.players[1] = player2
+        self.players[2] = player3
+        self.players[3] = player4
 
     # overloaded version of get which allows string form ie: "a1" -> (1,1)
     @dispatch(str)
@@ -227,9 +258,14 @@ class game:
         )
 
 
+class player:
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+
+
 # Active Games class stores all the currently active games
 class active_games:
-
     # initialize active_games with an empty games array
     @dispatch()
     def __init__(self):
@@ -258,3 +294,11 @@ class active_games:
         for x in range(self.size):
             if self.games[x].id == id:
                 return self.games[x]
+        return None
+    
+    def set(self, id, game):
+        for x in range(self.size):
+            if self.games[x].id == id:
+                self.games[x] = game
+                return True
+        return False

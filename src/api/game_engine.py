@@ -5,6 +5,7 @@
 
 from game_classes import *
 from multipledispatch import dispatch
+import random
 
 # ----Tests--------------------------------------------------------
 
@@ -58,7 +59,7 @@ def full_game_to_array(shorthand):
 # d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3
 # horzontal walls / vertical walls / player pieces / walls remaining by player / which player's turn?
 def state_to_array(shorthand):
-    walls = [0, 0, 0, 0]
+
     # print(shorthand)
     temp = shorthand.split("/")
     temp[0] = temp[0].strip()
@@ -69,7 +70,7 @@ def state_to_array(shorthand):
 
     num_players = temp[2].split(" ").__len__()
     assert num_players in range(1, 5)  # Python range is not inclusive.
-    gameOut = game(9, num_players)
+    gameOut = game(random.randint(10, 99), 9, num_players)
 
     # Horizontal Walls
     hori = [temp[0][i : i + 2] for i in range(0, len(temp[0]), 2)]
@@ -93,6 +94,7 @@ def state_to_array(shorthand):
         gameOut.get(x, y).val = i + 1
 
     walls = temp[3].split(" ")
+    gameOut.set_walls(walls)
     # for i in range(len(walls)):
     #     print(
     #         "Player "
@@ -101,13 +103,18 @@ def state_to_array(shorthand):
     #         + walls[i].__str__()
     #         + " walls remaining."
     #     )
+    if len(players) == 2:
+        gameOut.set_two_player(player(1, "Cole"), player(2, "Seth"))
+    elif len(players) == 4:
+        gameOut.set_four_player(
+            player(1, "Cole"), player(2, "Seth"), player(3, "Ridley"), player(4, "Seth")
+        )
 
     # print("It is Player " + temp[4] + "'s turn.")
 
     return gameOut
 
 
-#
 # array_to_state converts a game object to a game state
 # to_do: return state
 # Example of board state
@@ -143,27 +150,24 @@ def array_to_state(game):
                 player_piece.append(code)
     h_walls = h_walls[::2]
     v_walls = v_walls[1::2]
+    h_walls.sort()
+    v_walls.sort()
 
-    for s in range(count):
-        player_listNum.append("10")
+    for walls in game.get_walls():
+        player_listNum.append(walls)
 
-    hwStr = " ".join([str(element) for element in h_walls])
-    vwStr = " ".join([str(element) for element in v_walls])
+    hwStr = "".join([str(element) for element in h_walls])
+    vwStr = "".join([str(element) for element in v_walls])
     piece = " ".join([str(element) for element in player_piece])
     endCount = " ".join([str(element) for element in player_listNum])
 
+    turn = game.get_turn()
+
     # End hold the final String
-    end = (
-        (hwStr)
-        + " / "
-        + (vwStr)
-        + " / "
-        + (piece)
-        + " / "
-        + (endCount)
-        + " / (players turn)"
-    )
+    end = (hwStr) + " / " + (vwStr) + " / " + (piece) + " / " + (endCount) + " / " + (turn.__str__())
     return end
+
+
 
 
 # dispatch allows function overloading
