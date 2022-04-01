@@ -109,13 +109,13 @@ def shorthand_to_game(shorthand):
 
 
 
-# dispatch allows function overloading
+# LEGACY 
 @dispatch(str)
 def move_by_player(move):
     print("MOVE sent:", move)
     return move_by_player(move, "/ / e1 e9 / 10 10 / 1")
 
-
+# LEGACY
 @dispatch(str, str)
 def move_by_player(move, shorthand):
     print("MOVE sent:", move)
