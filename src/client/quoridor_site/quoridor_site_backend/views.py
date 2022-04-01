@@ -82,7 +82,7 @@ def make_move(request):
         return render(request, "board.html", {"board": x.text, "state": state})
 
 
-def user(request):
+def player(request):
     """View function for user page of site."""
 
     num_wins = Profile.wins
@@ -94,10 +94,14 @@ def user(request):
     # Profile.wins += 1
     # Profile.save()
     # Render the HTML template user.html with the data in the context variable
-    return render(request, "user.html", context=context)
+    return render(request, "player.html", context=context)
 
 
 class ProfileDetailView(generic.DetailView):
+    model = Profile
+
+
+class ProfileListView(generic.ListView):
     model = Profile
 
 
