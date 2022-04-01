@@ -96,7 +96,16 @@ class tile:
         return self.get_coor()
 
     def get_coor(self):
-        return "(" + chr(ord("`") + self.x) + self.get_char() + self.y.__str__() + ")"
+        return (
+            chr(ord("`") + self.x)
+            + self.y.__str__()
+            # + "player: "
+            # + self.player.__str__()
+            # + " N Wall: "
+            # + self.w_north.__str__()
+            # + " E Wall: "
+            # + self.w_east.__str__()
+        )
 
 
 # Game class basically stores an array of tile objects
@@ -221,37 +230,43 @@ class game:
         )
 
     def __repr__(self):
-        count = 0
         bd = self.board
         size = self.size
         h_walls = []
         v_walls = []
         player_listNum = []
         player_piece = []
-        for r in range(size):
-            for c in range(size):
-                t = bd[r][c]
+        ignore_h = ignore_v = False
+        for y in range(size):
+            for x in range(size):
+                t = self.get(x + 1, y + 1)
                 if t.w_north is True:
-                    letter = "abcdefghi"[c]
-                    num = str(size - r)
-                    code = letter + num
-                    h_walls.append(code)
-                elif t.w_east is True:
-                    letter = "abcdefghi"[c]
-                    num = str(size - r)
-                    code = letter + num
-                    v_walls.append(code)
-                if t.player == 1 or t.player == 2 or t.player == 3 or t.player == 4:
-                    count = count + 1
-                    letter = "abcdefghi"[c]
-                    num = str(size - r)
-                    code = letter + num
-                    player_piece.append(code)
-        h_walls = h_walls[::2]
-        v_walls = v_walls[1::2]
+                    code = t.get_coor()
+                    if not ignore_h:
+                        h_walls.append(code)
+                        ignore_h = True
+                    else:
+                        ignore_h = False
+                if t.w_east is True:
+                    code = t.get_coor()
+                    if not ignore_v:
+                        v_walls.append(code)
+                        ignore_v = True
+                    else:
+                        ignore_v = False
+                if t.get_player() > 0:
+                    player_piece.append(t)
+
+        # print(h_walls)
+        # print(v_walls)
+        # h_walls = h_walls[::2]
+        # v_walls = v_walls[1::2]
         h_walls.sort()
         v_walls.sort()
-
+        temp = [None for i in range(self.num_players)]
+        for player in player_piece:
+            temp[player.get_player() - 1] = player.get_coor()
+        player_piece = temp
         for walls in self.get_walls():
             player_listNum.append(walls)
 

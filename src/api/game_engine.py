@@ -87,33 +87,27 @@ def shorthand_to_game(shorthand):
 
     # players
     players = temp[2].split(" ")
+    gameOut.players = [player(i) for i in range(len(players))]
     for i in range(len(players)):
-        x = ord(players[i][0]) - ord("`")
-        y = int(players[i][1])
-        gameOut.get(x, y).val = i + 1
+
+        gameOut.get(players[i]).set_player(i + 1)
 
     walls = temp[3].split(" ")
     gameOut.set_walls(walls)
 
-    if len(players) == 2:
-        gameOut.set_two_player(player(1), player(2))
-    elif len(players) == 4:
-        gameOut.set_four_player(
-            player(1), player(2), player(3), player(4)
-        )
+    gameOut.set_turn(temp[4])
 
     # print("It is Player " + temp[4] + "'s turn.")
 
     return gameOut
 
 
-
-
-# LEGACY 
+# LEGACY
 @dispatch(str)
 def move_by_player(move):
     print("MOVE sent:", move)
     return move_by_player(move, "/ / e1 e9 / 10 10 / 1")
+
 
 # LEGACY
 @dispatch(str, str)
