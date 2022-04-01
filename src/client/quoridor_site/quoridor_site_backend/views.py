@@ -29,59 +29,44 @@ def showName(request):
     return HttpResponse(x)
 
 
-def game_state(request):
-    return render(request, "game_state_demo.html")
-
-
-# get_board pushes the game state string to the api and passes through
-# the returned html to the board.html template page
-def get_board(request):
-    state = request.POST["state"]
-    url = "http://api:8080/decode"
-    headers = requests.structures.CaseInsensitiveDict()
-    headers["Content-Type"] = "application/json"
-    headers["charset"] = "UTF-8"
-    data = {"state": state}
-    x = requests.post(url, headers=headers, data=json.dumps(data))
-    return render(request, "board.html", {"board": x.text, "state": state})
-
-
 def new_game(request):
-    state = "/ / e1 e9 / 10 10 / 1"
-    url = "http://api:8080/decode"
+    url = "http://api:8080/new"
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
     headers["charset"] = "UTF-8"
-    data = {"state": state}
+    # TODO replace ids with game id and player ids
+    data = {
+        "id": 1,
+        "player1": 11,
+        "player2": 12,
+        "players": 2,
+        "size": 9,
+    }
     x = requests.post(url, headers=headers, data=json.dumps(data))
-    game = utils.state_to_array(state)
-    return render(request, "board.html", {"board": game, "state": state})
+
+    if x.status_code == 200:
+        game = utils.state_to_array(x.text)
+        return render(request, "board.html", {"board": game})
 
 
 def make_move(request):
     tile = request.POST["tile"].lower()
-    state = request.POST["state"]
     player = request.POST["player"]
-    temp = state.split("/")
-
     move = "p" + player + tile
     url = "http://api:8080/move"
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
     headers["charset"] = "UTF-8"
-    data = {"move": move, "state": state}
+
+    data = {"move": move, "id": 1}
     x = requests.post(url, headers=headers, data=json.dumps(data))
-    # if x.text is empty return the same board
-    # if (x.text == None) | (x.text == "") | (x.text == "Error: Something went wrong"):
-    #     return render(
-    #         request, "board.html", {"board": request.POST["board"], "state": state}
-    #     )
-    # else:
-    # Cole will explain this cryptic line later
-    state = state.replace(temp[2].strip().split(" ")[int(player) - 1][0:2], tile)
-    return render(
-        request, "board.html", {"board": utils.state_to_array(state), "state": state}
-    )
+    if x.status_code == 200:
+        game = utils.state_to_array(x.text)
+        return render(request, "board.html", {"board": game})
+    elif x.status_code == 400:
+        game = utils.state_to_array(x.text)
+        # Put some sort of error message to user here
+        return render(request, "board.html", {"board": game})
 
 
 def player(request):
@@ -109,6 +94,7 @@ class ProfileListView(generic.ListView):
 
 class GameDetailView(generic.DetailView):
     model = Game
+
 
 class GameListView(generic.ListView):
     model = Game

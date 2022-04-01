@@ -53,13 +53,12 @@ def full_game_to_array(shorthand):
     return moves
 
 
-# state_to_array converts a game state to a game object
+# shorthand_to_game converts a game state to a game object
 # todo: return object
 # Example of board state
 # d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3
 # horzontal walls / vertical walls / player pieces / walls remaining by player / which player's turn?
-def state_to_array(shorthand):
-
+def shorthand_to_game(shorthand):
     # print(shorthand)
     temp = shorthand.split("/")
     temp[0] = temp[0].strip()
@@ -95,77 +94,17 @@ def state_to_array(shorthand):
 
     walls = temp[3].split(" ")
     gameOut.set_walls(walls)
-    # for i in range(len(walls)):
-    #     print(
-    #         "Player "
-    #         + (i + 1).__str__()
-    #         + " has "
-    #         + walls[i].__str__()
-    #         + " walls remaining."
-    #     )
+
     if len(players) == 2:
-        gameOut.set_two_player(player(1, "Cole"), player(2, "Seth"))
+        gameOut.set_two_player(player(1), player(2))
     elif len(players) == 4:
         gameOut.set_four_player(
-            player(1, "Cole"), player(2, "Seth"), player(3, "Ridley"), player(4, "Seth")
+            player(1), player(2), player(3), player(4)
         )
 
     # print("It is Player " + temp[4] + "'s turn.")
 
     return gameOut
-
-
-# array_to_state converts a game object to a game state
-# to_do: return state
-# Example of board state
-# d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3
-# horzontal walls / vertical walls / player pieces / walls remaining by player / which player's turn?
-def array_to_state(game):
-    count = 0
-    bd = game.board
-    size = len(bd)
-    game
-    h_walls = []
-    v_walls = []
-    player_listNum = []
-    player_piece = []
-    for r in range(size):
-        for c in range(size):
-            t = bd[r][c]
-            if t.w_north is True:
-                letter = "abcdefghi"[c]
-                num = str(size - r)
-                code = letter + num
-                h_walls.append(code)
-            elif t.w_east is True:
-                letter = "abcdefghi"[c]
-                num = str(size - r)
-                code = letter + num
-                v_walls.append(code)
-            if t.val == 1 or t.val == 2 or t.val == 3 or t.val == 4:
-                count = count + 1
-                letter = "abcdefghi"[c]
-                num = str(size - r)
-                code = letter + num
-                player_piece.append(code)
-    h_walls = h_walls[::2]
-    v_walls = v_walls[1::2]
-    h_walls.sort()
-    v_walls.sort()
-
-    for walls in game.get_walls():
-        player_listNum.append(walls)
-
-    hwStr = "".join([str(element) for element in h_walls])
-    vwStr = "".join([str(element) for element in v_walls])
-    piece = " ".join([str(element) for element in player_piece])
-    endCount = " ".join([str(element) for element in player_listNum])
-
-    turn = game.get_turn()
-
-    # End hold the final String
-    end = (hwStr) + " / " + (vwStr) + " / " + (piece) + " / " + (endCount) + " / " + (turn.__str__())
-    return end
 
 
 
@@ -180,7 +119,7 @@ def move_by_player(move):
 @dispatch(str, str)
 def move_by_player(move, shorthand):
     print("MOVE sent:", move)
-    game = state_to_array(shorthand)
+    game = shorthand_to_game(shorthand)
     assert len(move) == 4  # move should be four char
     assert move[0] == "p"  # move should start with p prefix indicating player
     assert int(move[1]) in range(1, 5)  # player number should be 1,2,3

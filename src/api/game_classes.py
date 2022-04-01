@@ -3,32 +3,23 @@ from multipledispatch import dispatch
 
 # ----Data Structures----------------------------------------------
 
-# Tile Class is equivalent to a 'node' data structure.
+# Tile Class is equiplayerent to a 'node' data structure.
 #
 # Stores x,y, which player is in it, and all the edges that it connects to
 class tile:
-    def __init__(self, x, y, parent):
+    def __init__(self, x, y, game):
         self.x = x
         self.y = y
-        self.val = 0
-        self.parent = parent
+        self.player = 0
+        self.game = game
         self.w_north = False
         self.w_east = False
         self.w_south = False
         self.w_west = False
 
-    def move(self, move):
-        destination = self.parent.get(move)
-        assert destination != None  # destination should exist
-        if self.distance(destination) > 1:
-            print("Invalid move")
-        assert self.distance(destination) == 1  # destination should be adjacent
-        destination.val = self.val
-        self.val = 0
-
     def distance(self, tile):
         # a^2 + b^2 = c^2
-        # floor to get int value
+        # floor to get int playerue
         return math.floor(
             math.sqrt(abs(self.x - tile.x) ** 2 + abs(self.y - tile.y) ** 2)
         )
@@ -37,37 +28,32 @@ class tile:
     def get_north(self):
         if self.w_north:
             return None
-        return self.parent.get(self.x, self.y + 1)
+        return self.game.get(self.x, self.y + 1)
 
     # return eastern edge
     def get_east(self):
         if self.w_east:
             return None
-        return self.parent.get(self.x + 1, self.y)
+        return self.game.get(self.x + 1, self.y)
 
     # return southern edge
     def get_south(self):
         if self.w_south:
             return None
-        return self.parent.get(self.x, self.y - 1)
+        return self.game.get(self.x, self.y - 1)
 
     # return western edge
     def get_west(self):
         if self.w_west:
             return None
-        return self.parent.get(self.x - 1, self.y)
+        return self.game.get(self.x - 1, self.y)
 
     # return player character if player is present
-    def get_val(self):
-        if self.val == 1:
-            return "x"
-        if self.val == 2:
-            return "o"
-        if self.val == 3:
-            return "@"
-        if self.val == 4:
-            return "*"
-        return " "
+    def get_player(self):
+        return self.player
+
+    def set_player(self, player):
+        self.player = player
 
     # sets the horizontal wall flag.
     # Note: this actually affects two tile pieces:
@@ -95,50 +81,19 @@ class tile:
     # todo: trim legacy code
     def get_char(self):
         if self.w_north:
-            return "﹋" + self.get_val() + "﹋"
+            return "﹋" + self.get_player() + "﹋"
         if self.w_east:
-            return " " + self.get_val() + "⏐"
+            return " " + self.get_player() + "⏐"
         if self.w_south:
-            return "﹏" + self.get_val() + "﹏"
+            return "﹏" + self.get_player() + "﹏"
         if self.w_west:
-            return "⏐" + self.get_val() + " "
-        return " " + self.get_val() + " "
+            return "⏐" + self.get_player() + " "
+        return " " + self.get_player() + " "
 
     # an alternative to the __str__ function.
     # Basically when tile is expected to be the string type, return the coordinates
-    def __repr__(
-        self,
-    ):
+    def __repr__(self):
         return self.get_coor()
-
-    # Probably legacy code, but returns html based on the value in the cell.
-    # this is how we get the nice walls and colors, probably going to be moved to
-    # the web container
-    def html(
-        self,
-    ):
-        out = "<td style='"
-        if self.w_north:
-            out += "border-top: 2px solid;"
-        if self.w_east:
-            out += "border-right: 2px solid;"
-        if self.w_south:
-            out += "border-bottom: 2px solid;"
-        if self.w_west:
-            out += "border-left: 2px solid;"
-        if self.val == 1:
-            out += "background-color:#bae1ff;"
-        elif self.val == 2:
-            out += "background-color:#baffc9;"
-        elif self.val == 3:
-            out += "background-color:#ffffba;"
-        elif self.val == 4:
-            out += "background-color:#ffdfba;"
-        out += "'>"
-        out += chr(ord("`") + self.x)
-        out += self.y.__str__()
-        out += "</td>"
-        return out
 
     def get_coor(self):
         return "(" + chr(ord("`") + self.x) + self.get_char() + self.y.__str__() + ")"
@@ -149,7 +104,7 @@ class tile:
 # todo: implement move log (array of moves like in full_game_to_array method)
 # stores the board, dimensions
 class game:
-    # initializes, verifies players and size are valid
+    # initializes, verifies players and size are playerid
     def __init__(self, id, size, players):
         assert players > 1 & players < 5, f"{players} is an invalid number of players"
         assert size > 1 & size < 10, f"{size} is an invalid board size"
@@ -166,6 +121,21 @@ class game:
         self.players = [None for i in range(players)]
         self.walls = []
         self.turn = 1
+
+    def move(self, move):
+        player = self.get_player(int(move[1]))
+        destination = self.get(move[2:])
+        assert destination != None, f"Destination cannot be empty"
+        if player.distance(destination) > 1:
+            print("Invalid move")
+        assert (
+            player.distance(destination) == 1
+        ), f"{player.distance(destination)} is too many tiles away to be a valid move"
+        assert (
+            destination.get_player() == 0
+        ), f"{destination.get_player()} is already occupied"
+        player.set_player(0)
+        destination.set_player(int(move[1]))
 
     def set_walls(self, walls):
         self.walls = walls
@@ -192,20 +162,31 @@ class game:
     def set_two_player(self, player1, player2):
         self.players[0] = player1
         self.players[1] = player2
+        self.get("e1").set_player(1)
+        self.get("e9").set_player(2)
+        self.walls = [10, 10]
 
     def set_four_player(self, player1, player2, player3, player4):
         self.players[0] = player1
         self.players[1] = player2
         self.players[2] = player3
         self.players[3] = player4
+        self.get("e1").set_player(1)
+        self.get("a5").set_player(2)
+        self.get("e9").set_player(3)
+        self.get("i5").set_player(4)
+        self.walls = [10, 10, 10, 10]
 
     # overloaded version of get which allows string form ie: "a1" -> (1,1)
     @dispatch(str)
     def get(self, string):
-        print(string, ":", len(string))
-        assert len(string) == 2
-        assert ord(string[0]) in range(ord("a"), ord("a") + self.size)
-        assert int(string[1]) in range(1, self.size + 1)
+        assert len(string) == 2, f"{string} is not a valid coordinate (type 1)"
+        assert ord(string[0]) in range(
+            ord("a"), ord("a") + self.size
+        ), f"{string} is not a valid coordinate (type 2)"
+        assert int(string[1]) in range(
+            1, self.size + 1
+        ), f"{string} is not a valid coordinate (type 3)"
         x = ord(string[0]) - ord("a") + 1
         y = int(string[1])
         return self.get(x, y)
@@ -219,27 +200,9 @@ class game:
     def get_player(self, player):
         for y in self.board:
             for x in y:
-                if x.val == player:
+                if x.player == player:
                     return x
         return None
-
-    # maybe this should be named html for consistency with tile
-    # an alternative to the __str__ function.
-    # Basically when board is expected to be the string type, return the html equivalent
-    def __repr__(self):
-        out = "<div id='wrapper'><h1>Converted Game Board:</h1>\
-      <section id='left'><table><tbody>"
-        for y in range(self.size):
-            out += "<tr>"
-            for x in range(self.size):
-                out += self.get(x + 1, self.size - y).html()
-            out += "</tr>"
-        out += "</tbody></table></section>"
-        out += "<section id='right'><table>\
-      <tr><td style = 'background-color:#bae1ff;'>Player 1</td><td style = 'background-color:#baffc9;'>Player 2</td></tr>\
-      <tr><td style = 'background-color:#ffffba;'>Player 3</td><td style = 'background-color:#ffdfba;'>Player 4</td></tr>\
-      </table></section>"
-        return out
 
     # legacy code
     # ascii art representation of board
@@ -257,11 +220,72 @@ class game:
             "------------------------------------------------------------------------------------------------------------------------------------------"
         )
 
+    def __repr__(self):
+        count = 0
+        bd = self.board
+        size = self.size
+        h_walls = []
+        v_walls = []
+        player_listNum = []
+        player_piece = []
+        for r in range(size):
+            for c in range(size):
+                t = bd[r][c]
+                if t.w_north is True:
+                    letter = "abcdefghi"[c]
+                    num = str(size - r)
+                    code = letter + num
+                    h_walls.append(code)
+                elif t.w_east is True:
+                    letter = "abcdefghi"[c]
+                    num = str(size - r)
+                    code = letter + num
+                    v_walls.append(code)
+                if t.player == 1 or t.player == 2 or t.player == 3 or t.player == 4:
+                    count = count + 1
+                    letter = "abcdefghi"[c]
+                    num = str(size - r)
+                    code = letter + num
+                    player_piece.append(code)
+        h_walls = h_walls[::2]
+        v_walls = v_walls[1::2]
+        h_walls.sort()
+        v_walls.sort()
+
+        for walls in self.get_walls():
+            player_listNum.append(walls)
+
+        hwStr = "".join([str(element) for element in h_walls])
+        vwStr = "".join([str(element) for element in v_walls])
+        piece = " ".join([str(element) for element in player_piece])
+        endCount = " ".join([str(element) for element in player_listNum])
+
+        turn = self.get_turn()
+
+        # End hold the final String
+        end = (
+            (hwStr)
+            + " / "
+            + (vwStr)
+            + " / "
+            + (piece)
+            + " / "
+            + (endCount)
+            + " / "
+            + (turn.__str__())
+        )
+        return end
+
 
 class player:
-    def __init__(self, id, name):
+    def __init__(self, id):
         self.id = id
-        self.name = name
+
+    def get_id(self):
+        return self.id
+
+    def set_id(self, id):
+        self.id = id
 
 
 # Active Games class stores all the currently active games
@@ -281,7 +305,7 @@ class active_games:
     # adds a game to the games array
     def add(self, game):
         self.games.append(game)
-        size += 1
+        self.size += 1
 
     # removes game with given id from games array
     def remove(self, id):

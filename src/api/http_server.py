@@ -13,7 +13,7 @@ class MyServer(BaseHTTPRequestHandler):
 
     # Client wants data from the game engine
     def do_GET(self):
-        self.send_response(200)
+        self.send_response(418)
         self.send_header("Content-type", "text/html")
         self.end_headers()
         self.wfile.write(
@@ -28,75 +28,70 @@ class MyServer(BaseHTTPRequestHandler):
         try:
             content_len = int(self.headers.get("Content-Length"))
             post_body = json.loads(self.rfile.read(content_len))
-            self.send_response(200)
-            self.send_header("Content-type", "text/html; charset=utf-8")
-            self.end_headers()
             match self.path:
-                # each endpoint can be a case here
-                case "/decode":
-                    self.wfile.write(
-                        bytes(
-                            state_to_array(post_body["state"]).__repr__(),
-                            "utf-8",
-                        )
-                    )
-                case "/move":
-                    print(move_by_player(post_body["move"], post_body["state"]))
-                    self.wfile.write(
-                        bytes(
-                            move_by_player(post_body["move"], post_body["state"]),
-                            "utf-8",
-                        )
-                    )
+                # need to pass game id, size, players(num of players), player1(id of player1)...
                 case "/new":
-                    players = []
-                    for i in range(1, post_body["num_players"] + 1):
-                        players.append(
-                            player(
-                                post_body["player_" + str(i) + "_id"],
-                                post_body["player_" + str(i) + "_name"],
-                            )
-                        )
-                    games.add(
-                        game(
-                            post_body["id"], post_body["size"], post_body["num_players"]
-                        )
+                    if games.get(post_body["id"]) != None:
+                        games.remove(post_body["id"])
+                    new_game = game(
+                        post_body["id"], post_body["size"], post_body["players"]
                     )
-                    for player in players:
-                        games.get(post_body["id"]).add_player(player)
+                    if post_body["players"] == 2:
+                        new_game.set_two_player(
+                            player(post_body["player1"]), player(post_body["player2"])
+                        )
+                    elif post_body["players"] == 4:
+                        new_game.set_four_player(
+                            player(post_body["player1"]),
+                            player(post_body["player2"]),
+                            player(post_body["player3"]),
+                            player(post_body["player4"]),
+                        )
+                    games.add(new_game)
+                    self.send_response(200)
+                    self.send_header("Content-type", "text/html; charset=utf-8")
+                    self.end_headers()
                     self.wfile.write(
                         bytes(
-                            array_to_state(games.get(post_body["id"])),
+                            games.get(post_body["id"]).__repr__(),
                             "utf-8",
                         )
                     )
 
-                case "/move2":
-                    games.set(
-                        post_body["id"],
-                        move_by_player(
-                            post_body["move"],
-                            array_to_state(games.get(post_body["id"])),
-                        ),
-                    )
+                case "/move":
+                    curr_game = games.get(post_body["id"])
+                    try:
+                        curr_game.move(post_body["move"])
+                        self.send_response(200)
+                    except AssertionError:
+                        self.send_response(400)
+                        print("Invalid move")
+                    self.send_header("Content-type", "text/html; charset=utf-8")
+                    self.end_headers()
                     self.wfile.write(
                         bytes(
-                            array_to_state(games.get(post_body["id"])),
+                            games.get(post_body["id"]).__repr__(),
                             "utf-8",
                         )
                     )
 
                 case _:
+                    self.send_response(418)
+                    self.send_header("Content-type", "text/html; charset=utf-8")
+                    self.end_headers()
                     self.wfile.write(
                         bytes(
                             "Error, invalid URL for POST request\n",
                             "utf-8",
                         )
                     )
-        except:
+        except Exception as e:
+            self.send_response(418)
+            self.send_header("Content-type", "text/html; charset=utf-8")
+            self.end_headers()
             self.wfile.write(
                 bytes(
-                    "Error: Something went wrong",
+                    "Exception " + repr(e) + ": " + str(e),
                     "utf-8",
                 )
             )
@@ -111,7 +106,7 @@ print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 # Test Cases
 # print("Testing Engine conversion from shorthand to array...")
 # game_engine.full_game_to_array("1. e2 e8 2. e3 e7 3. e4 e6 4. e3h g6v")
-print(array_to_state(state_to_array("d4e7f4 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3")))
+print(shorthand_to_game("d4e7f4 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3"))
 # game_engine.move_by_player("p1e3")
 # game_engine.move_by_player("p1e2")
 

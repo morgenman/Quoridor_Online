@@ -1,13 +1,13 @@
-version: '3'
+version: "3"
 
 services:
   mysql:
     image: mariadb:latest
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: 'quoridor_db'
-      MYSQL_USER: 'api'
-      MYSQL_PASSWORD: 'password'
+      MYSQL_DATABASE: "quoridor_db"
+      MYSQL_USER: "api"
+      MYSQL_PASSWORD: "password"
       MYSQL_ROOT_PASSWORD: 'Bxu<!yGaY"tj={J7b3U[T],qm9Ms>^ZL'
     ports:
       - "3306:3306"
@@ -22,7 +22,7 @@ services:
     depends_on:
       - mysql
     working_dir: /app
-    command: bash -c "pip3 install multipledispatch && ./rerun.sh python -u http_server.py" 
+    command: bash -c "pip3 install multipledispatch && ./rerun.sh python -u http_server.py"
     #command: tail -F /dev/null
     restart: unless-stopped
     #build: ./dockerfiles/engine
@@ -54,7 +54,7 @@ services:
     working_dir: /app/quoridor_site
     #command: ["chmod -x /app/wait-for-it.sh","/app/wait-for-it.sh", "db:${DJANGO_PORT}", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     #command: tail -F /dev/null
-    # ./migrate.sh &&  
+    # ./migrate.sh &&
     command: bash -c "pip3 install requests && ./migrate.sh && python manage.py runserver 0.0.0.0:8000"
 
     container_name: web
