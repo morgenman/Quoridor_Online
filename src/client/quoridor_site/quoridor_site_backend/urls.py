@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     path("", views.home),
-    path("user/", views.user, name="user"),
+    path("player/", views.ProfileListView.as_view(), name="player"),
     path("getName/", views.getName, name="getName"),
     path("showName/", views.showName, name="showName"),
     path("game_state/", views.game_state, name="game_state"),
