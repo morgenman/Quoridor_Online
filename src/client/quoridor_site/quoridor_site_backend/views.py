@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import requests, json
 from django.views import generic
-from .models import Profile, Games
+from .models import Profile, Game
 from .admin import *
 
 # import utils.py
@@ -107,5 +107,8 @@ class ProfileListView(generic.ListView):
     model = Profile
 
 
-class GamesListView(generic.ListView):
-    model = Games
+class GameDetailView(generic.DetailView):
+    model = Game
+
+class GameListView(generic.ListView):
+    model = Game
