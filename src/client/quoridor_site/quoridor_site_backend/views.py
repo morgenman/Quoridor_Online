@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import requests, json
 from django.views import generic
-from .models import Profile
+from .models import Profile, Games
 from .admin import *
 
 # import utils.py
@@ -99,3 +99,7 @@ def user(request):
 
 class ProfileDetailView(generic.DetailView):
     model = Profile
+
+
+class GamesListView(generic.ListView):
+    model = Games
