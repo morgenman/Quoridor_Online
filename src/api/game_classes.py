@@ -20,7 +20,7 @@ class tile:
     def move(self, move):
         destination = self.parent.get(move)
         assert destination != None  # destination should exist
-        if self.distance(destination) >= 1:
+        if self.distance(destination) > 1:
             print("Invalid move")
         assert self.distance(destination) == 1  # destination should be adjacent
         destination.val = self.val
@@ -295,7 +295,7 @@ class active_games:
             if self.games[x].id == id:
                 return self.games[x]
         return None
-    
+
     def set(self, id, game):
         for x in range(self.size):
             if self.games[x].id == id:

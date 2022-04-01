@@ -3,7 +3,7 @@
 <meta charset="utf-8" />
 <p style="display:none" >{{state}}</p>
 {{ board|safe }}
-<form action="{% url 'move' %}" method="POST">
+<form action="{% url 'make_move' %}" method="POST">
   <select name="player"> 
     <option value="1">Player 1</option>
     <option value="2">Player 2</option>

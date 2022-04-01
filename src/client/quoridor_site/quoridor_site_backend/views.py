@@ -72,14 +72,16 @@ def make_move(request):
     data = {"move": move, "state": state}
     x = requests.post(url, headers=headers, data=json.dumps(data))
     # if x.text is empty return the same board
-    if (x.text == None) | (x.text == "") | (x.text == "Error: Something went wrong"):
-        return render(
-            request, "board.html", {"board": request.POST["board"], "state": state}
-        )
-    else:
-        # Cole will explain this cryptic line later
-        state = state.replace(temp[2].strip().split(" ")[int(player) - 1][0:2], tile)
-        return render(request, "board.html", {"board": x.text, "state": state})
+    # if (x.text == None) | (x.text == "") | (x.text == "Error: Something went wrong"):
+    #     return render(
+    #         request, "board.html", {"board": request.POST["board"], "state": state}
+    #     )
+    # else:
+    # Cole will explain this cryptic line later
+    state = state.replace(temp[2].strip().split(" ")[int(player) - 1][0:2], tile)
+    return render(
+        request, "board.html", {"board": utils.state_to_array(state), "state": state}
+    )
 
 
 def player(request):

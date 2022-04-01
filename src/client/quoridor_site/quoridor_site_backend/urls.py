@@ -11,5 +11,5 @@ urlpatterns = [
     path("game_state/", views.game_state, name="game_state"),
     path("game_board/", views.get_board, name="game_board"),
     path("new_game", views.new_game, name="new_game"),
-    path("move/", views.make_move, name="move"),
+    path("make_move/", views.make_move, name="make_move"),
 ]

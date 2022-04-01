@@ -5,12 +5,11 @@ from game_engine import *
 
 hostName = "0.0.0.0"
 hostPort = 8080
+games = active_games()
 
 # MyServer hosts the game engine
 # Manual routing is in the match functions (match is switch statement for Python)
 class MyServer(BaseHTTPRequestHandler):
-    def __init__(self):
-        self.games = active_games()
 
     # Client wants data from the game engine
     def do_GET(self):
@@ -42,6 +41,7 @@ class MyServer(BaseHTTPRequestHandler):
                         )
                     )
                 case "/move":
+                    print(move_by_player(post_body["move"], post_body["state"]))
                     self.wfile.write(
                         bytes(
                             move_by_player(post_body["move"], post_body["state"]),
@@ -57,31 +57,31 @@ class MyServer(BaseHTTPRequestHandler):
                                 post_body["player_" + str(i) + "_name"],
                             )
                         )
-                    self.games.add(
+                    games.add(
                         game(
                             post_body["id"], post_body["size"], post_body["num_players"]
                         )
                     )
                     for player in players:
-                        self.games.get(post_body["id"]).add_player(player)
+                        games.get(post_body["id"]).add_player(player)
                     self.wfile.write(
                         bytes(
-                            array_to_state(self.games.get(post_body["id"])),
+                            array_to_state(games.get(post_body["id"])),
                             "utf-8",
                         )
                     )
 
                 case "/move2":
-                    self.games.set(
+                    games.set(
                         post_body["id"],
                         move_by_player(
                             post_body["move"],
-                            array_to_state(self.games.get(post_body["id"])),
+                            array_to_state(games.get(post_body["id"])),
                         ),
                     )
                     self.wfile.write(
                         bytes(
-                            array_to_state(self.games.get(post_body["id"])),
+                            array_to_state(games.get(post_body["id"])),
                             "utf-8",
                         )
                     )
