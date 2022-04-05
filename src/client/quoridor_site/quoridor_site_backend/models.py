@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    wins = models.PositiveIntegerField(default=0, verbose_name="win")
-    losses = models.PositiveIntegerField(default=0, verbose_name="loss")
+    wins = models.PositiveIntegerField(default=0, verbose_name="wins")
+    losses = models.PositiveIntegerField(default=0, verbose_name="losses")
 
     def __str__(self):
         return self.user.username

@@ -4,6 +4,7 @@ import requests, json
 from django.views import generic
 from .models import Profile, Game
 from .admin import *
+from django.db.models import F
 
 # import utils.py
 from . import utils
@@ -82,6 +83,13 @@ def player(request):
     # Profile.save()
     # Render the HTML template user.html with the data in the context variable
     return render(request, "player.html", context=context)
+
+
+def win_lose(request):
+    Profile.objects.all().update(wins=F("wins") + 1)
+
+    # Put some sort of error message to user here
+    return render(request, "board.html")
 
 
 class ProfileDetailView(generic.DetailView):
