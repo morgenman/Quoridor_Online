@@ -239,23 +239,23 @@ class game:
         ignore_h = ignore_v = False
         for y in range(size):
             for x in range(size):
-                t = self.get(x + 1, y + 1)
-                if t.w_north is True:
-                    code = t.get_coor()
+                tile = self.get(x + 1, y + 1)
+                if tile.w_north is True:
+                    code = tile.get_coor()
                     if not ignore_h:
                         h_walls.append(code)
                         ignore_h = True
                     else:
                         ignore_h = False
-                if t.w_east is True:
-                    code = t.get_coor()
+                if tile.w_east is True:
+                    code = tile.get_coor()
                     if not ignore_v:
                         v_walls.append(code)
                         ignore_v = True
                     else:
                         ignore_v = False
-                if t.get_player() > 0:
-                    player_piece.append(t)
+                if tile.get_player() > 0:
+                    player_piece.append(tile)
 
         # print(h_walls)
         # print(v_walls)
