@@ -18,9 +18,6 @@ class Profile(models.Model):
     def get_losses(self):
         return self.losses
 
-    def save(self):
-        super().save()
-
 
 class Game(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, max_length=5)

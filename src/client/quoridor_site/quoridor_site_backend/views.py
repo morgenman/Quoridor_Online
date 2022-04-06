@@ -85,11 +85,17 @@ def player(request):
     return render(request, "player.html", context=context)
 
 
-def win_lose(request):
+def win(request):
     Profile.objects.all().update(wins=F("wins") + 1)
 
     # Put some sort of error message to user here
-    return render(request, "board.html")
+    return render(request, "home.html")
+
+def lose(request):
+    Profile.objects.all().update(losses=F("losses") + 1)
+
+    # Put some sort of error message to user here
+    return render(request, "home.html")
 
 
 class ProfileDetailView(generic.DetailView):

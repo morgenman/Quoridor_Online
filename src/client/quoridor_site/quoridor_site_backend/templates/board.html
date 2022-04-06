@@ -22,8 +22,12 @@
   <p><button type="submit">Submit</button></p>
 </form>
 
-<form action="{% url 'win_lose' %}" method="POST">
+<form action="{% url 'win' %}" method="POST">
   {% csrf_token %}<p><button type="win">Win</button></p>
+</form>
+
+<form action="{% url 'lose' %}" method="POST">
+  {% csrf_token %}<p><button type="lose">Lose</button></p>
 </form>
 
 <canvas width="320" height="240">
