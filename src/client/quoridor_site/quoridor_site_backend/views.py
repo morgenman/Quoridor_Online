@@ -1,10 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import requests, json
 from django.views import generic
 from .models import Profile, Game
+from .forms import *
 from .admin import *
 from django.db.models import F
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+
 
 # import utils.py
 from . import utils
@@ -14,6 +18,22 @@ from . import utils
 
 def home(request):
     return render(request, "home.html")
+
+
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password1")
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect("home")
+    else:
+        form = UserCreationForm()
+    return render(request, "registration/register.html", {"form": form})
+
 
 
 def getName(request):
@@ -70,26 +90,12 @@ def make_move(request):
         return render(request, "board.html", {"board": game})
 
 
-def player(request):
-    """View function for user page of site."""
-
-    num_wins = Profile.wins
-    num_losses = Profile.losses
-    context = {
-        "num_wins": num_wins,
-        "num_losses": num_losses,
-    }
-    # Profile.wins += 1
-    # Profile.save()
-    # Render the HTML template user.html with the data in the context variable
-    return render(request, "player.html", context=context)
-
-
 def win(request):
     Profile.objects.all().update(wins=F("wins") + 1)
 
     # Put some sort of error message to user here
     return render(request, "home.html")
+
 
 def lose(request):
     Profile.objects.all().update(losses=F("losses") + 1)

@@ -12,4 +12,5 @@ urlpatterns = [
     path("make_move/", views.make_move, name="make_move"),
     path("win", views.win, name="win"),
     path("lose", views.lose, name="lose"),
+    path("register", views.register, name="register"),
 ]
