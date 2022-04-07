@@ -34,6 +34,8 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Game(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, max_length=5)
+    players = models.ManyToManyField(Profile)
+    state = models.CharField(max_length=100, default=" / / e1 e9 / 10 10 / 1")
 
     def __str__(self):
-        return self.id
+        return str(self.id)

@@ -35,7 +35,6 @@ def register(request):
     return render(request, "registration/register.html", {"form": form})
 
 
-
 def getName(request):
     return render(request, "get_name.html")
 
@@ -56,8 +55,11 @@ def new_game(request):
     headers["Content-Type"] = "application/json"
     headers["charset"] = "UTF-8"
     # TODO replace ids with game id and player ids
+    game = Game()
+    game.save()
+    game.players.add(Profile.objects.filter(user=request.user).first())
     data = {
-        "id": 1,
+        "id": str(game.id),
         "player1": 11,
         "player2": 12,
         "players": 2,
