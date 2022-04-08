@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -84,6 +85,10 @@ DATABASES = {
         "PORT": "3306",
     }
 }
+STATIC_ROOT = "static"
+STATIC_URL = "/static/"
+MEDIA_ROOT = "media"
+MEDIA_URL = "/media/"
 
 
 # Password validation
@@ -119,10 +124,42 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
+STATIC_ROOT = " # DEFAULT"
 STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# NPM/Yarn stuff
+INSTALLED_APPS += (
+    "compressor",
+    "compressor_toolkit",
+)
+
+
+COMPRESS_CSS_FILTERS = [
+    "compressor.filters.css_default.CssAbsoluteFilter",
+    "compressor.filters.cssmin.CSSMinFilter",
+    "compressor.filters.template.TemplateFilter",
+]
+COMPRESS_JS_FILTERS = [
+    "compressor.filters.jsmin.JSMinFilter",
+]
+COMPRESS_PRECOMPILERS = (
+    ("module", "compressor_toolkit.precompilers.ES6Compiler"),
+    ("css", "compressor_toolkit.precompilers.SCSSCompiler"),
+)
+COMPRESS_ENABLED = True
+
+COMPRESS_OFFLINE = False
+
+TEMPLATE_DEBUG = DEBUG
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder'
+]

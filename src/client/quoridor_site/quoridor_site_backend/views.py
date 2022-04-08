@@ -106,6 +106,10 @@ def lose(request):
     return render(request, "home.html")
 
 
+def js_test(request):
+    return render(request, "js_test.html")
+
+
 class ProfileDetailView(generic.DetailView):
     model = Profile
 

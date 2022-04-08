@@ -1,0 +1,11 @@
+<html>
+        {% load compress %}
+        {% load static %}
+        {% compress js %}
+        <script type="module" src="{% static 'helloWorld.js' %}"></script>
+        {% endcompress %}
+    </head>
+    <body>
+      yo yo yo
+    </body>
+</html>
