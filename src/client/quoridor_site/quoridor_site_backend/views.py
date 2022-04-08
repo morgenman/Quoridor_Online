@@ -59,7 +59,7 @@ def new_game(request):
     game.save()
     game.players.add(Profile.objects.filter(user=request.user).first())
     data = {
-        "id": str(game.id),
+        "id": 1, #str(game.id),
         "player1": 11,
         "player2": 12,
         "players": 2,
@@ -80,7 +80,6 @@ def make_move(request):
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
     headers["charset"] = "UTF-8"
-
     data = {"move": move, "id": 1}
     x = requests.post(url, headers=headers, data=json.dumps(data))
     if x.status_code == 200:

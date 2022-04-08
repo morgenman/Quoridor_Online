@@ -33,7 +33,7 @@ class Demo extends Phaser.Scene {
       chessA.moveForward(movingPoints);
     });
 
-    this.add.text(0, 580, 'Click to move forward.')
+    this.add.text(10, 30, 'Click to move forward.')
   }
 }
 
@@ -147,10 +147,10 @@ class ChessA extends RexPlugins.Board.Shape {
 
 var getQuadGrid = function (scene) {
   var grid = scene.rexBoard.add.quadGrid({
-    x: 100,
-    y: 100,
-    cellWidth: 50,
-    cellHeight: 50,
+    x: 200,
+    y: 200,
+    cellWidth: 100,
+    cellHeight: 100,
     type: 0
   });
   return grid;
@@ -160,8 +160,8 @@ var getHexagonGrid = function (scene) {
   var staggeraxis = 'x';
   var staggerindex = 'odd';
   var grid = scene.rexBoard.add.hexagonGrid({
-    x: 100,
-    y: 100,
+    x: 200,
+    y: 200,
     size: 30,
     staggeraxis: staggeraxis,
     staggerindex: staggerindex
@@ -182,8 +182,8 @@ var createTileMap = function (tilesMap, out) {
 var config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
-  width: 800,
-  height: 600,
+  width: 1000,
+  height: 1000,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
