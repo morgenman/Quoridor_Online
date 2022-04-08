@@ -2,7 +2,7 @@
   "id": "e4345b18-f925-45ee-95f6-7610c31977a0",
   "version": "2.0",
   "name": "SeleniumTest",
-  "url": "http://localhost:8000",
+  "url": "http://localhost:8000/js_test/",
   "tests": [{
     "id": "f58c49c0-a092-49ca-9c3e-7321dab44bba",
     "name": "*Irrelevant* Test01 - Home Page Displays",
@@ -499,6 +499,156 @@
       "targets": [],
       "value": ""
     }]
+  }, {
+    "id": "bbf116e2-30a5-4067-a585-f41a16bc9cf2",
+    "name": "Testing_moves",
+    "commands": [{
+      "id": "eb5f7ec6-92d4-4f06-84eb-54056ec9b632",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8000/js_test/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e1151af2-6fc4-476b-82bb-1167c6639837",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1200x761",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9861d410-245f-4a11-a461-896062f169f8",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3e543eb7-31e3-462e-8bd1-e54dc8365160",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fecd9e02-56a5-4e87-861a-042d9eabc4b1",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "278fce1f-f00b-4610-842a-15430e082675",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5098253b-eb15-4812-a78a-7110cd517d26",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "485f1de5-8df0-460e-97ac-01c6ac185434",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7794c593-d8de-4db7-970e-e5a519d5cd60",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c1000d9f-a052-485a-88d9-846def331b67",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bd9e7601-8244-4924-9d49-666f8daf0dbd",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2ebedcde-516b-4dd6-be9d-4f36d153334d",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "66df02ae-5f7e-43b1-9dab-172533c35d7c",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9a05f699-830b-4c5c-8e6e-9bccfa9d9ef1",
+      "comment": "",
+      "command": "click",
+      "target": "css=canvas",
+      "targets": [
+        ["css=canvas", "css:finder"],
+        ["xpath=//div[@id='phaser-example']/canvas", "xpath:idRelative"],
+        ["xpath=//canvas", "xpath:position"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "39b86e07-598f-44ae-8671-7d715058877d",
@@ -508,6 +658,6 @@
     "timeout": 300,
     "tests": []
   }],
-  "urls": ["http://localhost:8000/user/", "http://localhost:8000/"],
+  "urls": ["http://localhost:8000/user/", "http://localhost:8000/", "http://localhost:8000/js_test/"],
   "plugins": []
 }
