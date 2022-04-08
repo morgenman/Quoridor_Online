@@ -154,12 +154,12 @@ COMPRESS_PRECOMPILERS = (
 )
 COMPRESS_ENABLED = True
 
-COMPRESS_OFFLINE = False
+COMPRESS_OFFLINE = True
 
 TEMPLATE_DEBUG = DEBUG
 
 STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder'
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 ]
