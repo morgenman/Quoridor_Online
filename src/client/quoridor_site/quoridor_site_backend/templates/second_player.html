@@ -1,0 +1,13 @@
+{% block content %} {% load static %}
+<form action="{% url 'new_game' %}" method="POST">
+    Pick Player 2: <select name="player2">
+        {% for data in dataset %}
+        <option value='{{ data.user }}'>{{ data.user }}</option>
+        {% endfor %}
+    </select>
+    </br></br>
+    {% csrf_token %}
+    <p></p>
+    <p><button type="submit">Submit</button></p>
+</form>
+{% endblock %}

@@ -5,7 +5,7 @@
   <a href="{% url 'player' %}">
     <h1>Quoridor Online</h1>
   </a>
-  <li>Version 0.4.1</li>
+  <li>Version 0.4.2</li>
   {% if user.is_authenticated %}
   <li>User: {{ user.get_username }}</li>
   <li>
@@ -18,7 +18,7 @@
 
   {% if user.is_authenticated %}
   <div class="flex-container">
-    <a href="{% url 'new_game' %}"><img class="custom_button" src="../static/css/StartGameButton.png" /></a>
+    <a href="{% url 'second_player' %}"><img class="custom_button" src="../static/css/StartGameButton.png" /></a>
 
     <a href="{% url 'new_game' %}"><img class="custom_button" src="../static/css/JoinGameButton.png" /></a>
   </div>

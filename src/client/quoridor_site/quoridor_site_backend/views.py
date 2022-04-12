@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import requests, json
 from django.views import generic
-from .models import Profile, Game
+from .models import Profile, Game, User
 from .forms import *
 from .admin import *
 from django.db.models import F
@@ -18,6 +18,12 @@ from . import utils
 
 def home(request):
     return render(request, "home.html")
+
+
+def second_player(request):
+    context = {}
+    context["dataset"] = Profile.objects.all()
+    return render(request, "second_player.html", context)
 
 
 def register(request):
@@ -50,16 +56,21 @@ def showName(request):
 
 
 def new_game(request):
+
+    game = Game()
+    game.save()
+    game.players.add(Profile.objects.filter(user=request.user).first())
+    p2name = request.POST["player2"]
+    p2 = User.objects.filter(username=p2name).first()
+    player2 = Profile.objects.filter(user=p2).first()
+    game.players.add(player2)
     url = "http://api:8080/new"
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
     headers["charset"] = "UTF-8"
     # TODO replace ids with game id and player ids
-    game = Game()
-    game.save()
-    game.players.add(Profile.objects.filter(user=request.user).first())
     data = {
-        "id": 1, #str(game.id),
+        "id": 1,  # str(game.id),
         "player1": 11,
         "player2": 12,
         "players": 2,
@@ -68,8 +79,8 @@ def new_game(request):
     x = requests.post(url, headers=headers, data=json.dumps(data))
 
     if x.status_code == 200:
-        game = utils.state_to_array(x.text)
-        return render(request, "board.html", {"board": game})
+        board = utils.state_to_array(x.text)
+        return render(request, "board.html", {"board": board})
 
 
 def make_move(request):
@@ -83,12 +94,12 @@ def make_move(request):
     data = {"move": move, "id": 1}
     x = requests.post(url, headers=headers, data=json.dumps(data))
     if x.status_code == 200:
-        game = utils.state_to_array(x.text)
-        return render(request, "board.html", {"board": game})
+        board = utils.state_to_array(x.text)
+        return render(request, "board.html", {"board": board})
     elif x.status_code == 400:
-        game = utils.state_to_array(x.text)
+        board = utils.state_to_array(x.text)
         # Put some sort of error message to user here
-        return render(request, "board.html", {"board": game})
+        return render(request, "board.html", {"board": board})
 
 
 def win(request):
