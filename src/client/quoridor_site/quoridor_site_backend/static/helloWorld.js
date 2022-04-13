@@ -29,11 +29,23 @@ function create() {
   let grid_x = config.width * 0.2
   let grid_y = config.height * 0.2
   let tile_size = config.width / 15
+  console.log("grid_x: " + grid_x)
+  console.log("grid_y: " + grid_y)
+  console.log("tile_size: " + tile_size)
+
 
   var r1 = this.add.rectangle(grid_x, grid_y, tile_size, tile_size, 0x6666ff);
-  var r2 = this.add.rectangle(config.width-grid_x-tile_size, config.height-grid_y-tile_size, tile_size, tile_size, 0x6666ff);
-  var r3 = this.add.rectangle(config.width-grid_x-tile_size, config.height-grid_y-tile_size, tile_size, tile_size, 0x6666ff);
+  var r2 = this.add.rectangle(config.width - grid_x - tile_size, config.height - grid_y - tile_size, tile_size, tile_size, 0x6666ff);
 
+  var r3 = this.add.rectangle((config.width / 2), (config.height / 2), config.width - (2 * tile_size), config.height - (2 * tile_size), 0x4d8dcd79);
+
+  this.tweens.add({
+
+    targets: r3,
+    alpha: 0.2,
+
+
+  });
 
 
   var r4 = this.add.rectangle(200, 400, 148, 148, 0xff6699);
