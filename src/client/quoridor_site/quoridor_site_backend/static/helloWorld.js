@@ -37,7 +37,7 @@ function create() {
 
   for (let i = -4; i <= 4; i++) {
     for (let j = -4; j <= 4; j++) {
-      this.add.rectangle(center.x + i * tile_size, center.y + j * tile_size, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * (i + 4) + 0x001000 * (j + 4), 0.5);
+      this.add.rectangle(center.x + i * tile_size, center.y + j * tile_size, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * (i + 4) + 0x001000 * (j + 4), 0.8);
     }
   }
 
