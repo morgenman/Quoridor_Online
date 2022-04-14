@@ -4,6 +4,7 @@
 </a>
 <link rel="stylesheet" href="{% static 'css/board.css' %}" />
 <meta charset="utf-8" />
+<p style="display:none">{{id}}</p>
 <p style="display:none">{{state}}</p>
 {{ board|safe }}
 <form action="{% url 'make_move' %}" method="POST">
@@ -16,6 +17,7 @@
   </br></br>
   {% csrf_token %} Make a Move: <input name="tile" pattern="[a-z]{1}[1-9]{1}" minlength="2" maxlength="2" required />
   <input name="state" value="{{state}}" type="hidden" />
+  <input name="id" value="{{id}}" type="hidden" />
   <input name="board" value="{{board|safe}}" type="hidden" />
 
   <p></p>

@@ -39,9 +39,3 @@ class Game(models.Model):
 
     def __str__(self):
         return str(self.id)
-
-    # def new_game()
-
-    def make_move(request):
-
-        return
