@@ -1,3 +1,4 @@
+{% extends "base_generic.html" %}{% block content %}
 {% for game in game_list %}
 <li>
     <strong>ID:</strong> {{ game.id }}
@@ -8,3 +9,4 @@
 <p>_____________________________________________________________________</p>
 </li>
 {% endfor %}
+{% endblock %}

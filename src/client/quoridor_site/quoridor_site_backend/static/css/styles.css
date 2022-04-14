@@ -7,17 +7,22 @@ h1 {
     font-weight: bold;
 }
 
+.version {
+    font-size: 150%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-family: Garamond;
+}
+
 .flex-container {
     display: flex;
-    flex-wrap:wrap;
-    width:fit-content;
-    height:fit-content;
+    flex-wrap: wrap;
+    width: fit-content;
+    height: fit-content;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
-}
-.flex-container a{
-
 }
 
 div {
@@ -26,23 +31,26 @@ div {
     padding-top: 50px;
 }
 
-body{
-    background:url("parchmentPaper.png") no-repeat center center fixed;
+body {
+    background: url("parchmentPaper.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    overflow:auto;
+    overflow: auto;
 }
-.custom_button{
-    margin:10px;
-    width:400px;
-    
+
+.custom_button {
+    margin: 10px;
+    width: 400px;
+
 }
-.custom_button:hover{
+
+.custom_button:hover {
     filter: brightness(80%);
     transform: scale(0.9);
 }
-.custom_button:active{
+
+.custom_button:active {
     filter: brightness(120%);
 }

@@ -1,3 +1,4 @@
+{% extends "base_generic.html" %}{% block content %}
 {% for profile in profile_list %}
 <li>
     <strong>User:</strong> {{ profile.user }}
@@ -5,3 +6,4 @@
     <strong>Losses:</strong> {{ profile.losses }}
 </li>
 {% endfor %}
+{% endblock %}
