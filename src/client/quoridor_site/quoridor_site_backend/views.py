@@ -23,7 +23,7 @@ def home(request):
 # prompts user to select a second player
 def second_player(request):
     context = {}
-    context["dataset"] = Profile.objects.all()
+    context["dataset"] = Profile.objects.exclude(user=request.user)
     return render(request, "second_player.html", context)
 
 

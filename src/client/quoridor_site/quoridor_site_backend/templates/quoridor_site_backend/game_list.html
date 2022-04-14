@@ -1,0 +1,10 @@
+{% for game in game_list %}
+<li>
+    <strong>ID:</strong> {{ game.id }}
+    <p><strong>Players:</strong> {% for player in game.players.all %}
+<li> {{ player.user }} </li> {% endfor %} </p>
+
+<p><strong>State:</strong> {{ game.state }} </p>
+<p>_____________________________________________________________________</p>
+</li>
+{% endfor %}
