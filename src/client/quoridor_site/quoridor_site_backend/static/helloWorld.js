@@ -6,18 +6,25 @@ var config = {
   parent: 'phaser-example',
   width: 800,
   height: 800,
+  antialias: false,
   scene: {
     preload: preload,
     create: create
   }
 };
-
 var game = new Phaser.Game(config);
+
+
 
 function preload() {
   console.log('Current directory: ' + process.cwd());
   this.load.image('bg', '/static/Board.png');
+  this.load.spritesheet('p1_idle', '/static/P1_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
+  this.load.spritesheet('p2_idle', '/static/P2_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
+
 }
+
+
 
 function create() {
   // Logic for full screen image. Keep the frame square
@@ -29,63 +36,42 @@ function create() {
 
   // Drawing starts from center, not top left of object, so this should be useful
   let center = { x: config.width / 2, y: config.height / 2 + 6 }
-
-
   let tile_size = config.width / 12.45;
+
+  // Players
+  var p1_idle_config = {
+    key: 'p1_idle_animation',
+    frames: this.anims.generateFrameNumbers('p1_idle', { start: 0, end: 1, first: 0 }),
+    frameRate: 2,
+    repeat: -1
+  };
+  var p2_idle_config = {
+    key: 'p2_idle_animation',
+    frames: this.anims.generateFrameNumbers('p2_idle', { start: 0, end: 1, first: 0 }),
+    frameRate: 2,
+    repeat: -1
+  };
+  this.anims.create(p1_idle_config);
+  this.anims.create(p2_idle_config);
+
+  let p1 = this.add.sprite(center.x + (0 * tile_size), center.y + ((4) * tile_size) - 15, 'p1_idle').play('p1_idle_animation');
+  let p2 = this.add.sprite(center.x + (0 * tile_size), center.y + ((-4) * tile_size) - 15, 'p2_idle').play('p2_idle_animation');
+  p1.setScale(2);
+  p2.setScale(2);
+
+
 
 
 
   for (let i = -4; i <= 4; i++) {
     for (let j = -4; j <= 4; j++) {
-      this.add.rectangle(center.x + i * tile_size, center.y + j * tile_size, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * (i + 4) + 0x001000 * (j + 4), 0.8);
+      //this.add.rectangle(center.x + i * tile_size, center.y + j * tile_size, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * (i + 4) + 0x001000 * (j + 4), 0.5);
     }
   }
 
-  // var r3 = this.add.rectangle((config.width / 2), (config.height / 2), config.width - (2 * tile_size), config.height - (2 * tile_size), 0x4d8dcd79);
-
-  // this.tweens.add({
-
-  //   targets: r3,
-  //   alpha: 0.2,
 
 
-  // });
 
 
-  // var r4 = this.add.rectangle(200, 400, 148, 148, 0xff6699);
 
-  // var r5 = this.add.rectangle(400, 400, 148, 148, 0xff33cc);
-
-  // var r6 = this.add.rectangle(600, 400, 148, 148, 0xff66ff);
-
-  // this.tweens.add({
-
-  //   targets: r4,
-  //   scaleX: 0.25,
-  //   scaleY: 0.5,
-  //   yoyo: true,
-  //   repeat: -1,
-  //   ease: 'Sine.easeInOut'
-
-  // });
-
-  // this.tweens.add({
-
-  //   targets: r5,
-  //   alpha: 0.2,
-  //   yoyo: true,
-  //   repeat: -1,
-  //   ease: 'Sine.easeInOut'
-
-  // });
-
-  // this.tweens.add({
-
-  //   targets: r6,
-  //   angle: 90,
-  //   yoyo: true,
-  //   repeat: -1,
-  //   ease: 'Sine.easeInOut'
-
-  // });
 }
