@@ -1,11 +1,13 @@
+{% extends "base_generic.html" %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
+{% block content %}
 
 <body>
   <a href="{% url 'player' %}">
     <h1>Quoridor Online</h1>
   </a>
-  <li>Version 0.4.6</li>
   {% if user.is_authenticated %}
   <li>User: {{ user.get_username }}</li>
   <li>
@@ -34,3 +36,5 @@
   </div>
   {% endif %}
 </body>
+
+{% endblock %}
