@@ -4,26 +4,39 @@ table {
   border-spacing: 0; /* remove border gaps */
 }
 
-td{
+td {
   width: 80px;
   height: 80px;
-  text-align:center;
+  text-align: center;
 }
 #wrapper {
   width: fit-content;
   height: auto;
-  margin-left:auto;
-  margin-right:auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 #left {
-   width: fit-content;
-   height: auto;
-   float: left;
-   margin:50px;
+  width: fit-content;
+  height: auto;
+  float: left;
+  margin: 50px;
 }
 #right {
-    width: fit-content;
-    height: auto;
-    float: left;
-    margin:50px;
+  width: fit-content;
+  height: auto;
+  float: left;
+  margin: 50px;
+}
+div#container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+#board {
+  margin: 20px;
+}
+#forms {
+  margin: 20px;
 }

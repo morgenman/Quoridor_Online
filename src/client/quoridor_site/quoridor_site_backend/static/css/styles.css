@@ -1,56 +1,55 @@
 h1 {
-    padding-bottom: 20px;
-    font-size: 500%;
-    text-align: center;
-    font-family: Garamond;
-    color: #4b0b0b;
-    font-weight: bold;
+  padding-bottom: 20px;
+  font-size: 500%;
+  text-align: center;
+  font-family: Garamond;
+  color: #4b0b0b;
+  font-weight: bold;
 }
 
 .version {
-    font-size: 150%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    font-family: Garamond;
+  font-size: 150%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  font-family: Garamond;
 }
 
 .flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    width: fit-content;
-    height: fit-content;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
+  display: flex;
+  flex-wrap: wrap;
+  width: fit-content;
+  height: fit-content;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 div {
-    /*padding-left: 20%;
+  /*padding-left: 20%;
     padding-right: 20%;*/
-    padding-top: 50px;
+  padding-top: 50px;
 }
 
 body {
-    background: url("parchmentPaper.png") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    overflow: auto;
+  background: url("parchmentPaper.png") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow: auto;
 }
 
 .custom_button {
-    margin: 10px;
-    width: 400px;
-
+  margin: 10px;
+  width: 400px;
 }
 
 .custom_button:hover {
-    filter: brightness(80%);
-    transform: scale(0.9);
+  filter: brightness(80%);
+  transform: scale(0.9);
 }
 
 .custom_button:active {
-    filter: brightness(120%);
+  filter: brightness(120%);
 }

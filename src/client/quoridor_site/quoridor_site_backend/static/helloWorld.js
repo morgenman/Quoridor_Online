@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 
 var config = {
   type: Phaser.AUTO,
-  parent: 'phaser-example',
+  parent: 'board',
   width: 800,
   height: 800,
   antialias: false,
@@ -25,8 +25,6 @@ function preload() {
   this.load.spritesheet('p4_idle', '/static/P4_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
   this.load.spritesheet('h_wall', '/static/h_wall.png', { frameWidth: 192, frameHeight: 64, endFrame: 0 });
 }
-
-var shorthand = "d4 f4 e7 / a2 a8 / e4 e6 a4 h6 / 4 3 5 3 / 3";
 
 
 function create() {
@@ -75,6 +73,8 @@ function create() {
   //Player pieces 
   var x = 0;
   var y = 0;
+  var shorthand = document.getElementById('state').value;
+  console.log('Shorthand: ' + state);
   var temp = shorthand.split("/");
   var play_piece = (String(temp[2]).trim()).split(" ");
   for (var i = 0; i < play_piece.length; i++) {
@@ -102,7 +102,7 @@ function create() {
   }
 
 
-  let h_wall_1 = this.add.sprite(center.x + (1 * tile_size), center.y + ((2) * tile_size) - 40, 'h_wall');
+  //let h_wall_1 = this.add.sprite(center.x + (1 * tile_size), center.y + ((2) * tile_size) - 40, 'h_wall');
 
 
 
@@ -110,11 +110,11 @@ function create() {
 
 
 
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
-      //this.add.rectangle(center.x + (i - 4) * tile_size, center.y + (j - 4) * tile_size, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
-    }
-  }
+  // for (let i = 0; i < 9; i++) {
+  //   for (let j = 0; j < 9; j++) {
+  //this.add.rectangle(center.x + (i - 4) * tile_size, center.y + (j - 4) * tile_size, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
+  //   }
+  // }
 
 
 
