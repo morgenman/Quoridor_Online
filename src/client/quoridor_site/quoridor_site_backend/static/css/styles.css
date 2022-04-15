@@ -39,14 +39,6 @@ div {
 }
 
 body {
-<<<<<<< HEAD
-  background: url("parchmentPaper.png") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  overflow: auto;
-=======
     background: url("parchmentPaper.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -56,7 +48,6 @@ body {
 
     font-family: Garamond;
     font-size: 110%;
->>>>>>> af7ebca8b7c76a8526235770d09c02d83c3449f2
 }
 
 .custom_button {
