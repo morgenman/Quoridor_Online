@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+{% block content %}
+
+<body>
+    <h1>How to Play</h1>
+
+    <h3>The Goal of the Game</h3>
+    <li>The goal of the game in Quoridor is to reach the opposite wall of the player's starting position.</li>
+    <li>Each turn, you as the player have the choice of either moving your piece or placing a wall</li>
+    <li>You must make a move each turn, once you run out of walls, you must move your pawn</li>
+
+    <h3>Moves</h3>
+    <li>Players can move one square at a time, horizonally or vertically, forwards or backwards.</li>
+    <li>Players cannot move diagonally</li>
+    <li>Players cannot move through a wall, they must move around it</li>
+
+    <h3>Walls</h3>
+    <li>In a two player game each player is given <b>10 walls</b>, in a 4 player game each player gets <b>5 walls</b>
+    </li>
+    <li>Walls can be placed either horizontally or vertically</li>
+    <li>A path to the goal must be left open for every player, you will not be able to place a wall the blocks a player
+        in.</li>
+
+    <h3>Jumping over players</h3>
+    <li>Everytime two players face each other on neighboring squares, the player who is moving will have the option to
+        jump over the other player</li>
+    <li>The player can jump over the other pawn in a straight line</li>
+    <li><b>If and only if</b> the linear path behind the other player is blocked by a wall, you can jump diagonally to
+        either side of the opposing player</li>
+
+
+    <a href="{% url 'home' %}">
+        <h2>Go Back to Home</h2>
+    </a>
+</body>
+{% endblock %}

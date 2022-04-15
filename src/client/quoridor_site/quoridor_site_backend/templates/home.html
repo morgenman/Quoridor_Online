@@ -20,6 +20,7 @@
   <li>
     <a href="{% url 'games'%}">Games</a>
   </li>
+  <li><a href="{% url 'help' %}">How to Play</a></li>
   {% if user.is_authenticated %}
   <div class="flex-container">
     <a href="{% url 'second_player' %}"><img class="custom_button" src="../static/css/StartGameButton.png" /></a>

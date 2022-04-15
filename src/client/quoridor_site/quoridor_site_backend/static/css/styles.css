@@ -7,11 +7,18 @@ h1 {
     font-weight: bold;
 }
 
+h3 {
+    font-size: 200%;
+    font-family: Garamond;
+    color: #4b0b0b;
+    font-weight: bold;
+}
+
 .version {
     font-size: 150%;
-    position: absolute;
+    position: fixed;
     bottom: 0;
-    left: 0;
+    right: 0;
     font-family: Garamond;
 }
 
@@ -38,6 +45,9 @@ body {
     -o-background-size: cover;
     background-size: cover;
     overflow: auto;
+
+    font-family: Garamond;
+    font-size: 110%;
 }
 
 .custom_button {

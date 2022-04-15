@@ -16,4 +16,5 @@ urlpatterns = [
     path("lose", views.lose, name="lose"),
     path("register", views.register, name="register"),
     path("js_test/", views.js_test, name="js_test"),
+    path("help", views.help, name="help"),
 ]

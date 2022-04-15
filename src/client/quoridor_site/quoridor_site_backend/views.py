@@ -19,6 +19,8 @@ from . import utils
 def home(request):
     return render(request, "home.html")
 
+def help(request):
+    return render(request, "help.html")
 
 # prompts user to select a second player
 def second_player(request):
