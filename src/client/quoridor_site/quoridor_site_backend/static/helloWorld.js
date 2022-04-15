@@ -21,9 +21,12 @@ function preload() {
   this.load.image('bg', '/static/Board.png');
   this.load.spritesheet('p1_idle', '/static/P1_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
   this.load.spritesheet('p2_idle', '/static/P2_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
+  this.load.spritesheet('p3_idle', '/static/P3_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
+  this.load.spritesheet('p4_idle', '/static/P4_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
   this.load.spritesheet('h_wall', '/static/h_wall.png', { frameWidth: 192, frameHeight: 64, endFrame: 0 });
 }
 
+var shorthand = "d4 f4 e7 / a2 a8 / e4 e6 a4 h6 / 4 3 5 3 / 3";
 
 
 function create() {
@@ -51,16 +54,56 @@ function create() {
     frameRate: 2,
     repeat: -1
   };
+  var p3_idle_config = {
+    key: 'p3_idle_animation',
+    frames: this.anims.generateFrameNumbers('p3_idle', { start: 0, end: 1, first: 0 }),
+    frameRate: 2,
+    repeat: -1
+  };
+  var p4_idle_config = {
+    key: 'p4_idle_animation',
+    frames: this.anims.generateFrameNumbers('p4_idle', { start: 0, end: 1, first: 0 }),
+    frameRate: 2,
+    repeat: -1
+  };
+
   this.anims.create(p1_idle_config);
   this.anims.create(p2_idle_config);
+  this.anims.create(p3_idle_config);
+  this.anims.create(p4_idle_config);
 
-  let p1 = this.add.sprite(center.x + (0 * tile_size), center.y + ((4) * tile_size) - 15, 'p1_idle').play('p1_idle_animation');
-  let p2 = this.add.sprite(center.x + (0 * tile_size), center.y + ((-4) * tile_size) - 15, 'p2_idle').play('p2_idle_animation');
+  //Player pieces 
+  var x = 0;
+  var y = 0;
+  var temp = shorthand.split("/");
+  var play_piece = (String(temp[2]).trim()).split(" ");
+  for (var i = 0; i < play_piece.length; i++) {
+    var end = play_piece[i].split("");
+    x = String(end[0]).charCodeAt(0) - 97; //gives you the number of the letter. 
+    y = end[1]; // y position   
+    console.log("player: " + i + "; x: " + x + "; y: " + y);
+    switch (i) {
+      case 0: // Player 1
+        let p1 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 15, 'p1_idle').play('p1_idle_animation');
+        p1.setScale(2);
+        break;
+      case 1: // Player 2
+        let p2 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 15, 'p2_idle').play('p2_idle_animation');
+        p2.setScale(2);
+        break;
+      case 2: // Player 3
+        let p3 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 15, 'p3_idle').play('p3_idle_animation');
+        p3.setScale(2);
+        break;
+      case 3: // Player 4
+        let p4 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 15, 'p4_idle').play('p4_idle_animation');
+        p4.setScale(2);
+    }
+  }
+
 
   let h_wall_1 = this.add.sprite(center.x + (1 * tile_size), center.y + ((2) * tile_size) - 40, 'h_wall');
-  
-  p1.setScale(2);
-  p2.setScale(2);
+
 
 
 
