@@ -1,12 +1,23 @@
-{% extends "base_generic.html" %}{% block content %}
-{% for game in game_list %}
-<li>
-    <strong>ID:</strong> {{ game.id }}
-    <p><strong>Players:</strong> {% for player in game.players.all %}
-<li> {{ player.user }} </li> {% endfor %} </p>
 
-<p><strong>State:</strong> {{ game.state }} </p>
-<p>_____________________________________________________________________</p>
-</li>
-{% endfor %}
+
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Games List</h1>
+  {% if game_list %}
+  <ul>
+    {% for game in game_list %}
+      
+        <strong>ID:</strong>  <a href="{{ game.get_absolute_url }}">{{ game.id }}</a>
+        <p><strong>Players:</strong> {% for player in game.players.all %}
+            <li> {{ player.user }} </li> {% endfor %} </p> 
+            <p><strong>State:</strong> {{ game.state }} </p>
+            <p>_____________________________________________________________________</p>
+
+      
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no games at this time.</p>
+  {% endif %}
 {% endblock %}

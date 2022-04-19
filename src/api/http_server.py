@@ -74,6 +74,23 @@ class MyServer(BaseHTTPRequestHandler):
                             "utf-8",
                         )
                     )
+                case "/get":
+                    try:
+                        curr_game = games.get(post_body["id"])
+                        print("Sending game " + post_body["id"])
+                        print("Game State: " + curr_game.__repr__())
+                        self.send_response(200)
+                    except AssertionError:
+                        self.send_response(400)
+                        print("Invalid Game ID")
+                    self.send_header("Content-type", "text/html; charset=utf-8")
+                    self.end_headers()
+                    self.wfile.write(
+                        bytes(
+                            games.get(post_body["id"]).__repr__(),
+                            "utf-8",
+                        )
+                    )
 
                 case _:
                     self.send_response(418)

@@ -19,8 +19,10 @@ from . import utils
 def home(request):
     return render(request, "home.html")
 
+
 def help(request):
     return render(request, "help.html")
+
 
 # prompts user to select a second player
 def second_player(request):
@@ -138,11 +140,12 @@ def make_move(request):
         board = utils.state_to_array(x.text)
         # TODO Put some sort of error message to user here
         # render original board
-        return render(
-            request,
-            "board.html",
-            {"board": board, "id": id, "state": current_state},
-        )
+        # return render(
+        #     request,
+        #     "board.html",
+        #     {"board": board, "id": id, "state": current_state},
+        # )
+        return get_game(request, id)
 
 
 # adds a win to all profiles and goes back to home page
@@ -174,8 +177,44 @@ class ProfileListView(generic.ListView):
     model = Profile
 
 
-class GameDetailView(generic.DetailView):
-    model = Game
+def get_game(request, pk):
+    game = Game.objects.filter(id=pk).first()
+    # send request to api to make a new game
+    url = "http://api:8080/get"
+    headers = requests.structures.CaseInsensitiveDict()
+    headers["Content-Type"] = "application/json"
+    headers["charset"] = "UTF-8"
+    # sets data to game's info (id, player1, player2)
+    id = str(game.id)
+    data = {"id": id}
+    x = requests.post(url, headers=headers, data=json.dumps(data))
+    # if sent successfullly, render board
+    if x.status_code == 200:
+        # grab the new state and make new board
+        new_state = x.text
+        # board = utils.state_to_array(x.text)
+        # update state of corresponding game model
+        game = Game.objects.filter(id=id).first()
+        game.state = new_state
+        game.save()
+        # render new board
+        return render(
+            request,
+            "board.html",
+            {"board": "board", "id": id, "state": new_state},
+        )
+
+    # # else if illegal move
+    # elif x.status_code == 400:
+    #     # make board of original state
+    #     #board = utils.state_to_array(x.text)
+    #     # TODO Put some sort of error message to user here
+    #     # render original board
+    #     return render(
+    #         request,
+    #         "board.html",
+    #         {"board": "board", "id": id, "state": current_state},
+    #     )
 
 
 class GameListView(generic.ListView):
