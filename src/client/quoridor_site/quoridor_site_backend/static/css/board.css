@@ -30,13 +30,29 @@ td {
 div#container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  width: fit-content;
+  height: 94%;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
 }
 #board {
+  width: inherit;
+  height: inherit;
+  flex-grow: 1;
+  flex-basis: 100px;
   margin: 20px;
 }
 #forms {
+  flex-grow: 0;
+  min-width: 200px;
   margin: 20px;
+}
+html {
+  height: 100%;
+}
+body {
+  height: 90%;
+  margin-top: 0px;
 }

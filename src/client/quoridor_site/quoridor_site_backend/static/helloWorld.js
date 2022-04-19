@@ -4,13 +4,46 @@ import Phaser from 'phaser';
 var config = {
   type: Phaser.AUTO,
   parent: 'board',
-  width: 800,
-  height: 800,
+  width: 1000,
+  height: 1000,
+  scale: {
+    // Or set parent divId here
+    parent: 'board',
+
+    mode: Phaser.Scale.AUTO,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+
+    // Or put game size here
+    // width: 1024,
+    // height: 768,
+
+    // Minimum size
+    min: {
+      width: 50,
+      height: 50
+    },
+    // Or set minimum size like these
+    // minWidth: 800,
+    // minHeight: 600,
+
+    // Maximum size
+    max: {
+      width: 1600,
+      height: 1600
+    },
+    // Or set maximum size like these
+    // maxWidth: 1600,
+    // maxHeight: 1200,
+
+    zoom: 1,  // Size of game canvas = game size * zoom
+  },
+  autoRound: false,
   antialias: false,
   scene: {
     preload: preload,
     create: create
   }
+
 };
 var game = new Phaser.Game(config);
 

@@ -8,18 +8,18 @@ h1 {
 }
 
 h3 {
-    font-size: 200%;
-    font-family: Garamond;
-    color: #4b0b0b;
-    font-weight: bold;
+  font-size: 200%;
+  font-family: Garamond;
+  color: #4b0b0b;
+  font-weight: bold;
 }
 
 .version {
-    font-size: 150%;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    font-family: Garamond;
+  font-size: 150%;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  font-family: Garamond;
 }
 
 .flex-container {
@@ -32,22 +32,16 @@ h3 {
   margin-right: auto;
 }
 
-div {
-  /*padding-left: 20%;
-    padding-right: 20%;*/
-  padding-top: 50px;
-}
-
 body {
-    background: url("parchmentPaper.png") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    overflow: auto;
+  background: url("parchmentPaper.png") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow: auto;
 
-    font-family: Garamond;
-    font-size: 110%;
+  font-family: Garamond;
+  font-size: 110%;
 }
 
 .custom_button {
