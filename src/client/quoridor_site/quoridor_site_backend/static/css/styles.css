@@ -44,10 +44,11 @@ body {
   font-size: 110%;
 }
 
-.custom_button {
+.custom_button,.custom_button_disabled {
   margin: 10px;
   width: 400px;
 }
+
 
 .custom_button:hover {
   filter: brightness(80%);

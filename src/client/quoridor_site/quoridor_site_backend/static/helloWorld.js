@@ -10,7 +10,7 @@ var config = {
     // Or set parent divId here
     parent: 'board',
 
-    mode: Phaser.Scale.AUTO,
+    mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
 
     // Or put game size here
@@ -57,6 +57,8 @@ function preload() {
   this.load.spritesheet('p3_idle', '/static/P3_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
   this.load.spritesheet('p4_idle', '/static/P4_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
   this.load.spritesheet('h_wall', '/static/h_wall.png', { frameWidth: 192, frameHeight: 64, endFrame: 0 });
+  this.load.spritesheet('v_wall', '/static/v_wall.png', { frameWidth: 64, frameHeight: 192, endFrame: 0 });
+
 }
 
 
@@ -134,12 +136,33 @@ function create() {
     }
   }
 
+  // 1,2 and 3,0 are the coordinates 5,3 and 7,5   (x-4 = value),((y-5)*-1) = value
+  // let h_wall_1 = this.add.sprite(center.x + (1 * tile_size), center.y + ((2) * tile_size) - 40, 'h_wall');
+  // h_wall_1.setScale(1.2);
+  // let v_wall_1 = this.add.sprite(center.x + (3 * tile_size) + 40, center.y + ((0) * tile_size), 'v_wall');
+  // v_wall_1.setScale(1.2);
 
-  //let h_wall_1 = this.add.sprite(center.x + (1 * tile_size), center.y + ((2) * tile_size) - 40, 'h_wall');
-
-
-
-
+  var h_walls = (String(temp[0]).trim()).match(/.{2}/g);
+  for (var wall in h_walls) {
+    var strng = h_walls[wall].split("");
+    x = String(strng[0]).charCodeAt(0) - 97; //gives you the number of the letter. 
+    y = strng[1]; // y position
+    console.log("making h wall: " + x + "; y: " + y);
+    let h_wall_1 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 40, 'h_wall');
+    h_wall_1.setScale(1.2);
+  }
+  var v_walls = (String(temp[1]).trim()).match(/.{2}/g);
+  console.log(h_walls + ";" + v_walls);
+  var x = 0;
+  var y = 0;
+  for (var wall in v_walls) {
+    var strng = v_walls[wall].split("");
+    x = String(strng[0]).charCodeAt(0) - 97; //gives you the number of the letter. 
+    y = strng[1]; // y position
+    console.log("making v_wall from '", wall, "' at " + x + "," + y);
+    let v_wall_1 = this.add.sprite(center.x + ((x - 4) * tile_size) + 40, center.y + (-1 * (y - 5) * tile_size), 'v_wall');
+    v_wall_1.setScale(1.2);
+  }
 
 
 

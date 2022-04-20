@@ -30,7 +30,7 @@ td {
 div#container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   width: fit-content;
   height: 94%;
   justify-content: center;

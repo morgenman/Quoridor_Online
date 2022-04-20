@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import requests, json
@@ -175,6 +176,29 @@ class ProfileDetailView(generic.DetailView):
 
 class ProfileListView(generic.ListView):
     model = Profile
+
+
+def second_player_debug(request):
+    context = {}
+    context["dataset"] = Profile.objects.exclude(user=request.user)
+    context["state"] = "d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3"
+
+    return render(request, "second_player_debug.html", context)
+
+
+# starts a new game
+def debug(request):
+    state = request.POST["state"]
+    # create a new game model (with default state)
+    game = Game()
+    game.save()
+    # adds both players (player1 being the current user)
+    game.players.add(Profile.objects.filter(user=request.user).first())
+    p2name = request.POST["player2"]
+    p2user = User.objects.filter(username=p2name).first()
+    p2 = Profile.objects.filter(user=p2user).first()
+
+    return render(request, "debug.html", {"state": state})
 
 
 def get_game(request, pk):
