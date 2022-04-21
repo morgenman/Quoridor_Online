@@ -17,6 +17,7 @@
     <form action="{% url 'debug' %}" method="POST">
       {% csrf_token %}
       <input id="state" name="state" style="width: 400px" value="{{state}}" />
+      <br>horzontal walls / vertical walls / player pieces / correct tiles / incorrect tiles
       <input name="id" value="{{id}}" type="hidden" />
       <input name="player2" value="{{player2}}" type="hidden" />
       <p></p>

@@ -168,14 +168,52 @@ function create() {
     v_wall_1.setScale(1.2);
   }
 
-
-
-  for (let i = 1; i <= 9; i++) {
-    for (let j = 1; j <= 9; j++) {
-      let coor = coor_2_abs(i, j);
-      this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
-    }
+  //Correct tiles
+  var tiles = (String(temp[3]).trim()).split(" ");
+  var x = 0;
+  var y = 0;
+  for (var tile in tiles) {
+    var end = tiles[tile].split("");
+    x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+    y = end[1]; // y position   
+    console.log("tile: " + tile + "; x: " + x + "; y: " + y);
+    let coor = coor_2_abs(x, y);
+    this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.5);
   }
+
+  //Correct tiles
+  var tiles = (String(temp[3]).trim()).split(" ");
+  var x = 0;
+  var y = 0;
+  for (var tile in tiles) {
+    var end = tiles[tile].split("");
+    x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+    y = end[1]; // y position   
+    console.log("tile: " + tile + "; x: " + x + "; y: " + y);
+    let coor = coor_2_abs(x, y);
+    this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.5);
+  }
+
+
+  //Incorrect tiles
+  var tiles = (String(temp[4]).trim()).split(" ");
+  var x = 0;
+  var y = 0;
+  for (var tile in tiles) {
+    var end = tiles[tile].split("");
+    x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+    y = end[1]; // y position   
+    console.log("tile: " + tile + "; x: " + x + "; y: " + y);
+    let coor = coor_2_abs(x, y);
+    this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0xFF0004, 0.5);
+  }
+
+  //for (let i = 1; i <= 8; i++) {
+  //for (let j = 1; j <= 8; j++) {
+  //let coor = coor_2_abs(i, j);
+  //this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
+  //}
+  //}
 
   function coor_2_abs(x, y) {
     return {

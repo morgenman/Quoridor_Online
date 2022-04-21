@@ -181,7 +181,10 @@ class ProfileListView(generic.ListView):
 def second_player_debug(request):
     context = {}
     context["dataset"] = Profile.objects.exclude(user=request.user)
-    context["state"] = "d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3"
+    context[
+        "state"
+    ] = "d4f4e7 / a2a8 / e4 e7 a4 h6 / e3 d4 f4 a3 a5 b4 e6 d7 f7 g6 i6 h5 h7 / e5 e8 / 4 3 5 3 / 3"
+    # horzontal walls / vertical walls / player pieces / correct tiles / incorrect tiles
 
     return render(request, "second_player_debug.html", context)
 
