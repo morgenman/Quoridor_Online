@@ -59,6 +59,8 @@ function preload() {
   this.load.spritesheet('h_wall', '/static/h_wall.png', { frameWidth: 192, frameHeight: 64, endFrame: 0 });
   this.load.spritesheet('v_wall', '/static/v_wall.png', { frameWidth: 64, frameHeight: 192, endFrame: 0 });
 
+  this.load.image('target', '/static/Target.png');
+
 }
 
 
@@ -69,6 +71,7 @@ function create() {
   let scaleY = this.cameras.main.height / image.height
   let scale = Math.max(scaleX, scaleY)
   image.setScale(scale).setScrollFactor(0)
+
 
   // Drawing starts from center, not top left of object, so this should be useful
   let center = { x: config.width / 2, y: config.height / 2 + 6 }
@@ -168,7 +171,44 @@ function create() {
     v_wall_1.setScale(1.2);
   }
 
+  //movable target object
+  var target = this.add.sprite(900, 900, 'target').setInteractive();
+  target.setScale(0.5);
 
+  this.input.topOnly = false;
+  target.on('pointerover', function () {
+
+    this.setTint(0x00ff00);
+  });
+
+  target.on('pointerout', function () {
+
+    this.clearTint();
+
+  });
+
+  this.input.setDragable(target);
+
+
+  this.input.on('dragstart', function (pointer, gameObject) {
+
+    gameObject.setTint(0xff0000);
+
+  });
+
+  this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+
+    gameObject.x = dragX;
+    gameObject.y = dragY;
+
+  });
+
+
+  this.input.on('dragend', function (pointer, gameObject) {
+
+    gameObject.clearTint();
+
+  });
 
   for (let i = 1; i <= 9; i++) {
     for (let j = 1; j <= 9; j++) {
