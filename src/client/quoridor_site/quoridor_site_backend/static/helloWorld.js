@@ -169,7 +169,7 @@ function create() {
   }
 
   //Correct tiles
-  var tiles = (String(temp[3]).trim()).split(" ");
+  /*var tiles = (String(temp[3]).trim()).split(" ");
   var x = 0;
   var y = 0;
   for (var tile in tiles) {
@@ -179,27 +179,33 @@ function create() {
     console.log("tile: " + tile + "; x: " + x + "; y: " + y);
     let coor = coor_2_abs(x, y);
     this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.5);
-  }
+  }*/
 
   //Correct tiles
-  var tiles = (String(temp[3]).trim()).split(" ");
+  var active_player = (String(temp[4]).trim()).split(" ");
   var x = 0;
   var y = 0;
-  for (var tile in tiles) {
-    var end = tiles[tile].split("");
-    x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
-    y = end[1]; // y position   
-    console.log("tile: " + tile + "; x: " + x + "; y: " + y);
-    let coor = coor_2_abs(x, y);
-    this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.5);
+  //var player = (String(temp[2]).trim()).split(" ");
+  var end = play_piece[active_player].split("");
+  x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+  y = end[1]; // y position
+  for (let i = -1; i <= 1; i++) {
+    for (let j = -1; j <= 1; j++) {
+      if ((Math.abs(i) != Math.abs(j))) {
+        var a = x + i;
+        var b = parseInt(y) + j;
+        console.log("tile: " + active_player + "; x: " + a + "; y: " + b);
+        if ((!(a < 1) && !(a > 9)) && (!(b < 1) && !(b > 9))) {
+          let coor = coor_2_abs(a, b);
+          this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.5);
+        }
+      }
+    }
   }
 
 
   //Incorrect tiles
-  var tiles = (String(temp[4]).trim()).split(" ");
-  var x = 0;
-  var y = 0;
-  for (var tile in tiles) {
+  /*for (var tile in tiles) {
     var end = tiles[tile].split("");
     x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
     y = end[1]; // y position   
@@ -207,6 +213,7 @@ function create() {
     let coor = coor_2_abs(x, y);
     this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0xFF0004, 0.5);
   }
+  */
 
   //for (let i = 1; i <= 8; i++) {
   //for (let j = 1; j <= 8; j++) {
