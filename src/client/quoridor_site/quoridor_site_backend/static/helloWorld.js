@@ -114,24 +114,25 @@ function create() {
   var play_piece = (String(temp[2]).trim()).split(" ");
   for (var i = 0; i < play_piece.length; i++) {
     var end = play_piece[i].split("");
-    x = String(end[0]).charCodeAt(0) - 97; //gives you the number of the letter. 
+    x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
     y = end[1]; // y position   
     console.log("player: " + i + "; x: " + x + "; y: " + y);
+    let coor = coor_2_abs(x, y);
     switch (i) {
       case 0: // Player 1
-        let p1 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 15, 'p1_idle').play('p1_idle_animation');
+        let p1 = this.add.sprite(coor.x, coor.y - 15, 'p1_idle').play('p1_idle_animation');
         p1.setScale(2);
         break;
       case 1: // Player 2
-        let p2 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 15, 'p2_idle').play('p2_idle_animation');
+        let p2 = this.add.sprite(coor.x, coor.y - 15, 'p2_idle').play('p2_idle_animation');
         p2.setScale(2);
         break;
       case 2: // Player 3
-        let p3 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 15, 'p3_idle').play('p3_idle_animation');
+        let p3 = this.add.sprite(coor.x, coor.y - 15, 'p3_idle').play('p3_idle_animation');
         p3.setScale(2);
         break;
       case 3: // Player 4
-        let p4 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 15, 'p4_idle').play('p4_idle_animation');
+        let p4 = this.add.sprite(coor.x, coor.y - 15, 'p4_idle').play('p4_idle_animation');
         p4.setScale(2);
     }
   }
@@ -145,10 +146,11 @@ function create() {
   var h_walls = (String(temp[0]).trim()).match(/.{2}/g);
   for (var wall in h_walls) {
     var strng = h_walls[wall].split("");
-    x = String(strng[0]).charCodeAt(0) - 97; //gives you the number of the letter. 
+    x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
     y = strng[1]; // y position
     console.log("making h wall: " + x + "; y: " + y);
-    let h_wall_1 = this.add.sprite(center.x + ((x - 4) * tile_size), center.y + (-1 * (y - 5) * tile_size) - 40, 'h_wall');
+    let coor = coor_2_abs(x, y);
+    let h_wall_1 = this.add.sprite(coor.x, coor.y - 40, 'h_wall');
     h_wall_1.setScale(1.2);
   }
   var v_walls = (String(temp[1]).trim()).match(/.{2}/g);
@@ -157,21 +159,30 @@ function create() {
   var y = 0;
   for (var wall in v_walls) {
     var strng = v_walls[wall].split("");
-    x = String(strng[0]).charCodeAt(0) - 97; //gives you the number of the letter. 
+    x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
     y = strng[1]; // y position
+    let coor = coor_2_abs(x, y);
+
     console.log("making v_wall from '", wall, "' at " + x + "," + y);
-    let v_wall_1 = this.add.sprite(center.x + ((x - 4) * tile_size) + 40, center.y + (-1 * (y - 5) * tile_size), 'v_wall');
+    let v_wall_1 = this.add.sprite(coor.x + 40, coor.y, 'v_wall');
     v_wall_1.setScale(1.2);
   }
 
 
 
-  // for (let i = 0; i < 9; i++) {
-  //   for (let j = 0; j < 9; j++) {
-  //this.add.rectangle(center.x + (i - 4) * tile_size, center.y + (j - 4) * tile_size, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
-  //   }
-  // }
+  for (let i = 1; i <= 9; i++) {
+    for (let j = 1; j <= 9; j++) {
+      let coor = coor_2_abs(i, j);
+      this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
+    }
+  }
 
+  function coor_2_abs(x, y) {
+    return {
+      x: center.x + (x - 5) * tile_size,
+      y: center.y + (-1 * (y - 5) * tile_size)
+    }
+  }
 
 
 
