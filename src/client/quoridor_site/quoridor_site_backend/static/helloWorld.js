@@ -186,7 +186,7 @@ function create() {
   var x = 0;
   var y = 0;
   //var player = (String(temp[2]).trim()).split(" ");
-  var end = play_piece[active_player].split("");
+  var end = play_piece[active_player - 1].split("");
   x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
   y = end[1]; // y position
   for (let i = -1; i <= 1; i++) {
@@ -197,7 +197,7 @@ function create() {
         console.log("tile: " + active_player + "; x: " + a + "; y: " + b);
         if ((!(a < 1) && !(a > 9)) && (!(b < 1) && !(b > 9))) {
           let coor = coor_2_abs(a, b);
-          this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.5);
+          this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
         }
       }
     }
