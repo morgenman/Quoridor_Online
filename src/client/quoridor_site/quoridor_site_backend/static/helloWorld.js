@@ -171,6 +171,21 @@ function create() {
     v_wall_1.setScale(1.2);
   }
 
+  function coor_2_abs(x, y) {
+    return {
+      x: center.x + (x - 5) * tile_size,
+      y: center.y + (-1 * (y - 5) * tile_size)
+    }
+  }
+
+
+  for (let i = 1; i <= 9; i++) {
+    for (let j = 1; j <= 9; j++) {
+      let coor = coor_2_abs(i, j);
+      this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
+    }
+  }
+
   //movable target object
   var target = this.add.sprite(900, 900, 'target').setInteractive();
   target.setScale(0.5);
@@ -187,7 +202,7 @@ function create() {
 
   });
 
-  this.input.setDragable(target);
+  this.input.setDraggable(target);
 
 
   this.input.on('dragstart', function (pointer, gameObject) {
@@ -209,23 +224,6 @@ function create() {
     gameObject.clearTint();
 
   });
-
-  for (let i = 1; i <= 9; i++) {
-    for (let j = 1; j <= 9; j++) {
-      let coor = coor_2_abs(i, j);
-      this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
-    }
-  }
-
-  function coor_2_abs(x, y) {
-    return {
-      x: center.x + (x - 5) * tile_size,
-      y: center.y + (-1 * (y - 5) * tile_size)
-    }
-  }
-
-
-
 
 
 }
