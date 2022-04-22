@@ -184,26 +184,42 @@ function create() {
   }*/
 
   //Correct tiles
-  var active_player = (String(temp[4]).trim()).split(" ");
+
+  //This handles the potential moves
+  var highlight = " e2f1d1 "
+  var active_tiles = (String(highlight).trim()).match(/.{2}/g);
   var x = 0;
   var y = 0;
-  //var player = (String(temp[2]).trim()).split(" ");
-  var end = play_piece[active_player - 1].split("");
-  x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
-  y = end[1]; // y position
-  for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-      if ((Math.abs(i) != Math.abs(j))) {
-        var a = x + i;
-        var b = parseInt(y) + j;
-        console.log("tile: " + active_player + "; x: " + a + "; y: " + b);
-        if ((!(a < 1) && !(a > 9)) && (!(b < 1) && !(b > 9))) {
-          let coor = coor_2_abs(a, b);
-          this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
-        }
-      }
-    }
+  for (var tile in active_tiles) {
+    var strng = active_tiles[tile].split("");
+    x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+    y = strng[1]; // y position
+    let coor = coor_2_abs(x, y);
+
+    this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
   }
+
+  // Legacy code for drawing potential moves
+  // var x = 0;
+  // var y = 0;
+  // var end = play_piece[active_player - 1].split("");
+  // x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+  // y = end[1]; // y position
+  // for (let i = -1; i <= 1; i++) {
+  //   for (let j = -1; j <= 1; j++) {
+  //     if ((Math.abs(i) != Math.abs(j))) {
+  //       var a = x + i;
+  //       var b = parseInt(y) + j;
+  //       console.log("tile: " + active_player + "; x: " + a + "; y: " + b);
+  //       if ((!(a < 1) && !(a > 9)) && (!(b < 1) && !(b > 9))) {
+  //         let coor = coor_2_abs(a, b);
+  //         this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
+  //       }
+  //     }
+  //   }
+  // }
+
+
   //Incorrect tiles
   /*for (var tile in tiles) {
     var end = tiles[tile].split("");
