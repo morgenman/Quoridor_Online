@@ -170,6 +170,99 @@ function create() {
     let v_wall_1 = this.add.sprite(coor.x + 40, coor.y, 'v_wall');
     v_wall_1.setScale(1.2);
   }
+  //Correct tiles
+  /*var tiles = (String(temp[3]).trim()).split(" ");
+  var x = 0;
+  var y = 0;
+  for (var tile in tiles) {
+    var end = tiles[tile].split("");
+    x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+    y = end[1]; // y position   
+    console.log("tile: " + tile + "; x: " + x + "; y: " + y);
+    let coor = coor_2_abs(x, y);
+    this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.5);
+  }*/
+
+  //Correct tiles
+  var active_player = (String(temp[4]).trim()).split(" ");
+  var x = 0;
+  var y = 0;
+  //var player = (String(temp[2]).trim()).split(" ");
+  var end = play_piece[active_player - 1].split("");
+  x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+  y = end[1]; // y position
+  for (let i = -1; i <= 1; i++) {
+    for (let j = -1; j <= 1; j++) {
+      if ((Math.abs(i) != Math.abs(j))) {
+        var a = x + i;
+        var b = parseInt(y) + j;
+        console.log("tile: " + active_player + "; x: " + a + "; y: " + b);
+        if ((!(a < 1) && !(a > 9)) && (!(b < 1) && !(b > 9))) {
+          let coor = coor_2_abs(a, b);
+          this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
+        }
+      }
+    }
+  }
+  //Incorrect tiles
+  /*for (var tile in tiles) {
+    var end = tiles[tile].split("");
+    x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+    y = end[1]; // y position   
+    console.log("tile: " + tile + "; x: " + x + "; y: " + y);
+    let coor = coor_2_abs(x, y);
+    this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0xFF0004, 0.5);
+  }
+  */
+
+  //for (let i = 1; i <= 8; i++) {
+  //for (let j = 1; j <= 8; j++) {
+  //let coor = coor_2_abs(i, j);
+  //this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
+  //}
+  //}
+
+  //movable target object
+  var target = this.add.sprite(900, 900, 'target').setInteractive();
+  target.setScale(0.5);
+
+  //gives green tint when pointer is over target
+  this.input.topOnly = false;
+  target.on('pointerover', function () {
+
+    this.setTint(0x00ff00);
+  });
+
+  //undoes above
+  target.on('pointerout', function () {
+
+    this.clearTint();
+
+  });
+
+  this.input.setDraggable(target);
+
+  //gives red tint when being dragged
+  this.input.on('dragstart', function (pointer, gameObject) {
+
+    gameObject.setTint(0xff0000);
+
+  });
+
+  //controls dragging
+  this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+
+    gameObject.x = dragX;
+    gameObject.y = dragY;
+
+  });
+
+  //undoes tint when drag ends
+  this.input.on('dragend', function (pointer, gameObject) {
+
+    gameObject.clearTint();
+
+  });
 
   function coor_2_abs(x, y) {
     return {
@@ -179,51 +272,6 @@ function create() {
   }
 
 
-  for (let i = 1; i <= 9; i++) {
-    for (let j = 1; j <= 9; j++) {
-      let coor = coor_2_abs(i, j);
-      this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
-    }
-  }
-
-  //movable target object
-  var target = this.add.sprite(900, 900, 'target').setInteractive();
-  target.setScale(0.5);
-
-  this.input.topOnly = false;
-  target.on('pointerover', function () {
-
-    this.setTint(0x00ff00);
-  });
-
-  target.on('pointerout', function () {
-
-    this.clearTint();
-
-  });
-
-  this.input.setDraggable(target);
-
-
-  this.input.on('dragstart', function (pointer, gameObject) {
-
-    gameObject.setTint(0xff0000);
-
-  });
-
-  this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-
-    gameObject.x = dragX;
-    gameObject.y = dragY;
-
-  });
-
-
-  this.input.on('dragend', function (pointer, gameObject) {
-
-    gameObject.clearTint();
-
-  });
 
 
 }

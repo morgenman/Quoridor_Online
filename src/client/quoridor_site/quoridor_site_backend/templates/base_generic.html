@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  <body>
-    <!--ADD VERSION NUMBER HERE BEFORE PUSH-->
-    {% block content %}{% endblock %}
-    <div class="version">
-      <b>Version number: 0.5.4</b>
-    </div>
-  </body>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
+<body>
+  <!--ADD VERSION NUMBER HERE BEFORE PUSH-->
+  {% block content %}{% endblock %}
+  <div class="version">
+    <b>Version number: 0.5.6</b>
+  </div>
+</body>
+
 </html>

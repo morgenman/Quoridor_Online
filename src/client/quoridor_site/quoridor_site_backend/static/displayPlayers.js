@@ -1,6 +1,6 @@
 // Function that gets the x and y from the shorthand and plots on the board. 
 // Function that displays player pieces, horizontal and vertical walls, on the game board.
-// horzontal walls / vertical walls / player pieces /   
+// horzontal walls / vertical walls / player pieces / available walls / active player
 var shorthand = "d4 f4 e7 / a2 a8 / e4 e6 a4 h6 / 4 3 5 3 / 3";
 
 function displayPlayers(shorthand) {
