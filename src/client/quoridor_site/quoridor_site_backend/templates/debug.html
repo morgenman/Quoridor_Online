@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}{% block content %}
 <!--  -->
 {% load static %} {% load compress %} {% compress js %}
-<script type="module" src="{% static 'helloWorld.js' %}"></script>
+<script type="module" src="{% static 'game_canvas.js' %}"></script>
 {% endcompress %}
 <a href="{% url 'home' %}">
   <h3>Go Back to Home</h3>
@@ -17,7 +17,8 @@
     <form action="{% url 'debug' %}" method="POST">
       {% csrf_token %}
       <input id="state" name="state" style="width: 400px" value="{{state}}" />
-      <br>horzontal walls / vertical walls / player pieces / available walls per player / active player
+      <br />horzontal walls / vertical walls / player pieces / available walls
+      per player / active player
       <input name="id" value="{{id}}" type="hidden" />
       <input name="player2" value="{{player2}}" type="hidden" />
       <p></p>
