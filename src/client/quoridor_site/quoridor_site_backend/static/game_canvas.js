@@ -131,18 +131,26 @@ function create() {
       case 0: // Player 1
         let p1 = this.add.sprite(coor.x, coor.y - 15, 'p1_idle').play('p1_idle_animation');
         p1.setScale(2);
+        p1.setInteractive();
+        this.input.setDraggable(p1);
         break;
       case 1: // Player 2
         let p2 = this.add.sprite(coor.x, coor.y - 15, 'p2_idle').play('p2_idle_animation');
         p2.setScale(2);
+        p2.setInteractive();
+        this.input.setDraggable(p2);
         break;
       case 2: // Player 3
         let p3 = this.add.sprite(coor.x, coor.y - 15, 'p3_idle').play('p3_idle_animation');
         p3.setScale(2);
+        p3.setInteractive();
+        this.input.setDraggable(p3);
         break;
       case 3: // Player 4
         let p4 = this.add.sprite(coor.x, coor.y - 15, 'p4_idle').play('p4_idle_animation');
         p4.setScale(2);
+        p4.setInteractive();
+        this.input.setDraggable(p4);
     }
   }
 
@@ -186,33 +194,33 @@ function create() {
     this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
   }
 
-  for (let i = 1; i <= 9; i++) {
-    for (let j = 1; j <= 9; j++) {
-      let coor = coor_2_abs(i, j);
-      this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
-    }
-  }
+  // for (let i = 1; i <= 9; i++) {
+  //   for (let j = 1; j <= 9; j++) {
+  //     let coor = coor_2_abs(i, j);
+  //     this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
+  //   }
+  // }
 
 
   //movable target object
-  var target = this.add.sprite(900, 900, 'target').setInteractive();
-  target.setScale(0.5);
+  // var target = this.add.sprite(900, 900, 'target').setInteractive();
+  // target.setScale(0.5);
 
-  //gives green tint when pointer is over target
+  // //gives green tint when pointer is over target
   this.input.topOnly = false;
-  target.on('pointerover', function () {
+  // target.on('pointerover', function () {
 
-    this.setTint(0x00ff00);
-  });
+  //   this.setTint(0x00ff00);
+  // });
 
-  //undoes above
-  target.on('pointerout', function () {
+  // //undoes above
+  // target.on('pointerout', function () {
 
-    this.clearTint();
+  //   this.clearTint();
 
-  });
+  // });
 
-  this.input.setDraggable(target);
+  //this.input.setDraggable(target);
 
   //gives red tint when being dragged
   this.input.on('dragstart', function (pointer, gameObject) {
@@ -239,7 +247,7 @@ function create() {
     let xy = abs_2_coor(gameObject.x - gameObject.width / 4, gameObject.y - gameObject.height / 4);
     let coor = coor_2_abs(xy.x, xy.y);
     gameObject.x = coor.x;
-    gameObject.y = coor.y;
+    gameObject.y = coor.y - 15;
     text.setText(xy.x + "," + xy.y);
 
   });
