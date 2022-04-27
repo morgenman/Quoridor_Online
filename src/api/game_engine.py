@@ -7,30 +7,6 @@ from game_classes import *
 from multipledispatch import dispatch
 import random
 
-# ----Tests--------------------------------------------------------
-
-# this is not a proper unit test. It is just a quick test to see if the tile system is working as expected.
-def test():
-    game1 = game(9, 2)
-    game1.get(5, 3).set_wall_h()
-    game1.get(7, 2).set_wall_v()
-    game1.get(5, 1).val = 1
-    game1.get(5, 9).val = 2
-    game1.draw()
-    print(game1.get(3, 4).get_coor() + ":")
-    print()
-    print("                " + game1.get(3, 4).get_north().get_coor())
-    print(
-        "        "
-        + game1.get(3, 4).get_west().get_coor()
-        + " "
-        + game1.get(3, 4).get_coor()
-        + " "
-        + game1.get(3, 4).get_east().get_coor()
-    )
-    print("                " + game1.get(3, 4).get_south().get_coor())
-    print()
-
 
 # ----Methods------------------------------------------------------
 
@@ -100,31 +76,3 @@ def shorthand_to_game(shorthand):
     # print("It is Player " + temp[4] + "'s turn.")
 
     return gameOut
-
-
-# LEGACY
-@dispatch(str)
-def move_by_player(move):
-    print("MOVE sent:", move)
-    return move_by_player(move, "/ / e1 e9 / 10 10 / 1")
-
-
-# LEGACY
-@dispatch(str, str)
-def move_by_player(move, shorthand):
-    print("MOVE sent:", move)
-    game = shorthand_to_game(shorthand)
-    assert len(move) == 4  # move should be four char
-    assert move[0] == "p"  # move should start with p prefix indicating player
-    assert int(move[1]) in range(1, 5)  # player number should be 1,2,3
-    assert ord(move[2]) in range(
-        ord("a"), ord("a") + game.size
-    )  # x coordinate should be a->(a+board size)
-    assert int(move[3]) in range(1, game.size)  # y coordinate should be 1->board size
-    players = [game.get_player(i) for i in range(1, game.get_num_players() + 1)]
-    for i in range(len(players)):
-        assert players[i] != None  # all players should exist
-
-    print("distance between p1 & p2: ", players[0].distance(players[1]))
-    players[int(move[1]) - 1].move(move[2:4])
-    return game

@@ -78,6 +78,11 @@ function create() {
   let center = { x: config.width / 2, y: config.height / 2 + 6 }
   let tile_size = config.width / 12.45;
 
+  this.data.set('coordinates', "x,y");
+  let coor = coor_2_abs(0, 10);
+  var text = this.add.text(coor.x, coor.y, '', { font: '30px IBM Plex Mono', fill: '#00ff00' });
+  text.setText(this.data.get('coordinates'));
+
   // Players
   var p1_idle_config = {
     key: 'p1_idle_animation',
@@ -181,7 +186,7 @@ function create() {
     this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
   }
 
-  
+
 
   //movable target object
   var target = this.add.sprite(900, 900, 'target').setInteractive();
@@ -216,6 +221,7 @@ function create() {
     gameObject.x = dragX;
     gameObject.y = dragY;
 
+
   });
 
   //undoes tint when drag ends
@@ -223,12 +229,25 @@ function create() {
 
     gameObject.clearTint();
 
+    let xy = abs_2_coor(gameObject.x, gameObject.y);
+    let coor = coor_2_abs(xy.x, xy.y);
+    gameObject.x = coor.x;
+    gameObject.y = coor.y;
+    text.setText(xy.x + "," + xy.y);
+
   });
 
   function coor_2_abs(x, y) {
     return {
       x: center.x + (x - 5) * tile_size,
       y: center.y + (-1 * (y - 5) * tile_size)
+    }
+  }
+
+  function abs_2_coor(x, y) {
+    return {
+      x: Math.floor((x - center.x) / tile_size) + 6,
+      y: Math.floor((-1 * (y - center.y)) / tile_size) + 6
     }
   }
 
