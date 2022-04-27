@@ -186,6 +186,12 @@ function create() {
     this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
   }
 
+  for (let i = 1; i <= 9; i++) {
+    for (let j = 1; j <= 9; j++) {
+      let coor = coor_2_abs(i, j);
+      this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.5);
+    }
+  }
 
 
   //movable target object
@@ -220,7 +226,8 @@ function create() {
 
     gameObject.x = dragX;
     gameObject.y = dragY;
-
+    let coor = abs_2_coor(dragX - gameObject.width / 4, dragY - gameObject.height / 4);
+    text.setText(coor.x + "," + coor.y);
 
   });
 
@@ -229,7 +236,7 @@ function create() {
 
     gameObject.clearTint();
 
-    let xy = abs_2_coor(gameObject.x, gameObject.y);
+    let xy = abs_2_coor(gameObject.x - gameObject.width / 4, gameObject.y - gameObject.height / 4);
     let coor = coor_2_abs(xy.x, xy.y);
     gameObject.x = coor.x;
     gameObject.y = coor.y;
@@ -247,7 +254,7 @@ function create() {
   function abs_2_coor(x, y) {
     return {
       x: Math.floor((x - center.x) / tile_size) + 6,
-      y: Math.floor((-1 * (y - center.y)) / tile_size) + 6
+      y: Math.floor((-1 * (y - center.y)) / tile_size) + 5
     }
   }
 
