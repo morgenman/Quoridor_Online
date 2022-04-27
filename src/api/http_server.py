@@ -119,15 +119,6 @@ myServer = HTTPServer((hostName, hostPort), MyServer)
 
 print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 
-
-# Test Cases
-# print("Testing Engine conversion from shorthand to array...")
-# game_engine.full_game_to_array("1. e2 e8 2. e3 e7 3. e4 e6 4. e3h g6v")
-print("d4e7f4 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3")
-print(shorthand_to_game("d4e7f4 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3"))
-# game_engine.move_by_player("p1e3")
-# game_engine.move_by_player("p1e2")
-
 try:
     myServer.serve_forever()
 except KeyboardInterrupt:
