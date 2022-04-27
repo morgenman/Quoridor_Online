@@ -1,5 +1,38 @@
+from asyncio.windows_events import NULL
 import math
+import maiadb as db
+import numpy
 from multipledispatch import dispatch
+
+
+# numpy data types (for converting games to binary)
+gamedt = NULL
+tiledt = numpy.dtype(
+    [
+        ("x", numpy.int32),
+        ("y", numpy.int32),
+        ("player", numpy.int32),
+        ("game", gamedt),
+        ("w_north", numpy.bool),
+        ("w_east", numpy.bool),
+        ("w_south", numpy.bool),
+        ("w_west", numpy.bool),
+    ]
+)
+# may have to change id
+gamedt = numpy.dtype(
+    [
+        ("id", numpy.string),
+        ("size", numpy.int32),
+        ("num_players", numpy.int32),
+        # hope this one works
+        ("board", numpy.array(dtype=numpy.array(dtype=tiledt))),
+        ("walls", numpy.array()),
+        ("turn", numpy.int32),
+    ]
+)
+
+playerdt = numpy.dtype([('id' = numpy.string)])
 
 # ----Data Structures----------------------------------------------
 
@@ -341,3 +374,29 @@ class active_games:
                 self.games[x] = game
                 return True
         return False
+
+    # name = db, use env veriables DB_USER, DB_PASSWORD
+    # env variables:
+
+    # DB_HOST=db
+    # DB_USER=api
+    # B_PASSWORD=password
+    # DB_NAME=quoridor_db
+    # DB_PORT=3306
+
+    # convert to binary
+    # store in db // update db when nessecary
+    # pull from db on boot-up // make db if not already there
+    #
+    #
+    #
+    # def convert_to_binary(self):
+    #
+    #
+    # def mariadb_connect(db_name)
+    #
+    #
+    #
+    # def insert_file(file_name, db_name, table_name):
+    #
+    # def rebuild(db_name, table_name)
