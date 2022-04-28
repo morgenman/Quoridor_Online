@@ -22,7 +22,7 @@ services:
     depends_on:
       - mysql
     working_dir: /app
-    command: bash -c "pip3 install multipledispatch mariadb numpy && ./rerun.sh python -u http_server.py"
+    command: bash -c "pip3 install multipledispatch mysql-connector-python && ./rerun.sh python -u http_server.py"
     #command: tail -F /dev/null
     restart: unless-stopped
     #build: ./dockerfiles/engine
