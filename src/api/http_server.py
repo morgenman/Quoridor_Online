@@ -17,11 +17,6 @@ db = mysql.connector.connect(
     #user = os.getenv('DB_USER'),
     #password = os.getenv('DB_PASSWORD'),
     port = os.getenv('DB_PORT'),
-    #DB_HOST=db
-    #DB_USER=api
-    #DB_PASSWORD=password
-    #DB_NAME=quoridor_db
-    #DB_PORT=3306
 )
 #creates database if not already exists
 #db.cursor().execute("GRANT ALL PRIVILEGES ON *.* TO 'api'@'%' IDENTIFIED BY 'password'")
@@ -35,20 +30,25 @@ db = mysql.connector.connect(
     #password = os.getenv('DB_PASSWORD'),
     database = 'active_games',
     port = os.getenv('DB_PORT'),
-    #DB_HOST=db
-    #DB_USER=api
-    #DB_PASSWORD=password
-    #DB_NAME=quoridor_db
-    #DB_PORT=3306
 )
 
 db_cursor = db.cursor()
+db_cursor.execute("CREATE TABLE IF NOT EXISTS games (id VARCHAR(50) PRIMARY KEY, str_rep VARCHAR(128))")
 
-db_cursor.execute("GRANT ALL PRIVILEGES ON *.* TO 'api'@'%'")
-db_cursor.execute("CREATE TABLE games (str_rep VARCHAR(128))")
+#adding all games in db to active_games
+db_cursor.execute("SELECT id FROM games ORDER BY id")
+results = db_cursor.fetchall()
 
-for x in db_cursor:
-    print(x)
+for x in results:
+    sql = "SELECT str_rep FROM games WHERE id = %s"
+    y = x.replace("(", "")
+    z = y.replace(")", "")
+    val = (z)
+    db_cursor.execute(sql, val)
+    rep = db_cursor.fetchall()
+    rep2 = rep.replace("(", "")
+    true_rep = rep2.replace(")", "")
+    games.add(shorthand_to_game(true_rep))
 
 # MyServer hosts the game engine
 # Manual routing is in the match functions (match is switch statement for Python)
@@ -90,6 +90,13 @@ class MyServer(BaseHTTPRequestHandler):
                             player(post_body["player3"]),
                             player(post_body["player4"]),
                         )
+                    
+                    #adding new game to sql database
+                    sql = "INSERT INTO games (id, str_rep) VALUES (%s, %s)"
+                    val = (new_game.id, new_game.__repr__)
+                    db_cursor.execute(sql, val)
+                    db.commit()
+                    
                     games.add(new_game)
                     self.send_response(200)
                     self.send_header("Content-type", "text/html; charset=utf-8")
@@ -100,11 +107,17 @@ class MyServer(BaseHTTPRequestHandler):
                             "utf-8",
                         )
                     )
+                    
 
                 case "/move":
                     curr_game = games.get(post_body["id"])
                     try:
                         curr_game.move(post_body["move"])
+                        #updating curr_game in database
+                        sql = 'UPDATE games SET str_rep= %s WHERE id = %s'
+                        val = (curr_game.__repr__(), post_body["id"])
+                        db_cursor.execute(sql, val)
+                        db.commit()
                         self.send_response(200)
                     except AssertionError:
                         self.send_response(400)
@@ -122,6 +135,7 @@ class MyServer(BaseHTTPRequestHandler):
                         curr_game = games.get(post_body["id"])
                         print("Sending game " + post_body["id"])
                         print("Game State: " + curr_game.__repr__())
+
                         self.send_response(200)
                     except AssertionError:
                         self.send_response(400)
