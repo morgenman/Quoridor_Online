@@ -202,31 +202,43 @@ function create() {
         this.input.setDraggable(p4);
     }
   }
+  var banned_walls = [];
 
+  let temp_h_wall = [];
+  let temp_v_wall = [];
   var h_walls = (String(temp[0]).trim()).match(/.{2}/g);
   for (var wall in h_walls) {
     var strng = h_walls[wall].split("");
     x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
     y = strng[1]; // y position
+    temp_h_wall.push({ x: x, y: parseInt(y) });
+    temp_h_wall.push({ x: x + 1, y: parseInt(y) });
+    temp_h_wall.push({ x: x - 1, y: parseInt(y) });
+    temp_v_wall.push({ x: x, y: parseInt(y) });
     console.log("making h wall: " + x + "; y: " + y);
     let coor = coor_2_abs(x, y);
     let h_wall_1 = this.add.sprite(coor.x, coor.y - 40, 'h_wall');
     //h_wall_1.setScale(1.2);
   }
+
   var v_walls = (String(temp[1]).trim()).match(/.{2}/g);
   console.log(h_walls + ";" + v_walls);
-  var x = 0;
-  var y = 0;
   for (var wall in v_walls) {
     var strng = v_walls[wall].split("");
     x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
     y = strng[1]; // y position
+    temp_v_wall.push({ x: x, y: parseInt(y) });
+    temp_v_wall.push({ x: x, y: parseInt(y) + 1 });
+    temp_v_wall.push({ x: x, y: parseInt(y) - 1 });
+    temp_h_wall.push({ x: x, y: parseInt(y) });
     let coor = coor_2_abs(x, y);
 
     console.log("making v_wall from '", wall, "' at " + x + "," + y);
     let v_wall_1 = this.add.sprite(coor.x + 40, coor.y, 'v_wall');
     //v_wall_1.setScale(1.2);
   }
+  banned_walls.push(temp_h_wall);
+  banned_walls.push(temp_v_wall);
 
 
   //This handles the potential moves
@@ -251,17 +263,21 @@ function create() {
   //   }
   // }
 
+  console.log(banned_walls);
 
 
   for (let i = 1; i <= 8; i++) {
     for (let j = 1; j <= 8; j++) {
       let coor = coor_2_abs(i, j);
-      let sprite = this.add.h_wall_sprite(coor.x, coor.y, 'h_wall');
-      //this.input.enableDebug(sprite);
+      if (!banned_walls[0].filter(function (e) { return (e.x === i) && (e.y === j); }).length > 0) {
+        var sprite = this.add.h_wall_sprite(coor.x, coor.y, 'h_wall');
+        //this.input.enableDebug(sprite);
+      }
       coor = coor_2_abs(j, i);
-      sprite = this.add.h_wall_sprite(coor.x, coor.y, 'v_wall');
-      //this.input.enableDebug(sprite, 0x0000FF);
-
+      if (!banned_walls[1].filter(function (e) { return (e.x === j) && (e.y === i); }).length > 0) {
+        var sprite = this.add.h_wall_sprite(coor.x, coor.y, 'v_wall');
+        //this.input.enableDebug(sprite, 0x0000FF);
+      }
     }
 
   }
@@ -272,33 +288,11 @@ function create() {
 
 
 
-  // for (let i = 2; i <= 9; i++) {
-  //   for (let j = 1; j <= 9; j++) {
-  //     let coor = coor_2_abs(i, j);
 
-  //     this.add.rectangle(coor.x - tile_size / 2, coor.y, tile_size / 4, tile_size - 2, 0x000000 + 0x100000 * i + 0x001000 * j, 0.4);
-  //   }
-  // }
 
-  //movable target object
-  // var target = this.add.sprite(900, 900, 'target').setInteractive();
-  // target.setScale(0.5);
-
-  // //gives green tint when pointer is over target
   this.input.topOnly = false;
-  // target.on('pointerover', function () {
 
-  //   this.setTint(0x00ff00);
-  // });
 
-  // //undoes above
-  // target.on('pointerout', function () {
-
-  //   this.clearTint();
-
-  // });
-
-  //this.input.setDraggable(target);
 
   //gives red tint when being dragged
   this.input.on('dragstart', function (pointer, gameObject) {
