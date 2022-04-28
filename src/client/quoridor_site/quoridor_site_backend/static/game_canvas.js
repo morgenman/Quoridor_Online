@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-
+var interactive = true;
 
 class h_wall_sprite extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, name) {
@@ -15,12 +15,12 @@ class h_wall_sprite extends Phaser.GameObjects.Sprite {
     }
     this.visible = false;
     this.on('pointerover', function (pointer) {
-      this.visible = true;
+      if (interactive) this.visible = true;
     });
     this.on('pointerout', function (pointer) {
-      this.visible = false;
+      if (interactive) this.visible = false;
     });
-    //this.input.topOnly = false;
+    this.input.topOnly = true;
     this.input.alwaysEnabled = true;
     this.setAlpha(0.5);
 
@@ -265,7 +265,6 @@ function create() {
 
   console.log(banned_walls);
 
-
   for (let i = 1; i <= 8; i++) {
     for (let j = 1; j <= 8; j++) {
       let coor = coor_2_abs(i, j);
@@ -296,7 +295,7 @@ function create() {
 
   //gives red tint when being dragged
   this.input.on('dragstart', function (pointer, gameObject) {
-
+    interactive = false;
     gameObject.setTint(0xff0000);
 
   });
@@ -313,7 +312,7 @@ function create() {
 
   //undoes tint when drag ends
   this.input.on('dragend', function (pointer, gameObject) {
-
+    interactive = true;
     gameObject.clearTint();
 
     let xy = abs_2_coor(gameObject.x - gameObject.width / 4, gameObject.y - gameObject.height / 4);
