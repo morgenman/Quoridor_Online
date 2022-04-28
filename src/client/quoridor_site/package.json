@@ -20,16 +20,10 @@
     "webpack-dev-server": "^2.11.0"
   },
   "dependencies": {
+    "node-fetch": "^3.2.4",
     "phaser": "^3.55.2",
     "phaser3-project-template": "^1.0.9",
     "phaser3-rex-plugins": "^1.1.68",
     "yarn": "^1.22.18"
-  },
-  "plugins": {
-      "scene": [{
-          "key": "rexBoard",
-          "plugin": "rexboardplugin",
-          "mapping": "rexBoard"
-      }]
-}
+  }
 }

@@ -56,7 +56,10 @@ services:
     #command: tail -F /dev/null
     # ./migrate.sh &&
     command: bash -c "./migrate.sh && python manage.py runserver --verbosity 2 0.0.0.0:8000"
-
+    environment:
+      - API-URL=localhost
+      - API-PORT=9696
+      # Note: env variables not implemented yet in canvas
     container_name: web
     ports:
       - "8000:8000"

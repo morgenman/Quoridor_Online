@@ -1,5 +1,103 @@
 import Phaser from 'phaser';
 var interactive = true;
+var global_board = "";
+let delay = 5000;
+var p1;
+var p2;
+var p3;
+var p4;
+
+let timerId = setTimeout(function request() {
+  var board = document.getElementById('state');
+  console.log('Requesting...');
+  try {
+    board = refreshBoard();
+  }
+  catch (error) {
+    console.log(error);
+    // increase the interval to the next run
+    delay *= 2;
+  }
+  Promise.resolve(board).then(function (board) {
+    document.getElementById('state').value = board;
+  });
+
+  timerId = setTimeout(request, delay);
+
+}, delay);
+
+
+function update() {
+  if (global_board != document.getElementById('state').value) {
+    global_board = document.getElementById('state').value;
+    console.log("Changed global board");
+    let scaleX = this.cameras.main.width / 2048
+    let scaleY = this.cameras.main.height / 2048
+    let scale = Math.max(scaleX, scaleY)
+    // Drawing starts from center, not top left of object, so this should be useful
+    let center = { x: config.width / 2, y: config.height / 2 + 6 }
+    let tile_size = config.width / 12.45;
+    var x = 0;
+    var y = 0;
+    var shorthand = document.getElementById('state').value;
+    console.log('Shorthand: ' + shorthand.text);
+    var temp = shorthand.split("/");
+    var play_piece = (String(temp[2]).trim()).split(" ");
+    for (var i = 0; i < play_piece.length; i++) {
+      var end = play_piece[i].split("");
+      x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+      y = end[1]; // y position   
+      console.log("player: " + i + "; x: " + x + "; y: " + y);
+      let coor = coor_2_abs(x, y);
+      switch (i) {
+        case 0: // Player 1
+          p1.destroy();
+          p1 = this.add.sprite(coor.x, coor.y - 15, 'p1_idle').play('p1_idle_animation');
+          //p1.setScale(2);
+          p1.setInteractive({ pixelPerfect: true });
+          this.input.setDraggable(p1);
+          break;
+        case 1: // Player 2
+          p2.destroy();
+          p2 = this.add.sprite(coor.x, coor.y - 15, 'p2_idle').play('p2_idle_animation');
+          //p2.setScale(2);
+          p2.setInteractive({ pixelPerfect: true });
+          this.input.setDraggable(p2);
+          break;
+        case 2: // Player 3
+          p3.destroy();
+          p3 = this.add.sprite(coor.x, coor.y - 15, 'p3_idle').play('p3_idle_animation');
+          //p3.setScale(2);
+          p3.setInteractive({ pixelPerfect: true });
+          this.input.setDraggable(p3);
+          break;
+        case 3: // Player 4
+          p4.destroy();
+          p4 = this.add.sprite(coor.x, coor.y - 15, 'p4_idle').play('p4_idle_animation');
+          //p4.setScale(2);
+          p4.setInteractive({ pixelPerfect: true });
+          this.input.setDraggable(p4);
+      }
+    }
+    function coor_2_abs(x, y) {
+      return {
+        x: center.x + (x - 5) * tile_size,
+        y: center.y + (-1 * (y - 5) * tile_size)
+      }
+    }
+
+    function abs_2_coor(x, y) {
+      return {
+        x: Math.floor((x - center.x) / tile_size) + 6,
+        y: Math.floor((-1 * (y - center.y)) / tile_size) + 5
+      }
+    }
+  }
+
+}
+
+
+
 
 class h_wall_sprite extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, name) {
@@ -20,14 +118,19 @@ class h_wall_sprite extends Phaser.GameObjects.Sprite {
     this.on('pointerout', function (pointer) {
       if (interactive) this.visible = false;
     });
+
     this.input.topOnly = true;
     this.input.alwaysEnabled = true;
     this.setAlpha(0.5);
 
-
+    this.on('pointerdown', function (pointer) {
+      if (interactive) {
+        this.setInteractive(false);
+        this.visible = true;
+        this.setAlpha(1);
+      }
+    });
   }
-
-
 }
 
 class CustomPlugin extends Phaser.Plugins.BasePlugin {
@@ -90,7 +193,8 @@ var config = {
   },
   scene: {
     preload: preload,
-    create: create
+    create: create,
+    update: update
   }
 
 };
@@ -100,7 +204,6 @@ var game = new Phaser.Game(config);
 
 
 function preload() {
-  console.log('Current directory: ' + process.cwd());
   this.load.image('bg', '/static/Board.png');
   this.load.spritesheet('p1_idle', '/static/P1_Idle.png', { frameWidth: 128, frameHeight: 128, endFrame: 1 });
   this.load.spritesheet('p2_idle', '/static/P2_Idle.png', { frameWidth: 128, frameHeight: 128, endFrame: 1 });
@@ -167,7 +270,7 @@ function create() {
   var x = 0;
   var y = 0;
   var shorthand = document.getElementById('state').value;
-  console.log('Shorthand: ' + state);
+  console.log('Shorthand: ' + shorthand.text);
   var temp = shorthand.split("/");
   var play_piece = (String(temp[2]).trim()).split(" ");
   for (var i = 0; i < play_piece.length; i++) {
@@ -178,30 +281,32 @@ function create() {
     let coor = coor_2_abs(x, y);
     switch (i) {
       case 0: // Player 1
-        let p1 = this.add.sprite(coor.x, coor.y - 15, 'p1_idle').play('p1_idle_animation');
+        p1 = this.add.sprite(coor.x, coor.y - 15, 'p1_idle').play('p1_idle_animation');
         //p1.setScale(2);
         p1.setInteractive({ pixelPerfect: true });
         this.input.setDraggable(p1);
         break;
       case 1: // Player 2
-        let p2 = this.add.sprite(coor.x, coor.y - 15, 'p2_idle').play('p2_idle_animation');
+        p2 = this.add.sprite(coor.x, coor.y - 15, 'p2_idle').play('p2_idle_animation');
         //p2.setScale(2);
         p2.setInteractive({ pixelPerfect: true });
         this.input.setDraggable(p2);
         break;
       case 2: // Player 3
-        let p3 = this.add.sprite(coor.x, coor.y - 15, 'p3_idle').play('p3_idle_animation');
+        p3 = this.add.sprite(coor.x, coor.y - 15, 'p3_idle').play('p3_idle_animation');
         //p3.setScale(2);
         p3.setInteractive({ pixelPerfect: true });
         this.input.setDraggable(p3);
         break;
       case 3: // Player 4
-        let p4 = this.add.sprite(coor.x, coor.y - 15, 'p4_idle').play('p4_idle_animation');
+        p4 = this.add.sprite(coor.x, coor.y - 15, 'p4_idle').play('p4_idle_animation');
         //p4.setScale(2);
         p4.setInteractive({ pixelPerfect: true });
         this.input.setDraggable(p4);
     }
   }
+
+
   var banned_walls = [];
 
   let temp_h_wall = [];
@@ -340,4 +445,14 @@ function create() {
 
 
 
+
+}
+async function refreshBoard() {
+  var id = document.getElementById('game-id').value;
+  const response = await fetch("http://localhost:9696/get", {
+    method: "POST",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ "id": id })
+  })
+  return response.text();
 }

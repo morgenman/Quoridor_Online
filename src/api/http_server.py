@@ -51,7 +51,14 @@ for x in results:
 # MyServer hosts the game engine
 # Manual routing is in the match functions (match is switch statement for Python)
 class MyServer(BaseHTTPRequestHandler):
-
+    def do_OPTIONS(self):
+        self.send_response(200, "ok")
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
+        
     # Client wants data from the game engine
     def do_GET(self):
         self.send_response(418)
@@ -139,6 +146,11 @@ class MyServer(BaseHTTPRequestHandler):
                         self.send_response(400)
                         print("Invalid Game ID")
                     self.send_header("Content-type", "text/html; charset=utf-8")
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                    self.send_header(
+                        "Access-Control-Allow-Headers", "Content-Type, Authorization"
+                    )
                     self.end_headers()
                     self.wfile.write(
                         bytes(
