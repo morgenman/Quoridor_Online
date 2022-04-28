@@ -1,5 +1,49 @@
 import Phaser from 'phaser';
-//import BoardPlugin from 'rexboardplugin.min.js';
+var interactive = true;
+
+class h_wall_sprite extends Phaser.GameObjects.Sprite {
+  constructor(scene, x, y, name) {
+    if (name === 'h_wall') {
+      super(scene, x, y - 40, name);
+      this.setInteractive(new Phaser.Geom.Rectangle(84, 28, 60, 16), Phaser.Geom.Rectangle.Contains);
+
+    }
+    else if (name === 'v_wall') {
+      super(scene, x + 40, y, name);
+      //this.setScale(1.2);
+      this.setInteractive(new Phaser.Geom.Rectangle(28, 84, 16, 60), Phaser.Geom.Rectangle.Contains);
+    }
+    this.visible = false;
+    this.on('pointerover', function (pointer) {
+      if (interactive) this.visible = true;
+    });
+    this.on('pointerout', function (pointer) {
+      if (interactive) this.visible = false;
+    });
+    this.input.topOnly = true;
+    this.input.alwaysEnabled = true;
+    this.setAlpha(0.5);
+
+
+  }
+
+
+}
+
+class CustomPlugin extends Phaser.Plugins.BasePlugin {
+
+  constructor(pluginManager) {
+    super(pluginManager);
+    //  Register our new Game Object type
+    pluginManager.registerGameObject('h_wall_sprite', this.createHWall, this);
+  }
+
+  createHWall(x, y, name) {
+    return this.displayList.add(new h_wall_sprite(this.scene, x, y, name));
+  }
+
+}
+
 
 var config = {
   type: Phaser.AUTO,
@@ -39,6 +83,11 @@ var config = {
   },
   autoRound: false,
   antialias: false,
+  plugins: {
+    global: [
+      { key: 'CustomPlugin', plugin: CustomPlugin, start: true }
+    ]
+  },
   scene: {
     preload: preload,
     create: create
@@ -53,12 +102,12 @@ var game = new Phaser.Game(config);
 function preload() {
   console.log('Current directory: ' + process.cwd());
   this.load.image('bg', '/static/Board.png');
-  this.load.spritesheet('p1_idle', '/static/P1_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
-  this.load.spritesheet('p2_idle', '/static/P2_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
-  this.load.spritesheet('p3_idle', '/static/P3_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
-  this.load.spritesheet('p4_idle', '/static/P4_Idle.png', { frameWidth: 64, frameHeight: 64, endFrame: 1 });
-  this.load.spritesheet('h_wall', '/static/h_wall.png', { frameWidth: 192, frameHeight: 64, endFrame: 0 });
-  this.load.spritesheet('v_wall', '/static/v_wall.png', { frameWidth: 64, frameHeight: 192, endFrame: 0 });
+  this.load.spritesheet('p1_idle', '/static/P1_Idle.png', { frameWidth: 128, frameHeight: 128, endFrame: 1 });
+  this.load.spritesheet('p2_idle', '/static/P2_Idle.png', { frameWidth: 128, frameHeight: 128, endFrame: 1 });
+  this.load.spritesheet('p3_idle', '/static/P3_Idle.png', { frameWidth: 128, frameHeight: 128, endFrame: 1 });
+  this.load.spritesheet('p4_idle', '/static/P4_Idle.png', { frameWidth: 128, frameHeight: 128, endFrame: 1 });
+  this.load.spritesheet('h_wall', '/static/h_wall.png', { frameWidth: 230, frameHeight: 77, endFrame: 0 });
+  this.load.spritesheet('v_wall', '/static/v_wall.png', { frameWidth: 77, frameHeight: 230, endFrame: 0 });
 
   this.load.image('target', '/static/Target.png');
 
@@ -130,54 +179,66 @@ function create() {
     switch (i) {
       case 0: // Player 1
         let p1 = this.add.sprite(coor.x, coor.y - 15, 'p1_idle').play('p1_idle_animation');
-        p1.setScale(2);
-        p1.setInteractive();
+        //p1.setScale(2);
+        p1.setInteractive({ pixelPerfect: true });
         this.input.setDraggable(p1);
         break;
       case 1: // Player 2
         let p2 = this.add.sprite(coor.x, coor.y - 15, 'p2_idle').play('p2_idle_animation');
-        p2.setScale(2);
-        p2.setInteractive();
+        //p2.setScale(2);
+        p2.setInteractive({ pixelPerfect: true });
         this.input.setDraggable(p2);
         break;
       case 2: // Player 3
         let p3 = this.add.sprite(coor.x, coor.y - 15, 'p3_idle').play('p3_idle_animation');
-        p3.setScale(2);
-        p3.setInteractive();
+        //p3.setScale(2);
+        p3.setInteractive({ pixelPerfect: true });
         this.input.setDraggable(p3);
         break;
       case 3: // Player 4
         let p4 = this.add.sprite(coor.x, coor.y - 15, 'p4_idle').play('p4_idle_animation');
-        p4.setScale(2);
-        p4.setInteractive();
+        //p4.setScale(2);
+        p4.setInteractive({ pixelPerfect: true });
         this.input.setDraggable(p4);
     }
   }
+  var banned_walls = [];
 
+  let temp_h_wall = [];
+  let temp_v_wall = [];
   var h_walls = (String(temp[0]).trim()).match(/.{2}/g);
   for (var wall in h_walls) {
     var strng = h_walls[wall].split("");
     x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
     y = strng[1]; // y position
+    temp_h_wall.push({ x: x, y: parseInt(y) });
+    temp_h_wall.push({ x: x + 1, y: parseInt(y) });
+    temp_h_wall.push({ x: x - 1, y: parseInt(y) });
+    temp_v_wall.push({ x: x, y: parseInt(y) });
     console.log("making h wall: " + x + "; y: " + y);
     let coor = coor_2_abs(x, y);
     let h_wall_1 = this.add.sprite(coor.x, coor.y - 40, 'h_wall');
-    h_wall_1.setScale(1.2);
+    //h_wall_1.setScale(1.2);
   }
+
   var v_walls = (String(temp[1]).trim()).match(/.{2}/g);
   console.log(h_walls + ";" + v_walls);
-  var x = 0;
-  var y = 0;
   for (var wall in v_walls) {
     var strng = v_walls[wall].split("");
     x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
     y = strng[1]; // y position
+    temp_v_wall.push({ x: x, y: parseInt(y) });
+    temp_v_wall.push({ x: x, y: parseInt(y) + 1 });
+    temp_v_wall.push({ x: x, y: parseInt(y) - 1 });
+    temp_h_wall.push({ x: x, y: parseInt(y) });
     let coor = coor_2_abs(x, y);
 
     console.log("making v_wall from '", wall, "' at " + x + "," + y);
     let v_wall_1 = this.add.sprite(coor.x + 40, coor.y, 'v_wall');
-    v_wall_1.setScale(1.2);
+    //v_wall_1.setScale(1.2);
   }
+  banned_walls.push(temp_h_wall);
+  banned_walls.push(temp_v_wall);
 
 
   //This handles the potential moves
@@ -194,6 +255,7 @@ function create() {
     this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
   }
 
+  // Rainbow Grid
   // for (let i = 1; i <= 9; i++) {
   //   for (let j = 1; j <= 9; j++) {
   //     let coor = coor_2_abs(i, j);
@@ -201,30 +263,39 @@ function create() {
   //   }
   // }
 
+  console.log(banned_walls);
 
-  //movable target object
-  // var target = this.add.sprite(900, 900, 'target').setInteractive();
-  // target.setScale(0.5);
+  for (let i = 1; i <= 8; i++) {
+    for (let j = 1; j <= 8; j++) {
+      let coor = coor_2_abs(i, j);
+      if (!banned_walls[0].filter(function (e) { return (e.x === i) && (e.y === j); }).length > 0) {
+        var sprite = this.add.h_wall_sprite(coor.x, coor.y, 'h_wall');
+        //this.input.enableDebug(sprite);
+      }
+      coor = coor_2_abs(j, i);
+      if (!banned_walls[1].filter(function (e) { return (e.x === j) && (e.y === i); }).length > 0) {
+        var sprite = this.add.h_wall_sprite(coor.x, coor.y, 'v_wall');
+        //this.input.enableDebug(sprite, 0x0000FF);
+      }
+    }
 
-  // //gives green tint when pointer is over target
+  }
+
+
+
+
+
+
+
+
+
   this.input.topOnly = false;
-  // target.on('pointerover', function () {
 
-  //   this.setTint(0x00ff00);
-  // });
 
-  // //undoes above
-  // target.on('pointerout', function () {
-
-  //   this.clearTint();
-
-  // });
-
-  //this.input.setDraggable(target);
 
   //gives red tint when being dragged
   this.input.on('dragstart', function (pointer, gameObject) {
-
+    interactive = false;
     gameObject.setTint(0xff0000);
 
   });
@@ -241,7 +312,7 @@ function create() {
 
   //undoes tint when drag ends
   this.input.on('dragend', function (pointer, gameObject) {
-
+    interactive = true;
     gameObject.clearTint();
 
     let xy = abs_2_coor(gameObject.x - gameObject.width / 4, gameObject.y - gameObject.height / 4);

@@ -36,19 +36,17 @@ db_cursor = db.cursor()
 db_cursor.execute("CREATE TABLE IF NOT EXISTS games (id VARCHAR(50) PRIMARY KEY, str_rep VARCHAR(128))")
 
 #adding all games in db to active_games
-db_cursor.execute("SELECT id FROM games ORDER BY id")
+db_cursor.execute("SELECT games.id FROM games ORDER BY id")
 results = db_cursor.fetchall()
 
 for x in results:
-    sql = "SELECT str_rep FROM games WHERE id = %s"
-    y = x.replace("(", "")
-    z = y.replace(")", "")
-    val = (z)
+    sql = "SELECT games.str_rep FROM games WHERE id = %s"
+    val = (x)
     db_cursor.execute(sql, val)
     rep = db_cursor.fetchall()
-    rep2 = rep.replace("(", "")
-    true_rep = rep2.replace(")", "")
-    games.add(shorthand_to_game(true_rep))
+    rep_str = str(rep).replace("[('", "")
+    rep_str = str(rep_str).replace("[('", "',)]")
+    games.add(shorthand_to_game(rep_str))
 
 # MyServer hosts the game engine
 # Manual routing is in the match functions (match is switch statement for Python)
@@ -93,7 +91,7 @@ class MyServer(BaseHTTPRequestHandler):
                     
                     #adding new game to sql database
                     sql = "INSERT INTO games (id, str_rep) VALUES (%s, %s)"
-                    val = (new_game.id, new_game.__repr__)
+                    val = (new_game.id, new_game.__repr__())
                     db_cursor.execute(sql, val)
                     db.commit()
                     
