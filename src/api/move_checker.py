@@ -1,5 +1,5 @@
 # Class that checks if the players move and if the player wall were placed correctly or not.
-from game_classes import game, tile
+from game_classes import tile
 from multipledispatch import dispatch
 import random
 
@@ -24,17 +24,29 @@ class move_checker:
         if distance_of_tile > 1:
             # Distance is to far
             return False
-            # Checks if another player is on the tile or not.
+
+        # Checks if another player is on the tile or not.
         if target(player) == 0:
             return False
-        # Checks if a wall is in the way but still need more work.
-        if (
-            # target(tile.get_north())
-            # or target(tile.get_east())
-            # or target(tile.get_south())
-            # or target(tile.get_west())
-        ):
-            return False
+
+        # Checks if a wall is in the way.
+        #if target is north of player
+        if target.x == player.x and target.y == player.y + 1:
+            return player.get_north()
+        #if target is east of player
+        elif target.x == player.x + 1 and target.y == player.y:
+            return player.get_east()
+        #if target is south of player
+        elif target.x == player.x and target.y == player.y - 1:
+            return player.get_south()
+        #if target is west of player
+        elif target.x == player.x - 1 and target.y == player.y:
+            return player.get_west()
+
+        # target(tile.get_north())
+        # or target(tile.get_east())
+        # or target(tile.get_south())
+        # or target(tile.get_west())
 
         # if (insert weird special case like the going around other player)
         return True

@@ -106,6 +106,7 @@ class MyServer(BaseHTTPRequestHandler):
                     self.send_response(200)
                     self.send_header("Content-type", "text/html; charset=utf-8")
                     self.end_headers()
+                    print("Exception " + repr(e) + ": " + str(e))
                     self.wfile.write(
                         bytes(
                             games.get(post_body["id"]).__repr__(),

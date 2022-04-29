@@ -1,5 +1,6 @@
 import math
 from multipledispatch import dispatch
+import copy
 
 
 # ----Data Structures----------------------------------------------
@@ -48,6 +49,24 @@ class tile:
         if self.w_west:
             return None
         return self.game.get(self.x - 1, self.y)
+
+
+    # return True if there is a wall
+    # return northern edge
+    def if_north(self):
+        return self.w_north
+
+    # return eastern edge
+    def if_east(self):
+        return self.w_east
+
+    # return southern edge
+    def if_south(self):
+        return self.w_south
+
+    # return western edge
+    def if_west(self):
+        return self.w_west
 
     # return player character if player is present
     def get_player(self):
@@ -144,8 +163,84 @@ class game:
         assert (
             destination.get_player() == 0
         ), f"{destination.get_player()} is already occupied"
+        
+        #if self.valid_player_move(player, destination, player.distance(destination)):
+            #print("destination")
+            #print(destination)
         player.set_player(0)
         destination.set_player(int(move[1]))
+
+    # function that checks if the player move is valid or not
+
+    def valid_player_move(self, player, target, distance):
+        # Jumping over player case
+        if distance == 2:
+            test = copy.deepcopy(player)
+            location = copy.deepcopy(target)
+            # if target is north of player
+            if target.x == test.x and target.y == test.y + 2:
+                location.y = location.y - 1
+                print(location.get_player())
+                print(test.y)
+                if location.get_player() != 0:
+                    print("Jump")
+                    return True
+            # if target is east of player
+            elif target.x == test.x + 2 and target.y == test.y:
+                location.y == location.x - 1
+                if location.get_player() != 0:
+                    print("Jump")
+                    return True
+            # if target is south of player
+            elif target.x == test.x and target.y == test.y - 2:
+                location.y == location.y + 1
+                if location.get_player() != 0:
+                    print("Jump")
+                    return True
+            # if target is west of player
+            elif target.x == player.x - 2 and target.y == player.y:
+                location.y == location.x + 1
+                if location.get_player() != 0:
+                    print("Jump")
+                    return True
+
+        # Checks if the tile you want to travel to is too far or not.
+        if distance > 1:
+            # Distance is too far
+            print(target.x)
+            print(target.y)
+            print("Invalid move")
+            return False
+
+        # Checks if another player is on the tile or not.
+        if target.get_player() == 0:
+            print(target.x)
+            print(target.y)
+            print("Valid move")
+            return True
+
+        # Checks if a wall is in the way.
+        # if target is north of player
+        if target.x == player.x and target.y == player.y + 1:
+            return player.if_north()
+        # if target is east of player
+        elif target.x == player.x + 1 and target.y == player.y:
+            return player.if_east()
+        # if target is south of player
+        elif target.x == player.x and target.y == player.y - 1:
+            return player.if_south()
+        # if target is west of player
+        elif target.x == player.x - 1 and target.y == player.y:
+            return player.if_west()
+
+        # target(tile.get_north())
+        # or target(tile.get_east())
+        # or target(tile.get_south())
+        # or target(tile.get_west())
+
+        # if (insert weird special case like the going around other player)
+        return True
+
 
     def set_walls(self, walls):
         self.walls = walls
