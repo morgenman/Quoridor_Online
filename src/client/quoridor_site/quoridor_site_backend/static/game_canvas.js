@@ -443,9 +443,6 @@ function create() {
   }
 
 
-
-
-
 }
 async function refreshBoard() {
   var id = document.getElementById('game-id').value;
