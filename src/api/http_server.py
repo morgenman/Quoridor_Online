@@ -46,7 +46,12 @@ for x in results:
     rep = db_cursor.fetchall()
     rep_str = str(rep).replace("[('", "")
     rep_str = str(rep_str).replace("[('", "',)]")
-    games.add(shorthand_to_game(rep_str))
+    new_game = shorthand_to_game(rep_str)
+    id = str(x).replace("('", "")
+    id = id.replace("',)", "")
+    new_game.id = id
+    games.add(new_game)
+    
 
 # MyServer hosts the game engine
 # Manual routing is in the match functions (match is switch statement for Python)
