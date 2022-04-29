@@ -36,6 +36,11 @@ db_cursor = db.cursor()
 db_cursor.execute(
     "CREATE TABLE IF NOT EXISTS games (id VARCHAR(50) PRIMARY KEY, str_rep VARCHAR(128))"
 )
+db_cursor.execute(
+    "ALTER TABLE games ADD COLUMN IF NOT EXISTS (player1 VARCHAR(150), player2 VARCHAR(150), player3 VARCHAR(150), player4 VARCHAR(150))"
+    )
+db_cursor.execute("DELETE FROM games WHERE player1 IS NULL")
+db.commit()
 
 # adding all games in db to active_games
 db_cursor.execute("SELECT games.id FROM games ORDER BY id")
@@ -49,9 +54,45 @@ for x in results:
     rep_str = str(rep).replace("[('", "")
     rep_str = str(rep_str).replace("[('", "',)]")
     new_game = shorthand_to_game(rep_str)
+    #sets game id
     id = str(x).replace("('", "")
     id = id.replace("',)", "")
     new_game.id = id
+    #sets players
+    #player1
+    sql = "SELECT games.player1 FROM games WHERE id = %s"
+    val = x
+    db_cursor.execute(sql, val)
+    player1 = str(db_cursor.fetchall())
+    player1 = player1.replace('[(', '')
+    player1 = player1.replace(',)]', '')
+    #player2
+    sql = "SELECT games.player2 FROM games WHERE id = %s"
+    val = x
+    db_cursor.execute(sql, val)
+    player2 = str(db_cursor.fetchall())
+    player2 = player2.replace('[(', '')
+    player2 = player2.replace(',)]', '')
+    #player3
+    sql = "SELECT games.player3 FROM games WHERE id = %s"
+    val = x
+    db_cursor.execute(sql, val)
+    player3 = str(db_cursor.fetchall())
+    player3 = player3.replace('[(', '')
+    player3 = player3.replace(',)]', '')
+    #player4
+    sql = "SELECT games.player4 FROM games WHERE id = %s"
+    val = x
+    db_cursor.execute(sql, val)
+    player4 = str(db_cursor.fetchall())
+    player4 = player4.replace('[(', '')
+    player4 = player4.replace(',)]', '')
+    #sets in new_game
+    if (player3 == "None"):
+        new_game.set_two_player(player(player1), player(player2))
+    else: 
+        new_game.set_four_player(player(player1), player(player2), player(player3), player(player4))
+    #adds game
     games.add(new_game)
     
 
@@ -104,8 +145,13 @@ class MyServer(BaseHTTPRequestHandler):
                         )
 
                     # adding new game to sql database
-                    sql = "INSERT INTO games (id, str_rep) VALUES (%s, %s)"
-                    val = (new_game.id, new_game.__repr__())
+                    if(new_game.get_num_players() == 2):
+                        sql = "INSERT INTO games (id, player1, player2, str_rep) VALUES (%s, %s, %s, %s)"
+                        val = (new_game.id, new_game.players[0].get_id(),new_game.players[1].get_id(),new_game.__repr__())
+                    elif(new_game.get_num_players() == 4):
+                        sql = "INSERT INTO games (id, player1, player2, player3, player4, str_rep) VALUES (%s, %s, %s, %s, %s, %s)"
+                        val = (new_game.id.get_id(), new_game.players[0].get_id(),new_game.players[1].get_id(), new_game.players[2].get_id(), new_game.players[3].get_id(), new_game.__repr__())
+                        
                     success = False
                     while success == False:
                         try:
@@ -137,6 +183,7 @@ class MyServer(BaseHTTPRequestHandler):
                         val = (curr_game.__repr__(), post_body["id"])
                         db_cursor.execute(sql, val)
                         db.commit()
+
                         self.send_response(200)
                     except AssertionError:
                         self.send_response(400)
