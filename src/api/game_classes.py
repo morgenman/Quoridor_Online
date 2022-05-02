@@ -153,56 +153,37 @@ class game:
     def move(self, move):
         player = self.get_player(int(move[1]))
         destination = self.get(move[2:])
-        assert destination != None, f"Destination cannot be empty"
-        if player.distance(destination) > 1:
-            print("Invalid move")
-        assert (
-            player.distance(destination) == 1
-        ), f"{player.distance(destination)} is too many tiles away to be a valid move"
-        assert (
-            destination.get_player() == 0
-        ), f"{destination.get_player()} is already occupied"
-
-        # if self.valid_player_move(player, destination, player.distance(destination)):
-        # print("destination")
-        # print(destination)
-        player.set_player(0)
-        destination.set_player(int(move[1]))
-
-    # checks who's turn it is to who's sending the move request
-    # def check_player(self, playerid):
-    #    curr_player = self.players[self.get_turn() - 1]
-    #    assert curr_player.get_id() == playerid, f"it is not {playerid}'s turn"
+        if self.valid_player_move(player, destination):
+            player.set_player(0)
+            destination.set_player(int(move[1]))
 
     # function that checks if the player move is valid or not
-    def valid_player_move(self, player, target, distance):
+    def valid_player_move(self, player, target):
+        distance = player.distance(target)
+        user = copy.deepcopy(player)
         # Jumping over player case
         if distance == 2:
-            test = copy.deepcopy(player)
-            location = copy.deepcopy(target)
             # if target is north of player
-            if target.x == test.x and target.y == test.y + 2:
-                location.y = location.y - 1
-                print(location.get_player())
-                print(test.y)
+            if target.x == user.x and target.y == user.y + 2:
+                location = copy.deepcopy(player.get_north())
                 if location.get_player() != 0:
                     print("Jump")
                     return True
             # if target is east of player
-            elif target.x == test.x + 2 and target.y == test.y:
-                location.y == location.x - 1
+            elif target.x == user.x + 2 and target.y == user.y:
+                location = copy.deepcopy(player.get_east())
                 if location.get_player() != 0:
                     print("Jump")
                     return True
             # if target is south of player
-            elif target.x == test.x and target.y == test.y - 2:
-                location.y == location.y + 1
+            elif target.x == user.x and target.y == user.y - 2:
+                location = copy.deepcopy(player.get_south())
                 if location.get_player() != 0:
                     print("Jump")
                     return True
             # if target is west of player
-            elif target.x == player.x - 2 and target.y == player.y:
-                location.y == location.x + 1
+            elif target.x == user.x - 2 and target.y == user.y:
+                location = copy.deepcopy(player.get_west())
                 if location.get_player() != 0:
                     print("Jump")
                     return True
@@ -210,36 +191,27 @@ class game:
         # Checks if the tile you want to travel to is too far or not.
         if distance > 1:
             # Distance is too far
-            print(target.x)
-            print(target.y)
             print("Invalid move")
             return False
 
         # Checks if another player is on the tile or not.
-        if target.get_player() == 0:
-            print(target.x)
-            print(target.y)
-            print("Valid move")
-            return True
+        if target.get_player() != 0:
+            print("Inalid move")
+            return False
 
         # Checks if a wall is in the way.
         # if target is north of player
-        if target.x == player.x and target.y == player.y + 1:
+        if target.x == user.x and target.y == user.y + 1:
             return player.if_north()
         # if target is east of player
-        elif target.x == player.x + 1 and target.y == player.y:
+        elif target.x == user.x + 1 and target.y == user.y:
             return player.if_east()
         # if target is south of player
-        elif target.x == player.x and target.y == player.y - 1:
+        elif target.x == user.x and target.y == user.y - 1:
             return player.if_south()
         # if target is west of player
-        elif target.x == player.x - 1 and target.y == player.y:
+        elif target.x == user.x - 1 and target.y == user.y:
             return player.if_west()
-
-        # target(tile.get_north())
-        # or target(tile.get_east())
-        # or target(tile.get_south())
-        # or target(tile.get_west())
 
         # if (insert weird special case like the going around other player)
         return True
