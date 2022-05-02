@@ -51,8 +51,8 @@ for x in results:
     val = x
     db_cursor.execute(sql, val)
     rep = db_cursor.fetchall()
-    rep_str = str(rep).replace("[('", "")
-    rep_str = str(rep_str).replace("[('", "',)]")
+    rep_str = str(rep).replace("[('", " ")
+    rep_str = str(rep_str).replace("',)]", " ")
     new_game = shorthand_to_game(rep_str)
     #sets game id
     id = str(x).replace("('", "")
@@ -177,6 +177,7 @@ class MyServer(BaseHTTPRequestHandler):
                 case "/move":
                     curr_game = games.get(post_body["id"])
                     try:
+                        #curr_game.check_player(post_body["playerid"])
                         curr_game.move(post_body["move"])
                         # updating curr_game in database
                         sql = "UPDATE games SET str_rep= %s WHERE id = %s"

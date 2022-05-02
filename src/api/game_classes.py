@@ -50,7 +50,6 @@ class tile:
             return None
         return self.game.get(self.x - 1, self.y)
 
-
     # return True if there is a wall
     # return northern edge
     def if_north(self):
@@ -163,15 +162,19 @@ class game:
         assert (
             destination.get_player() == 0
         ), f"{destination.get_player()} is already occupied"
-        
-        #if self.valid_player_move(player, destination, player.distance(destination)):
-            #print("destination")
-            #print(destination)
+
+        # if self.valid_player_move(player, destination, player.distance(destination)):
+        # print("destination")
+        # print(destination)
         player.set_player(0)
         destination.set_player(int(move[1]))
 
-    # function that checks if the player move is valid or not
+    # checks who's turn it is to who's sending the move request
+    # def check_player(self, playerid):
+    #    curr_player = self.players[self.get_turn() - 1]
+    #    assert curr_player.get_id() == playerid, f"it is not {playerid}'s turn"
 
+    # function that checks if the player move is valid or not
     def valid_player_move(self, player, target, distance):
         # Jumping over player case
         if distance == 2:
@@ -240,7 +243,6 @@ class game:
 
         # if (insert weird special case like the going around other player)
         return True
-
 
     def set_walls(self, walls):
         self.walls = walls
