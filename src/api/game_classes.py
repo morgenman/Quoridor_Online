@@ -170,9 +170,12 @@ class game:
         destination.set_player(int(move[1]))
 
     # checks who's turn it is to who's sending the move request
-    # def check_player(self, playerid):
-    #    curr_player = self.players[self.get_turn() - 1]
-    #    assert curr_player.get_id() == playerid, f"it is not {playerid}'s turn"
+    def check_player(self, playerid, move):
+        curr_player = self.players[self.get_turn() - 1]
+        assert curr_player.get_id() == playerid, f"it is not {playerid}'s turn"
+        assert self.get_turn() == int(
+            move[1]
+        ), f"{playerid} cannot move {curr_player.get_id()}'s piece"
 
     # function that checks if the player move is valid or not
     def valid_player_move(self, player, target, distance):

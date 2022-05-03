@@ -110,9 +110,8 @@ def make_move(request):
     # retrieve data from POST request
     tile = request.POST["tile"].lower()
     player = request.POST["player"]
-    # curr_player = Profile.objects.filter(user=request.user).first()
-    # playerid = curr_player.__str__()
-    # print(playerid)
+    curr_player = Profile.objects.filter(user=request.user).first()
+    playerid = curr_player.__str__()
     id = request.POST["id"]
     current_state = request.POST["state"]
     # send move request to api
@@ -121,7 +120,7 @@ def make_move(request):
     headers = requests.structures.CaseInsensitiveDict()
     headers["Content-Type"] = "application/json"
     headers["charset"] = "UTF-8"
-    data = {"move": move, "id": id}  # , "playerid": playerid}
+    data = {"move": move, "id": id, "playerid": playerid}
     x = requests.post(url, headers=headers, data=json.dumps(data))
     # if legal move
     if x.status_code == 200:
