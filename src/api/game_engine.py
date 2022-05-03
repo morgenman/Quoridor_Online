@@ -35,7 +35,7 @@ def full_game_to_array(shorthand):
 # d4f4e7 / a2a8 / e4 e6 a4 h6 / 4 3 5 3 / 3
 # horzontal walls / vertical walls / player pieces / walls remaining by player / which player's turn?
 def shorthand_to_game(shorthand):
-    # print(shorthand)
+    # print("Shorthand: " + str(shorthand) + "end")
     temp = shorthand.split("/")
     temp[0] = temp[0].strip()
     temp[1] = temp[1].strip()
