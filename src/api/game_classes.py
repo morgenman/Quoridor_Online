@@ -218,10 +218,10 @@ class game:
 
     # checks who's turn it is to who's sending the move request
     def check_player(self, playerid, move):
-        curr_player = self.players[self.get_turn() - 1]
+        curr_player = self.players[int(self.get_turn()) - 1]
         assert curr_player.get_id() == playerid, f"it is not {playerid}'s turn"
-        assert self.get_turn() == int(
-            move[1]
+        assert (
+            self.get_turn() == move[1]
         ), f"{playerid} cannot move {curr_player.get_id()}'s piece"
 
     def set_walls(self, walls):

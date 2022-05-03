@@ -64,29 +64,35 @@ for x in results:
     val = x
     db_cursor.execute(sql, val)
     player1 = str(db_cursor.fetchall())
-    player1 = player1.replace('[(', '')
-    player1 = player1.replace(',)]', '')
+    player1 = player1.replace("[('", "")
+    player1 = player1.replace("',)]", "")
+    print(player1)
     #player2
     sql = "SELECT games.player2 FROM games WHERE id = %s"
     val = x
     db_cursor.execute(sql, val)
     player2 = str(db_cursor.fetchall())
-    player2 = player2.replace('[(', '')
-    player2 = player2.replace(',)]', '')
+    player2 = player2.replace("[('", "")
+    player2 = player2.replace("',)]", "")
     #player3
     sql = "SELECT games.player3 FROM games WHERE id = %s"
     val = x
     db_cursor.execute(sql, val)
     player3 = str(db_cursor.fetchall())
-    player3 = player3.replace('[(', '')
-    player3 = player3.replace(',)]', '')
+    player3 = player3.replace("[(", "")
+    player3 = player3.replace(",)]", "")
+    player3 = player3.replace("'", "")
+    player3 = player3.replace("'", "")
+    print(player3)
     #player4
     sql = "SELECT games.player4 FROM games WHERE id = %s"
     val = x
     db_cursor.execute(sql, val)
     player4 = str(db_cursor.fetchall())
-    player4 = player4.replace('[(', '')
-    player4 = player4.replace(',)]', '')
+    player4 = player4.replace("[(", "")
+    player4 = player4.replace(",)]", "")
+    player4 = player4.replace("'", "")
+    player4 = player4.replace("'", "")
     #sets in new_game
     if (player3 == "None"):
         new_game.set_two_player(player(player1), player(player2))
