@@ -196,15 +196,16 @@ class game:
         # Checks if the tile you want to travel to is too far or not.
         if distance > 1:
             # Distance is too far
-            print("Invalid move")
+            print("It's too far! Invalid move")
             return False
 
         # Checks if another player is on the tile or not.
         if target.get_player() != 0:
-            print("Inalid move")
+            print("There's another player there! Invalid move")
             return False
 
         # Checks if a wall is in the way.
+        print("Wall check")
         return self.check_walls(player, target)
 
         # if (insert weird special case like the going around other player)
