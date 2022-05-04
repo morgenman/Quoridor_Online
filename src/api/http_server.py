@@ -66,7 +66,6 @@ for x in results:
     player1 = str(db_cursor.fetchall())
     player1 = player1.replace("[('", "")
     player1 = player1.replace("',)]", "")
-    print(player1)
     #player2
     sql = "SELECT games.player2 FROM games WHERE id = %s"
     val = x
@@ -83,7 +82,6 @@ for x in results:
     player3 = player3.replace(",)]", "")
     player3 = player3.replace("'", "")
     player3 = player3.replace("'", "")
-    print(player3)
     #player4
     sql = "SELECT games.player4 FROM games WHERE id = %s"
     val = x

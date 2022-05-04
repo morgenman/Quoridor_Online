@@ -72,14 +72,13 @@ def showName(request):
 def new_game(request):
 
     # create a new game model (with default state)
-    game = Game()
-    game.save()
     # adds both players (player1 being the current user)
-    game.players.add(Profile.objects.filter(user=request.user).first())
+    p1 = Profile.objects.filter(user=request.user).first()
     p2name = request.POST["player2"]
     p2user = User.objects.filter(username=p2name).first()
     p2 = Profile.objects.filter(user=p2user).first()
-    game.players.add(p2)
+    game = Game(player1=p1, player2=p2)
+    game.save()
     # send request to api to make a new game
     url = "http://api:8080/new"
     headers = requests.structures.CaseInsensitiveDict()
@@ -87,8 +86,8 @@ def new_game(request):
     headers["charset"] = "UTF-8"
     # sets data to game's info (id, player1, player2)
     id = str(game.id)
-    player1 = str(game.players.all()[0])
-    player2 = str(game.players.all()[1])
+    player1 = str(game.player1)
+    player2 = game.player2.__str__()
     data = {
         "id": id,
         "player1": player1,
