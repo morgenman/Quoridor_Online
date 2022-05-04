@@ -153,6 +153,9 @@ class game:
     def move(self, move):
         player = self.get_player(int(move[1]))
         destination = self.get(move[2:])
+        # print("player is " + str(player))
+        # print("destination is " + str(destination))
+        # print("valid move is " + str(self.valid_player_move(player, destination)))
         if self.valid_player_move(player, destination):
             player.set_player(0)
             destination.set_player(int(move[1]))
@@ -166,9 +169,11 @@ class game:
             # if target is north of player
             if target.x == user.x and target.y == user.y + 2:
                 location = copy.deepcopy(player.get_north())
-                if location.get_player() != 0:
-                    print("Jump")
-                    return True
+                if self.check_walls(player, location):
+                    if self.check_walls(location, target):
+                        if location.get_player() != 0:
+                            print("Jump")
+                            return True
             # if target is east of player
             elif target.x == user.x + 2 and target.y == user.y:
                 location = copy.deepcopy(player.get_east())
@@ -200,28 +205,34 @@ class game:
             return False
 
         # Checks if a wall is in the way.
-        # if target is north of player
-        if target.x == user.x and target.y == user.y + 1:
-            return player.if_north()
-        # if target is east of player
-        elif target.x == user.x + 1 and target.y == user.y:
-            return player.if_east()
-        # if target is south of player
-        elif target.x == user.x and target.y == user.y - 1:
-            return player.if_south()
-        # if target is west of player
-        elif target.x == user.x - 1 and target.y == user.y:
-            return player.if_west()
+        return self.check_walls(player, target)
 
         # if (insert weird special case like the going around other player)
+        # return True
+
+    def check_walls(self, player, target):
+        user = copy.deepcopy(player)
+        if target.x == user.x and target.y == user.y + 1:
+            return not player.if_north()
+        # if target is east of player
+        elif target.x == user.x + 1 and target.y == user.y:
+            return not player.if_east()
+        # if target is south of player
+        elif target.x == user.x and target.y == user.y - 1:
+            return not player.if_south()
+        # if target is west of player
+        elif target.x == user.x - 1 and target.y == user.y:
+            return not player.if_west()
         return True
 
     # checks who's turn it is to who's sending the move request
     def check_player(self, playerid, move):
         curr_player = self.players[int(self.get_turn()) - 1]
+        print(curr_player.get_id() + " and " + playerid)
         assert curr_player.get_id() == playerid, f"it is not {playerid}'s turn"
-        assert (
-            self.get_turn() == move[1]
+        print(str(self.get_turn()) + " and " + move[1])
+        assert int(self.get_turn()) == int(
+            move[1]
         ), f"{playerid} cannot move {curr_player.get_id()}'s piece"
 
     def set_walls(self, walls):
