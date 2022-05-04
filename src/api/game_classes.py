@@ -54,15 +54,12 @@ class tile:
     # return northern edge
     def if_north(self):
         return self.w_north
-
     # return eastern edge
     def if_east(self):
         return self.w_east
-
     # return southern edge
     def if_south(self):
         return self.w_south
-
     # return western edge
     def if_west(self):
         return self.w_west
@@ -203,20 +200,24 @@ class game:
             return False
 
         # Checks if a wall is in the way.
-        # if target is north of player
-        if target.x == user.x and target.y == user.y + 1:
-            return not player.if_north()
-        # if target is east of player
-        elif target.x == user.x + 1 and target.y == user.y:
-            return not player.if_east()
-        # if target is south of player
-        elif target.x == user.x and target.y == user.y - 1:
-            return not player.if_south()
-        # if target is west of player
-        elif target.x == user.x - 1 and target.y == user.y:
-            return not player.if_west()
+        #self.check_walls(player, target)
 
         # if (insert weird special case like the going around other player)
+        return True
+
+    def check_walls(self, player, target):
+        user = copy.deepcopy(player)
+        if target.x == user.x and target.y == user.y + 1:
+            return player.if_north()
+        # if target is east of player
+        elif target.x == user.x + 1 and target.y == user.y:
+            return player.if_east()
+        # if target is south of player
+        elif target.x == user.x and target.y == user.y - 1:
+            return player.if_south()
+        # if target is west of player
+        elif target.x == user.x - 1 and target.y == user.y:
+            return player.if_west()
         return True
 
     # checks who's turn it is to who's sending the move request
