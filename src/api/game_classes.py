@@ -419,3 +419,36 @@ class active_games:
                 self.games[x] = game
                 return True
         return False
+
+
+
+class queue:
+    def __init__(self):
+        self.two_queue = []
+        self.four_queue = []
+    
+    def add_two(self, player):
+        self.two_queue.append(player)
+
+    def add_four(self, player):
+        self.four_queue.append(player)
+
+    def is_ready(self, size):
+        assert(size == 2 or size == 4), "Invalid size"
+        if size == 2:
+            if len(self.two_queue) >= 1:
+                return True
+            else:
+                return False
+        else:
+            if len(self.four_queue) >= 3:
+                return True
+            else:
+                return False
+
+    def get_2p(self):
+        return self.two_queue.pop(0)
+
+    def get_4p(self):
+        temp = [self.four_queue.pop(0), self.four_queue.pop(0), self.four_queue.pop(0)]
+        return temp

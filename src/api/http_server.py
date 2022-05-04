@@ -22,6 +22,7 @@ db = mysql.connector.connect(
 # db.cursor().execute("GRANT ALL PRIVILEGES ON *.* TO 'api'@'%' IDENTIFIED BY 'password'")
 db.cursor().execute("CREATE DATABASE IF NOT EXISTS active_games")
 
+
 db = mysql.connector.connect(
     user="root",
     password='Bxu<!yGaY"tj={J7b3U[T],qm9Ms>^ZL',
