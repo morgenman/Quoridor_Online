@@ -9,6 +9,7 @@ import os
 hostName = "0.0.0.0"
 hostPort = 8080
 games = active_games()
+queue = queue()
 
 db = mysql.connector.connect(
     user="root",
@@ -21,6 +22,7 @@ db = mysql.connector.connect(
 # creates database if not already exists
 # db.cursor().execute("GRANT ALL PRIVILEGES ON *.* TO 'api'@'%' IDENTIFIED BY 'password'")
 db.cursor().execute("CREATE DATABASE IF NOT EXISTS active_games")
+
 
 db = mysql.connector.connect(
     user="root",
@@ -38,7 +40,7 @@ db_cursor.execute(
 )
 db_cursor.execute(
     "ALTER TABLE games ADD COLUMN IF NOT EXISTS (player1 VARCHAR(150), player2 VARCHAR(150), player3 VARCHAR(150), player4 VARCHAR(150))"
-    )
+)
 db_cursor.execute("DELETE FROM games WHERE player1 IS NULL")
 db.commit()
 
@@ -54,12 +56,12 @@ for x in results:
     rep_str = str(rep).replace("[('", " ")
     rep_str = str(rep_str).replace("',)]", " ")
     new_game = shorthand_to_game(rep_str)
-    #sets game id
+    # sets game id
     id = str(x).replace("('", "")
     id = id.replace("',)", "")
     new_game.id = id
-    #sets players
-    #player1
+    # sets players
+    # player1
     sql = "SELECT games.player1 FROM games WHERE id = %s"
     val = x
     db_cursor.execute(sql, val)
@@ -73,7 +75,7 @@ for x in results:
     player2 = str(db_cursor.fetchall())
     player2 = player2.replace("[('", "")
     player2 = player2.replace("',)]", "")
-    #player3
+    # player3
     sql = "SELECT games.player3 FROM games WHERE id = %s"
     val = x
     db_cursor.execute(sql, val)
@@ -91,14 +93,16 @@ for x in results:
     player4 = player4.replace(",)]", "")
     player4 = player4.replace("'", "")
     player4 = player4.replace("'", "")
-    #sets in new_game
-    if (player3 == "None"):
+    # sets in new_game
+    if player3 == "None":
         new_game.set_two_player(player(player1), player(player2))
-    else: 
-        new_game.set_four_player(player(player1), player(player2), player(player3), player(player4))
-    #adds game
+    else:
+        new_game.set_four_player(
+            player(player1), player(player2), player(player3), player(player4)
+        )
+    # adds game
     games.add(new_game)
-    
+
 
 # MyServer hosts the game engine
 # Manual routing is in the match functions (match is switch statement for Python)
@@ -149,13 +153,25 @@ class MyServer(BaseHTTPRequestHandler):
                         )
 
                     # adding new game to sql database
-                    if(new_game.get_num_players() == 2):
+                    if new_game.get_num_players() == 2:
                         sql = "INSERT INTO games (id, player1, player2, str_rep) VALUES (%s, %s, %s, %s)"
-                        val = (new_game.id, new_game.players[0].get_id(),new_game.players[1].get_id(),new_game.__repr__())
-                    elif(new_game.get_num_players() == 4):
+                        val = (
+                            new_game.id,
+                            new_game.players[0].get_id(),
+                            new_game.players[1].get_id(),
+                            new_game.__repr__(),
+                        )
+                    elif new_game.get_num_players() == 4:
                         sql = "INSERT INTO games (id, player1, player2, player3, player4, str_rep) VALUES (%s, %s, %s, %s, %s, %s)"
-                        val = (new_game.id.get_id(), new_game.players[0].get_id(),new_game.players[1].get_id(), new_game.players[2].get_id(), new_game.players[3].get_id(), new_game.__repr__())
-                        
+                        val = (
+                            new_game.id.get_id(),
+                            new_game.players[0].get_id(),
+                            new_game.players[1].get_id(),
+                            new_game.players[2].get_id(),
+                            new_game.players[3].get_id(),
+                            new_game.__repr__(),
+                        )
+
                     success = False
                     while success == False:
                         try:
@@ -221,6 +237,45 @@ class MyServer(BaseHTTPRequestHandler):
                     self.wfile.write(
                         bytes(
                             games.get(post_body["id"]).__repr__(),
+                            "utf-8",
+                        )
+                    )
+
+                case "/queue":
+                    player = post_body["player_id"]
+                    if queue.is_ready(post_body["size"], player):
+                        temp_players = queue.get_players(post_body["size"])
+                    else:
+                        temp_players = []
+
+                    self.send_header("Content-type", "text/html; charset=utf-8")
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                    self.send_header(
+                        "Access-Control-Allow-Headers", "Content-Type, Authorization"
+                    )
+                    self.end_headers()
+                    match temp_players.__len__():
+                        case 0:
+                            out = {
+                                "ready": False,
+                            }
+                        case 1:
+                            out = {
+                                "ready": True,
+                                "p1": temp_players[0],
+                            }
+                        case 3:
+                            out = {
+                                "ready": True,
+                                "p1": temp_players[0],
+                                "p2": temp_players[1],
+                                "p3": temp_players[2],
+                            }
+
+                    self.wfile.write(
+                        bytes(
+                            json.dumps(out),
                             "utf-8",
                         )
                     )
