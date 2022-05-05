@@ -36,11 +36,11 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Game(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, max_length=5)
-    player1 = models.OneToOneField(
-        Profile, on_delete=models.CASCADE, null=True, related_name="player1_set"
+    player1 = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="player1_set"
     )
-    player2 = models.OneToOneField(
-        Profile, on_delete=models.CASCADE, null=True, related_name="player2_set"
+    player2 = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="player2_set"
     )
     state = models.CharField(max_length=100, default=" / / e1 e9 / 10 10 / 1")
 

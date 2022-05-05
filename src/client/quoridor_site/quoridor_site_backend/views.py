@@ -86,7 +86,7 @@ def new_game(request):
     headers["charset"] = "UTF-8"
     # sets data to game's info (id, player1, player2)
     id = str(game.id)
-    player1 = str(game.player1)
+    player1 = game.player1.__str__()
     player2 = game.player2.__str__()
     data = {
         "id": id,
