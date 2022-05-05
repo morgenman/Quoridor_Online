@@ -244,8 +244,8 @@ class MyServer(BaseHTTPRequestHandler):
                     )
 
                 case "/queue":
-                    player = post_body["player_id"]
-                    if queue.is_ready(post_body["size"], player):
+                    player_id = post_body["player_id"]
+                    if queue.is_ready(post_body["size"], player_id):
                         temp_players = queue.get_players(post_body["size"])
                     else:
                         temp_players = []
