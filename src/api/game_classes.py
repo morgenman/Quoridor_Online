@@ -164,6 +164,8 @@ class game:
     def valid_player_move(self, player, target):
         distance = player.distance(target)
         user = copy.deepcopy(player)
+        print("distance = " + distance)
+
         # Jumping over player case
         if distance == 2:
             # if target is north of player
@@ -177,39 +179,138 @@ class game:
             # if target is east of player
             elif target.x == user.x + 2 and target.y == user.y:
                 location = copy.deepcopy(player.get_east())
-                if location.get_player() != 0:
-                    print("Jump")
-                    return True
+                if self.check_walls(player, location):
+                    if self.check_walls(location, target):
+                        if location.get_player() != 0:
+                            print("Jump")
+                            return True
             # if target is south of player
             elif target.x == user.x and target.y == user.y - 2:
                 location = copy.deepcopy(player.get_south())
-                if location.get_player() != 0:
-                    print("Jump")
-                    return True
+                if self.check_walls(player, location):
+                    if self.check_walls(location, target):
+                        if location.get_player() != 0:
+                            print("Jump")
+                            return True
             # if target is west of player
             elif target.x == user.x - 2 and target.y == user.y:
                 location = copy.deepcopy(player.get_west())
-                if location.get_player() != 0:
-                    print("Jump")
-                    return True
+                if self.check_walls(player, location):
+                    if self.check_walls(location, target):
+                        if location.get_player() != 0:
+                            print("Jump")
+                            return True
+
+        # Moving diagonal next to another player case
+        if distance != 1:
+            # if target is northeast of player
+            if target.x == user.x + 1 and target.y == user.y + 1:
+                # If the opposing player is to the east
+                if player.get_east().get_player() != 0:
+                    location = copy.deepcopy(player.get_east())
+                    if self.check_walls(player, location):
+                        # Check for the wall behind the opposing player, required for this case
+                        if location.if_east():
+                            if self.check_walls(location, target):
+                                if location.get_player() != 0:
+                                    print("NE Diagonal")
+                                    return True
+                # If the opposing player is to the north
+                else:
+                    location = copy.deepcopy(player.get_north())
+                    if self.check_walls(player, location):
+                        # Check for the wall behind the opposing player, required for this case
+                        if location.if_north():
+                            if self.check_walls(location, target):
+                                if location.get_player() != 0:
+                                    print("NE Diagonal")
+                                    return True
+            # if target is southeast of player
+            elif target.x == user.x + 1 and target.y == user.y - 1:
+                # If the opposing player is to the east
+                if player.get_east().get_player() != 0:
+                    location = copy.deepcopy(player.get_east())
+                    if self.check_walls(player, location):
+                        # Check for the wall behind the opposing player, required for this case
+                        if location.if_east():
+                            if self.check_walls(location, target):
+                                if location.get_player() != 0:
+                                    print("SE Diagonal")
+                                    return True
+                # If the opposing player is to the south
+                else:
+                    location = copy.deepcopy(player.get_south())
+                    if self.check_walls(player, location):
+                        # Check for the wall behind the opposing player, required for this case
+                        if location.if_south():
+                            if self.check_walls(location, target):
+                                if location.get_player() != 0:
+                                    print("SE Diagonal")
+                                    return True
+            # if target is southwest of player
+            elif target.x == user.x - 1 and target.y == user.y - 1:
+                # If the opposing player is to the west
+                if player.get_west().get_player() != 0:
+                    location = copy.deepcopy(player.get_west())
+                    if self.check_walls(player, location):
+                        # Check for the wall behind the opposing player, required for this case
+                        if location.if_west():
+                            if self.check_walls(location, target):
+                                if location.get_player() != 0:
+                                    print("SW Diagonal")
+                                    return True
+                # If the opposing player is to the south
+                else:
+                    location = copy.deepcopy(player.get_south())
+                    if self.check_walls(player, location):
+                        # Check for the wall behind the opposing player, required for this case
+                        if location.if_south():
+                            if self.check_walls(location, target):
+                                if location.get_player() != 0:
+                                    print("SW Diagonal")
+                                    return True
+            # if target is northwest of player
+            elif target.x == user.x - 1 and target.y == user.y + 1:
+                # If the opposing player is to the west
+                if player.get_west().get_player() != 0:
+                    location = copy.deepcopy(player.get_west())
+                    if self.check_walls(player, location):
+                        # Check for the wall behind the opposing player, required for this case
+                        if location.if_west():
+                            if self.check_walls(location, target):
+                                if location.get_player() != 0:
+                                    print("NW Diagonal")
+                                    return True
+                # If the opposing player is to the north
+                else:
+                    location = copy.deepcopy(player.get_north())
+                    if self.check_walls(player, location):
+                        # Check for the wall behind the opposing player, required for this case
+                        if location.if_north():
+                            if self.check_walls(location, target):
+                                if location.get_player() != 0:
+                                    print("NW Diagonal")
+                                    return True
 
         # Checks if the tile you want to travel to is too far or not.
         if distance > 1:
             # Distance is too far
-            print("Invalid move")
+            print("It's too far! Invalid move")
             return False
 
         # Checks if another player is on the tile or not.
         if target.get_player() != 0:
-            print("Inalid move")
+            print("There's another player there! Invalid move")
             return False
 
         # Checks if a wall is in the way.
+        print("Wall check")
         return self.check_walls(player, target)
 
         # if (insert weird special case like the going around other player)
         # return True
 
+    # Checks if there is a wall between any two tiles. Returns False if there is a wall
     def check_walls(self, player, target):
         user = copy.deepcopy(player)
         if target.x == user.x and target.y == user.y + 1:
