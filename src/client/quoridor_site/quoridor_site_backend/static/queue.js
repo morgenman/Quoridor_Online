@@ -29,9 +29,6 @@ let timerId = setTimeout(function request() {
 
             let p2_id = p2_user_id;
             if (p2_id.ready) {
-
-                console.log("WOOOOOOO")
-
                 window.location = './game/' + p2_id.game_id;
             }
             else if (!p2_id.ready) {

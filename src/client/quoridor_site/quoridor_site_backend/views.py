@@ -10,6 +10,7 @@ from .admin import *
 from django.db.models import F
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponseRedirect
 
 
 # import utils.py
@@ -103,9 +104,7 @@ def new_game(request):
         if x.status_code == 200:
             board = utils.state_to_array(x.text)
             state = game.state
-            return render(
-                request, "board.html", {"board": board, "id": id, "state": state}
-            )
+            return HttpResponseRedirect("/game/" + id)
 
     else:
 
