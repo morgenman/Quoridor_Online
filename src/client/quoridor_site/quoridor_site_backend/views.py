@@ -138,11 +138,7 @@ def make_move(request):
         game.state = new_state
         game.save()
         # render new board
-        return render(
-            request,
-            "board.html",
-            {"board": board, "id": id, "state": new_state},
-        )
+        return HttpResponseRedirect("/game/" + game.id)
     # else if illegal move
     elif x.status_code == 400:
         # make board of original state

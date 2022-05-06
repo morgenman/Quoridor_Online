@@ -3,9 +3,14 @@
         {% compress js %}
         <script type="module" src="{% static 'queue.js' %}"></script>
         {% endcompress %}
+        {% compress css %}
+        <link rel="stylesheet" href="{% static 'loading.css' %}" type="text/css" />
+        {% endcompress %}
+
 <form action="{% url 'new_game' %}" name="sbmt" id="sbmt" method="POST">
 
     </br></br>
+    <img src="{% static "loading.gif" %}" id="center-load" alt="My image"/>
     <input id="player-id" name="id" value="{{player_id}}" type="hidden" />
     <input id="csrfmiddlewaretoken" name="csrfmiddlewaretoken" value="{{ csrf_token }}" type="hidden" />
     <input id="game-id" name="game-id" value="" type="hidden" />

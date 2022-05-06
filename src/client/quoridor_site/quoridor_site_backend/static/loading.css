@@ -1,0 +1,14 @@
+body {
+  background-color: #f7f7f7;
+  background: #f7f7f7;
+}
+
+img#center-load {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 300px;
+  margin-top: -150px; /* Half the height */
+  margin-left: -150px;
+}
