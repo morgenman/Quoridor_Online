@@ -492,6 +492,12 @@ class player:
     def set_id(self, id):
         self.id = id
 
+    def __repr__(self):
+        return self.id
+
+    def __len__(self):
+        return 1
+
 
 # Active Games class stores all the currently active games
 class active_games:
@@ -538,6 +544,9 @@ class queue:
         self.two_queue = []
         self.four_queue = []
 
+    def __repr__(self):
+        return str(self.two_queue) + "\n " + str(self.four_queue)
+
     def add_two(self, player):
         if player not in self.two_queue:
             self.two_queue.append(player)
@@ -547,7 +556,7 @@ class queue:
             self.four_queue.append(player)
 
     def is_ready(self, size, player):
-        cutoff = 0
+        cutoff = 0          
         assert size == 2 or size == 4, "Invalid size"
         if size == 2:
             if player in self.two_queue:
@@ -573,11 +582,12 @@ class queue:
     def get_players(self, size):
         assert size == 2 or size == 4, "Invalid size"
         if size == 2:
-            return self.two_queue.pop(0)
+            temp = [self.two_queue.pop(0).id]
+            return temp
         else:
             temp = [
-                self.four_queue.pop(0),
-                self.four_queue.pop(0),
-                self.four_queue.pop(0),
+                self.four_queue.pop(0).id,
+                self.four_queue.pop(0).id,
+                self.four_queue.pop(0).id,
             ]
             return temp

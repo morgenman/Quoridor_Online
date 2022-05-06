@@ -1,4 +1,5 @@
 import re
+from tkinter import E
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import requests, json
@@ -29,6 +30,7 @@ def help(request):
 def second_player(request):
     context = {}
     context["dataset"] = Profile.objects.exclude(user=request.user)
+    context["player_id"] = request.user.id
     return render(request, "second_player.html", context)
 
 
@@ -74,34 +76,40 @@ def new_game(request):
     # create a new game model (with default state)
     # adds both players (player1 being the current user)
     p1 = Profile.objects.filter(user=request.user).first()
-    p2name = request.POST["player2"]
-    p2user = User.objects.filter(username=p2name).first()
-    p2 = Profile.objects.filter(user=p2user).first()
-    game = Game(player1=p1, player2=p2)
-    game.save()
-    # send request to api to make a new game
-    url = "http://api:8080/new"
-    headers = requests.structures.CaseInsensitiveDict()
-    headers["Content-Type"] = "application/json"
-    headers["charset"] = "UTF-8"
-    # sets data to game's info (id, player1, player2)
-    id = str(game.id)
-    player1 = game.player1.__str__()
-    player2 = game.player2.__str__()
-    data = {
-        "id": id,
-        "player1": player1,
-        "player2": player2,
-        "players": 2,
-        "size": 9,
-    }
-    x = requests.post(url, headers=headers, data=json.dumps(data))
+    p2name = request.POST["id"]
+    p2 = Profile.objects.filter(user=p2name).first()
+    if p1 != p2:
+        game = Game(player1=p1, player2=p2)
+        game.save()
+        # send request to api to make a new game
+        url = "http://api:8080/new"
+        headers = requests.structures.CaseInsensitiveDict()
+        headers["Content-Type"] = "application/json"
+        headers["charset"] = "UTF-8"
+        # sets data to game's info (id, player1, player2)
+        id = str(game.id)
+        player1 = game.player1.id
+        player2 = game.player2.id
+        data = {
+            "id": id,
+            "player1": player1,
+            "player2": player2,
+            "players": 2,
+            "size": 9,
+        }
+        x = requests.post(url, headers=headers, data=json.dumps(data))
 
-    # if sent successfullly, render board
-    if x.status_code == 200:
-        board = utils.state_to_array(x.text)
-        state = game.state
-        return render(request, "board.html", {"board": board, "id": id, "state": state})
+        # if sent successfullly, render board
+        if x.status_code == 200:
+            board = utils.state_to_array(x.text)
+            state = game.state
+            return render(
+                request, "board.html", {"board": board, "id": id, "state": state}
+            )
+
+    else:
+
+        return redirect(request.META["HTTP_REFERER"])
 
 
 # make a move in the current game

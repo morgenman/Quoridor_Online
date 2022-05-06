@@ -1,3 +1,4 @@
+from genericpath import exists
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import json
@@ -9,7 +10,8 @@ import os
 hostName = "0.0.0.0"
 hostPort = 8080
 games = active_games()
-queue = queue()
+user_queue = queue()
+removed_from_queue = {}
 
 db = mysql.connector.connect(
     user="root",
@@ -68,7 +70,7 @@ for x in results:
     player1 = str(db_cursor.fetchall())
     player1 = player1.replace("[('", "")
     player1 = player1.replace("',)]", "")
-    #player2
+    # player2
     sql = "SELECT games.player2 FROM games WHERE id = %s"
     val = x
     db_cursor.execute(sql, val)
@@ -84,7 +86,7 @@ for x in results:
     player3 = player3.replace(",)]", "")
     player3 = player3.replace("'", "")
     player3 = player3.replace("'", "")
-    #player4
+    # player4
     sql = "SELECT games.player4 FROM games WHERE id = %s"
     val = x
     db_cursor.execute(sql, val)
@@ -144,12 +146,23 @@ class MyServer(BaseHTTPRequestHandler):
                         new_game.set_two_player(
                             player(post_body["player1"]), player(post_body["player2"])
                         )
+                        removed_from_queue[post_body["player2"]] = post_body["id"]
+
                     elif post_body["players"] == 4:
                         new_game.set_four_player(
                             player(post_body["player1"]),
                             player(post_body["player2"]),
                             player(post_body["player3"]),
                             player(post_body["player4"]),
+                        )
+                        removed_from_queue.append(
+                            {post_body["player1"]: post_body["id"]}
+                        )
+                        removed_from_queue.append(
+                            {post_body["player2"]: post_body["id"]}
+                        )
+                        removed_from_queue.append(
+                            {post_body["player3"]: post_body["id"]}
                         )
 
                     # adding new game to sql database
@@ -241,14 +254,24 @@ class MyServer(BaseHTTPRequestHandler):
                         )
                     )
 
-                case "/queue":
+                # It's a bit confusing, but enqueue is the first queue 'check'.
+                # For the first player, it will simply return 'ready' false and add them to the appropriate queue
+                # If however this is called by the last player, it will return 'ready' and return the other player ids.
+                # All of the other players will be in a state where they are checking '/queue' to see if a game is ready
+                case "/enqueue":
                     player_id = post_body["player_id"]
-                    if queue.is_ready(post_body["size"], player_id):
-                        temp_players = queue.get_players(post_body["size"])
+                    if user_queue.is_ready(post_body["size"], player_id):
+                        temp_players = user_queue.get_players(post_body["size"])
                     else:
+                        if post_body["size"] == 2:
+                            user_queue.add_two(player(player_id))
+                        elif post_body["size"] == 4:
+                            user_queue.add_four(player(player_id))
                         temp_players = []
 
-                    self.send_header("Content-type", "text/html; charset=utf-8")
+                    self.send_response(200)
+
+                    self.send_header("Content-type", "application/json; charset=utf-8")
                     self.send_header("Access-Control-Allow-Origin", "*")
                     self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
                     self.send_header(
@@ -268,11 +291,47 @@ class MyServer(BaseHTTPRequestHandler):
                         case 3:
                             out = {
                                 "ready": True,
-                                "p1": temp_players[0],
-                                "p2": temp_players[1],
-                                "p3": temp_players[2],
+                                "p1": temp_players[0].get_id(),
+                                "p2": temp_players[1].get_id(),
+                                "p3": temp_players[2].get_id(),
                             }
+                    print("enqueue: " + str(out))
+                    self.wfile.write(
+                        bytes(
+                            json.dumps(out),
+                            "utf-8",
+                        )
+                    )
 
+                case "/queue":
+                    print(user_queue.__repr__())
+                    print(removed_from_queue)
+                    print("Queue incoming player_id: " + post_body["player_id"])
+                    player_id = int(post_body["player_id"])
+                    self.send_response(200)
+
+                    self.send_header("Content-type", "application/json; charset=utf-8")
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                    self.send_header(
+                        "Access-Control-Allow-Headers", "Content-Type, Authorization"
+                    )
+                    self.end_headers()
+
+                    if player_id in removed_from_queue.keys():
+
+                        print("Player " + str(player_id) + " removed from queue")
+                        out = {
+                            "ready": True,
+                            "game_id": removed_from_queue.pop(player_id),
+                        }
+                    else:
+
+                        print("hmmm")
+                        out = {
+                            "ready": False,
+                        }
+                    print("queue: " + str(out))
                     self.wfile.write(
                         bytes(
                             json.dumps(out),
