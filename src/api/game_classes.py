@@ -153,18 +153,23 @@ class game:
     def move(self, move):
         player = self.get_player(int(move[1]))
         destination = self.get(move[2:])
-        # print("player is " + str(player))
-        # print("destination is " + str(destination))
+        print("player is " + str(player))
+        print("destination is " + str(destination))
         # print("valid move is " + str(self.valid_player_move(player, destination)))
+
         if self.valid_player_move(player, destination):
+            print("hmm2")
             player.set_player(0)
             destination.set_player(int(move[1]))
+            self.turn += 1
+            if self.turn == self.num_players + 1:
+                self.turn = 1
 
     # function that checks if the player move is valid or not
     def valid_player_move(self, player, target):
         distance = player.distance(target)
         user = copy.deepcopy(player)
-        print("distance = " + distance)
+        print("distance = " + str(distance))
 
         # Jumping over player case
         if distance == 2:
@@ -329,8 +334,8 @@ class game:
     # checks who's turn it is to who's sending the move request
     def check_player(self, playerid, move):
         curr_player = self.players[int(self.get_turn()) - 1]
-        print(curr_player.get_id() + " and " + playerid)
-        assert curr_player.get_id() == playerid, f"it is not {playerid}'s turn"
+        print(str(curr_player.get_id()) + " and " + str(playerid))
+        assert int(curr_player.get_id()) == playerid, f"it is not {playerid}'s turn"
         print(str(self.get_turn()) + " and " + move[1])
         assert int(self.get_turn()) == int(
             move[1]
@@ -556,7 +561,7 @@ class queue:
             self.four_queue.append(player)
 
     def is_ready(self, size, player):
-        cutoff = 0          
+        cutoff = 0
         assert size == 2 or size == 4, "Invalid size"
         if size == 2:
             if player in self.two_queue:

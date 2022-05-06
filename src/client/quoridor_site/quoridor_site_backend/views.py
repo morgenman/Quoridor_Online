@@ -117,7 +117,7 @@ def make_move(request):
     tile = request.POST["tile"].lower()
     player = request.POST["player"]
     curr_player = Profile.objects.filter(user=request.user).first()
-    playerid = curr_player.__str__()
+    playerid = curr_player.id
     id = request.POST["id"]
     current_state = request.POST["state"]
     # send move request to api
@@ -132,17 +132,15 @@ def make_move(request):
     if x.status_code == 200:
         # grab the new state and make new board
         new_state = x.text
-        board = utils.state_to_array(x.text)
         # update state of corresponding game model
         game = Game.objects.filter(id=id).first()
         game.state = new_state
         game.save()
         # render new board
-        return HttpResponseRedirect("/game/" + game.id)
+        return HttpResponseRedirect("/game/" + str(game.id))
     # else if illegal move
     elif x.status_code == 400:
         # make board of original state
-        board = utils.state_to_array(x.text)
         # TODO Put some sort of error message to user here
         # render original board
         # return render(
@@ -150,7 +148,7 @@ def make_move(request):
         #     "board.html",
         #     {"board": board, "id": id, "state": current_state},
         # )
-        return get_game(request, id)
+        return redirect(request.META["HTTP_REFERER"])
 
 
 # adds a win to all profiles and goes back to home page

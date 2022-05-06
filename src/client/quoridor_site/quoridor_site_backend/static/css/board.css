@@ -33,6 +33,7 @@ div#container {
   flex-wrap: wrap-reverse;
   width: fit-content;
   height: 94%;
+  top: 50px;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;

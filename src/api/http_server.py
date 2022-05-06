@@ -210,14 +210,19 @@ class MyServer(BaseHTTPRequestHandler):
                 case "/move":
                     curr_game = games.get(post_body["id"])
                     try:
+                        print("got this far1")
+
                         curr_game.check_player(post_body["playerid"], post_body["move"])
+                        print("got this far")
+
                         curr_game.move(post_body["move"])
+                        print("got this far2")
+
                         # updating curr_game in database
                         sql = "UPDATE games SET str_rep= %s WHERE id = %s"
                         val = (curr_game.__repr__(), post_body["id"])
                         db_cursor.execute(sql, val)
                         db.commit()
-
                         self.send_response(200)
                     except AssertionError:
                         self.send_response(400)
