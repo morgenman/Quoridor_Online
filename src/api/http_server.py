@@ -373,6 +373,12 @@ myServer = HTTPServer((hostName, hostPort), MyServer)
 
 print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 
+test_game = shorthand_to_game("      ")
+if test_game.can_reach_level(test_game.get("e1"), 9):
+    print("e2 can reach 9")
+else:
+    print("e2 cannot reach 9")
+
 try:
     myServer.serve_forever()
 except KeyboardInterrupt:

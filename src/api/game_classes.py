@@ -149,6 +149,7 @@ class game:
         self.players = [None for i in range(players)]
         self.walls = []
         self.turn = 1
+        self.checked = []
 
     def move(self, move):
         player = self.get_player(int(move[1]))
@@ -331,6 +332,46 @@ class game:
             return not player.if_west()
         return True
 
+    def can_reach_level(self, player, level):
+        self.checked = []
+        return self.reached(player, player, level, 0)
+
+    def reached(self, player, checking, level, iterations):
+        if checking == None:
+            print("Node is None")
+            return False
+        if checking.__repr__() in self.checked:
+            return False
+        self.checked.append(checking.__repr__())
+        if int(checking.y) == level:
+            return True
+        if iterations >= 9 * 9:
+            return False
+
+        print(
+            "checking "
+            + checking.__repr__()
+            + "; distance: "
+            + str(player.distance(checking))
+            + "; iterations: "
+            + str(iterations)
+            + "; checked: "
+            + str(self.checked)
+        )
+
+        iterations += 1
+
+        if self.reached(player, checking.get_north(), level, iterations):
+            return True
+        if self.reached(player, checking.get_east(), level, iterations):
+            return True
+        if self.reached(player, checking.get_south(), level, iterations):
+            return True
+        if self.reached(player, checking.get_west(), level, iterations):
+            return True
+        print("Reached the end of " + checking.__repr__())
+        return False
+
     # checks who's turn it is to who's sending the move request
     def check_player(self, playerid, move):
         curr_player = self.players[int(self.get_turn()) - 1]
@@ -385,12 +426,6 @@ class game:
     @dispatch(str)
     def get(self, string):
         assert len(string) == 2, f"{string} is not a valid coordinate (type 1)"
-        assert ord(string[0]) in range(
-            ord("a"), ord("a") + self.size
-        ), f"{string} is not a valid coordinate (type 2)"
-        assert int(string[1]) in range(
-            1, self.size + 1
-        ), f"{string} is not a valid coordinate (type 3)"
         x = ord(string[0]) - ord("a") + 1
         y = int(string[1])
         return self.get(x, y)
@@ -398,6 +433,8 @@ class game:
     # returns the tile at the given coordinates
     @dispatch(int, int)
     def get(self, x, y):  # 3 4
+        if x < 1 or x > 9 or y < 1 or y > 9:
+            return None
         return self.board[self.size - y][x - 1]  # 5 3
 
     # returns the tile of the player

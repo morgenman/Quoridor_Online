@@ -183,6 +183,8 @@ class ProfileListView(generic.ListView):
 def second_player_debug(request):
     context = {}
     context["dataset"] = Profile.objects.exclude(user=request.user)
+    context["player_id"] = request.user.id
+    context["players"] = 2
     context["state"] = "d4f4e7 / a2a8 / e4 e7 a4 h6 / 4 3 5 3 / 3"
     # horzontal walls / vertical walls / player pieces / available walls per player / active player
 
@@ -193,10 +195,11 @@ def second_player_debug(request):
 def debug(request):
     state = request.POST["state"]
     # create a new game model (with default state)
-    game = Game()
+    p1 = Profile.objects.filter(user=request.user).first()
+
+    game = Game(player1=p1, player2=p1)
     game.save()
     # adds both players (player1 being the current user)
-    game.players.add(Profile.objects.filter(user=request.user).first())
     p2name = request.POST["player2"]
     p2user = User.objects.filter(username=p2name).first()
     p2 = Profile.objects.filter(user=p2user).first()
