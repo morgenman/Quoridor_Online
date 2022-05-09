@@ -227,7 +227,12 @@ class MyServer(BaseHTTPRequestHandler):
                     except AssertionError:
                         self.send_response(400)
                         print("Invalid move")
-                    self.send_header("Content-type", "text/html; charset=utf-8")
+                    self.send_header("Content-type", "application/json; charset=utf-8")
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                    self.send_header(
+                        "Access-Control-Allow-Headers", "Content-Type, Authorization"
+                    )
                     self.end_headers()
                     self.wfile.write(
                         bytes(

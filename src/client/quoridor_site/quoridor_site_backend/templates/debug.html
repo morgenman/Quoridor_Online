@@ -19,7 +19,9 @@
       <input id="state" name="state" style="width: 400px" value="{{state}}" />
       <br />horzontal walls / vertical walls / player pieces / available walls
       per player / active player
-      <input name="id" value="{{id}}" type="hidden" />
+      <input id="game-id" name="id" value="{{id}}" type="hidden" />
+      <input id="player-id" name="id" value="{{ user.id }}" type="hidden" />
+
       <input name="player2" value="{{player2}}" type="hidden" />
       <p></p>
       <p><button type="submit">Submit</button></p>

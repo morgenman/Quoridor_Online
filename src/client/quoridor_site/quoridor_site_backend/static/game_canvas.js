@@ -425,7 +425,7 @@ function create() {
         gameObject.x = coor.x;
         gameObject.y = coor.y - 15;
         text.setText(xy.x + "," + xy.y);
-        makeMove(xy.x + xy.y);
+        makeMove(xy.x, xy.y);
 
     });
 
@@ -455,7 +455,17 @@ async function refreshBoard() {
     return response.text();
 }
 
-async function makeMove(move) {
-    move[0] = String.fromCharCode(move.charCodeAt(0) + 48)[0];
+async function makeMove(x, y) {
+    var move = String.fromCharCode((x + 96)) + y;
+    var id = document.getElementById('game-id').value;
+    var player = document.getElementById('player-id').value;
     console.log("making move: " + move);
+    console.log("id: " + id);
+    console.log("player: " + player);
+    const response = await fetch("http://localhost:9696/move", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ "move": move, "id": id, "playerid": player })
+    })
+    console.log(response.text());
 }
