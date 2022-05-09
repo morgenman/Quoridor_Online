@@ -13,15 +13,15 @@
 <div id="container">
 <div id="board"></div>
 <div id="forms">
-<form action="{% url 'make_move' %}" method="POST">
-  <select name="player">
+<!-- <form action="{% url 'make_move' %}" method="POST" >
+  <select name="player"type="hidden">
     <option value="1">Player 1</option>
     <option value="2">Player 2</option>
     <option value="3">Player 3</option>
     <option value="4">Player 4</option>
   </select>
-  </br></br>
-  {% csrf_token %} Make a Move: <input name="tile" pattern="[a-z]{1}[1-9]{1}" minlength="2" maxlength="2" required />
+  </br></br> -->
+  <!-- {% csrf_token %} Make a Move: <input name="tile" pattern="[a-z]{1}[1-9]{1}" minlength="2" maxlength="2" required  type="hidden"/> -->
   <input id="state" name="state" value="{{state}}" />
   <input id="game-id" name="id" value="{{id}}" type="hidden" />
   <input id="player-id" name="pid" value="{{ user.id }}" type="hidden" />
@@ -30,8 +30,8 @@
 
 
 
-  <p></p>
-  <p><button type="submit">Submit</button></p>
+  <!-- <p></p> -->
+  <!-- <p><button type="hidden">Submit</button></p> -->
 </form>
 
 <form action="{% url 'win' %}" method="POST">
