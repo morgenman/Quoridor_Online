@@ -199,12 +199,14 @@ def debug(request):
 
     game = Game(player1=p1, player2=p1)
     game.save()
+    turn = game.get_player_turn(request.user.id)
+
     # adds both players (player1 being the current user)
     p2name = request.POST["player2"]
     p2user = User.objects.filter(username=p2name).first()
     p2 = Profile.objects.filter(user=p2user).first()
 
-    return render(request, "debug.html", {"state": state})
+    return render(request, "debug.html", {"state": state, "turn": turn})
 
 
 def get_game(request, pk):
@@ -227,11 +229,12 @@ def get_game(request, pk):
         game = Game.objects.filter(id=id).first()
         game.state = new_state
         game.save()
+        turn = game.get_player_turn(request.user.id)
         # render new board
         return render(
             request,
             "board.html",
-            {"board": "board", "id": id, "state": new_state},
+            {"board": "board", "id": id, "state": new_state, "turn": turn},
         )
 
     # # else if illegal move

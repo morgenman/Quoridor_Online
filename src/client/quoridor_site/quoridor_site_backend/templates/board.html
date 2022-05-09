@@ -22,9 +22,12 @@
   </select>
   </br></br>
   {% csrf_token %} Make a Move: <input name="tile" pattern="[a-z]{1}[1-9]{1}" minlength="2" maxlength="2" required />
-  <input id="state" name="state" value="{{state}}" type="hidden" />
+  <input id="state" name="state" value="{{state}}" />
   <input id="game-id" name="id" value="{{id}}" type="hidden" />
-  <input id="player-id" name="id" value="{{ user.id }}" type="hidden" />
+  <input id="player-id" name="pid" value="{{ user.id }}" type="hidden" />
+  <input id="player-turn" name="turn" value="{{ turn }}" type="hidden" />
+  <p>You are player {{ turn }}</p>
+
 
 
   <p></p>

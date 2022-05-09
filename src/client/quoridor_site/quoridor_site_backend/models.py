@@ -47,5 +47,13 @@ class Game(models.Model):
     def get_absolute_url(self):
         return reverse("game-detail", args=[str(self.id)])
 
+    def get_player_turn(self, player):
+        if player == self.player1.id:
+            return "1"
+        if player == self.player2.id:
+            return "2"
+        else:
+            return "0"
+
     def __str__(self):
         return str(self.id)
