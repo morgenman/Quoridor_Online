@@ -228,7 +228,7 @@ function create() {
 
     // Drawing starts from center, not top left of object, so this should be useful
     let center = { x: config.width / 2, y: config.height / 2 + 6 }
-    let tile_size = config.width / 12.45; 
+    let tile_size = config.width / 12.45;
 
     this.data.set('coordinates', "x,y");
     let coor = coor_2_abs(0, 10);
@@ -425,6 +425,7 @@ function create() {
         gameObject.x = coor.x;
         gameObject.y = coor.y - 15;
         text.setText(xy.x + "," + xy.y);
+        makeMove(xy.x + xy.y);
 
     });
 
@@ -452,4 +453,9 @@ async function refreshBoard() {
         body: JSON.stringify({ "id": id })
     })
     return response.text();
+}
+
+async function makeMove(move) {
+    move[0] = String.fromCharCode(move.charCodeAt(0) + 48)[0];
+    console.log("making move: " + move);
 }

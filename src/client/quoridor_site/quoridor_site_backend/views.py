@@ -185,7 +185,7 @@ def second_player_debug(request):
     context["dataset"] = Profile.objects.exclude(user=request.user)
     context["player_id"] = request.user.id
     context["players"] = 2
-    context["state"] = "d4f4e7 / a2a8 / e4 e7 a4 h6 / 4 3 5 3 / 3"
+    context["state"] = " a4c4e4g4g6  / h5  / e1 e9 / 10 10 / 1 "
     # horzontal walls / vertical walls / player pieces / available walls per player / active player
 
     return render(request, "second_player_debug.html", context)

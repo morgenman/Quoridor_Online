@@ -373,11 +373,11 @@ myServer = HTTPServer((hostName, hostPort), MyServer)
 
 print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 
-test_game = shorthand_to_game("      ")
-if test_game.can_reach_level(test_game.get("e1"), 9):
-    print("e2 can reach 9")
-else:
-    print("e2 cannot reach 9")
+# test_game = shorthand_to_game(" a4c4e4g4h6  / h5  / e1 e9 / 10 10 / 1 ")
+# if test_game.can_reach_level(test_game.get("e9"), 1):
+#     print("e9 can reach 1")
+# else:
+#     print("e9 cannot reach 1")
 
 try:
     myServer.serve_forever()
