@@ -332,44 +332,124 @@ class game:
             return not player.if_west()
         return True
 
+    def place_wall_h(self, wall):
+        temp_game = copy.deepcopy(self)
+        wally = ord(wall[0]) - ord("a")
+        wallx = 9 - int(wall[1])
+        temp_game.board[wallx][wally].set_wall_h()
+        if temp_game.num_players == 2:
+            start = temp_game.get_player(temp_game.players[0])
+            if not temp_game.can_reach_level(start, 1):
+                print("player 1 can't reach row 9")
+                return None
+            start = temp_game.get_player(temp_game.players[1])
+            if not temp_game.can_reach_level(start, 9):
+                print("player 2 can't reach row 1")
+                return None
+            self.board[wallx][wally].set_wall_h()
+            print("successfully placed a horizontal wall at " + str(wall))
+
+        if temp_game.num_players == 4:
+            start = temp_game.get_player(temp_game.players[0])
+            if not temp_game.can_reach_level(start, 9):
+                print("player 1 can't reach row 9")
+                return None
+            start = temp_game.get_player(temp_game.players[1])
+            if not temp_game.can_reach_level(start, -9):
+                print("player 2 can't reach row i")
+                return None
+            start = temp_game.get_player(temp_game.players[2])
+            if not temp_game.can_reach_level(start, 1):
+                print("player 3 can't reach row 1")
+                return None
+            start = temp_game.get_player(temp_game.players[3])
+            if not temp_game.can_reach_level(start, -1):
+                print("player 4 can't reach row a")
+                return None
+            self.board[wallx][wally].set_wall_h()
+            print("successfully placed a horizontal wall at " + str(wall))
+
+    def place_wall_v(self, wall):
+        temp_game = copy.deepcopy(self)
+        wally = ord(wall[0]) - ord("a")
+        wallx = 9 - int(wall[1])
+        temp_game.board[wallx][wally].set_wall_v()
+        if temp_game.num_players == 2:
+            start = temp_game.get_player(temp_game.players[0])
+            if not temp_game.can_reach_level(start, 1):
+                print("player 1 can't reach row 9")
+                return None
+            start = temp_game.get_player(temp_game.players[1])
+            if not temp_game.can_reach_level(start, 9):
+                print("player 2 can't reach row 1")
+                return None
+            self.board[wallx][wally].set_wall_h()
+            print("successfully placed a horizontal wall at " + str(wall))
+
+        if temp_game.num_players == 4:
+            start = temp_game.get_player(temp_game.players[0])
+            if not temp_game.can_reach_level(start, 9):
+                print("player 1 can't reach row 9")
+                return None
+            start = temp_game.get_player(temp_game.players[1])
+            if not temp_game.can_reach_level(start, -9):
+                print("player 2 can't reach row i")
+                return None
+            start = temp_game.get_player(temp_game.players[2])
+            if not temp_game.can_reach_level(start, 1):
+                print("player 3 can't reach row 1")
+                return None
+            start = temp_game.get_player(temp_game.players[3])
+            if not temp_game.can_reach_level(start, -1):
+                print("player 4 can't reach row a")
+                return None
+            self.board[wallx][wally].set_wall_v()
+            print("successfully placed a horizontal wall at " + str(wall))
+
     def can_reach_level(self, player, level):
         self.checked = []
         return self.reached(player, player, level, 0)
 
     def reached(self, player, checking, level, iterations):
         if checking == None:
-            print("Node is None")
+            # print("Node is None")
             return False
         if checking.__repr__() in self.checked:
             return False
         self.checked.append(checking.__repr__())
         if int(checking.y) == level:
             return True
+        elif int(checking.x) == ((-1) * level):
+            return True
         if iterations >= 9 * 9:
             return False
 
-        print(
-            "checking "
-            + checking.__repr__()
-            + "; distance: "
-            + str(player.distance(checking))
-            + "; iterations: "
-            + str(iterations)
-            + "; checked: "
-            + str(self.checked)
-        )
+        # print(
+        #    "checking "
+        #    + checking.__repr__()
+        #    + "; distance: "
+        #    + str(player.distance(checking))
+        #    + "; iterations: "
+        #    + str(iterations)
+        #    + "; checked: "
+        #    + str(self.checked)
+        # )
 
         iterations += 1
 
+        # check north
         if self.reached(player, checking.get_north(), level, iterations):
             return True
+        # check east
         if self.reached(player, checking.get_east(), level, iterations):
             return True
+        # check south
         if self.reached(player, checking.get_south(), level, iterations):
             return True
+        # check west
         if self.reached(player, checking.get_west(), level, iterations):
             return True
-        print("Reached the end of " + checking.__repr__())
+        # print("Reached the end of " + checking.__repr__())
         return False
 
     # checks who's turn it is to who's sending the move request

@@ -378,11 +378,23 @@ myServer = HTTPServer((hostName, hostPort), MyServer)
 
 print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 
-# test_game = shorthand_to_game(" a4c4e4g4h6  / h5  / e1 e9 / 10 10 / 1 ")
-# if test_game.can_reach_level(test_game.get("e9"), 1):
-#     print("e9 can reach 1")
-# else:
-#     print("e9 cannot reach 1")
+#test_game = shorthand_to_game(" a4c4e4g4h6  / h5  / e1 e9 / 10 10 / 1 ")
+#if test_game.can_reach_level(test_game.get("e9"), 1):
+#    print("e9 can reach 1")
+#else:
+#    print("e9 cannot reach 1")
+
+#test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 10 / 1 ")
+#test_game.place_wall_h('h6')
+#print(test_game.__repr__())
+#test_game.place_wall_h('h5')
+#print(test_game.__repr__())
+#test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 10 / 1 ")
+#test_game.place_wall_v('h5')
+#print(test_game.__repr__())
+#test_game.place_wall_v('h3')
+#print(test_game.__repr__())
+
 
 try:
     myServer.serve_forever()
