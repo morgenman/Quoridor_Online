@@ -456,12 +456,15 @@ async function refreshBoard() {
 }
 
 async function makeMove(x, y) {
-    var move = String.fromCharCode((x + 96)) + y;
     var id = document.getElementById('game-id').value;
     var player = document.getElementById('player-id').value;
+    var turn = document.getElementById('player-turn').value;
+    var move = "p" + turn + String.fromCharCode((x + 96)) + y;
+
     console.log("making move: " + move);
     console.log("id: " + id);
     console.log("player: " + player);
+
     const response = await fetch("http://localhost:9696/move", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
