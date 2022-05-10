@@ -18,6 +18,7 @@ class tile:
         self.w_east = False
         self.w_south = False
         self.w_west = False
+        self.can_place = True
 
     def distance(self, tile):
         # a^2 + b^2 = c^2
@@ -96,30 +97,26 @@ class tile:
     # first is a wall north of this tile
     # second is a wall north of the tile east to this wall
     def set_wall_h(self):
-        rep = self.game.__repr__().split("/")
-        tile_str = chr(self.y + ord("a") - 1) + str(self.x)
-
-        if not (tile_str in rep[0] or tile_str in rep[1]):
+        if self.can_place:
             # print("Horizontal wall at " + self.__repr__())
             self.get_true_north().w_south = True
             self.w_north = True
             self.get_true_east().get_true_north().w_south = True
             self.get_true_east().w_north = True
+            self.can_place = False
 
     # sets the vertical wall flag.
     # Note: this actually affects two tile pieces:
     # first is a wall east of this tile
     # second is a wall east of the tile north to this wall
     def set_wall_v(self):
-        rep = self.game.__repr__().split("/")
-        tile_str = chr(self.y + ord("a") - 1) + str(self.x)
-
-        if not (tile_str in rep[0] or tile_str in rep[1]):
+        if self.can_place:
             # print("Vertical wall at " + self.__repr__())
             self.get_true_north().get_true_east().w_west = True
             self.get_true_north().w_east = True
             self.get_true_east().w_west = True
             self.w_east = True
+            self.can_place = False
 
     # used for ascii board.
     # todo: trim legacy code
@@ -357,97 +354,106 @@ class game:
             return not player.if_west()
         return True
 
+    # places horizintal walls while checking for valid path
     def place_wall_h(self, wall):
+        # makes copy of game with added wall
         temp_game = copy.deepcopy(self)
-        wallx = 9 - int(wall[1])
-        wally = ord(wall[0]) - ord("a")
-        temp_game.board[wallx][wally].set_wall_h()
-        print(temp_game.__repr__())
-        if temp_game.num_players == 2:
-            # print("player 1 is " + temp_game.players[0].__str__())
-            # print("player 1 is at " + temp_game.get_player(1))
-            start = temp_game.get_player(1)
-            if not temp_game.can_reach_level(start, 9):
-                print("player 1 can't reach row 1")
-                return None
-            start = temp_game.get_player(2)
-            if not temp_game.can_reach_level(start, 1):
-                print("player 2 can't reach row 9")
-                return None
-        elif temp_game.num_players == 4:
-            start = temp_game.get_player(1)
-            if not temp_game.can_reach_level(start, 9):
-                print("player 1 can't reach row 9")
-                return None
-            start = temp_game.get_player(2)
-            if not temp_game.can_reach_level(start, -9):
-                print("player 2 can't reach row i")
-                return None
-            start = temp_game.get_player(3)
-            if not temp_game.can_reach_level(start, 1):
-                print("player 3 can't reach row 1")
-                return None
-            start = temp_game.get_player(4)
-            if not temp_game.can_reach_level(start, -1):
-                print("player 4 can't reach row a")
-                return None
-        self.board[wallx][wally].set_wall_h()
-        print("successfully placed a horizontal wall at " + str(wall))
+        wall_tile = temp_game.get(wall)
 
-    def place_wall_v(self, wall):
-        temp_game = copy.deepcopy(self)
-        wallx = 9 - int(wall[1])
-        wally = ord(wall[0]) - ord("a")
-        temp_game.board[wallx][wally].set_wall_v()
+        # check if a wall can be placed there
+        if wall_tile.can_place:
+            wall_tile.set_wall_h()
+        else:
+            print("a wall is already placed there")
+            return None
         # print(temp_game.__repr__())
-        if temp_game.num_players == 2:
-            # print("player 1 is " + temp_game.players[0].__str__())
-            # print("player 1 is at " + temp_game.get_player(1))
-            start = temp_game.get_player(1)
-            if not temp_game.can_reach_level(start, 9):
-                print("player 1 can't reach row 1")
-                return None
-            start = temp_game.get_player(2)
-            if not temp_game.can_reach_level(start, 1):
-                print("player 2 can't reach row 9")
-                return None
-        elif temp_game.num_players == 4:
-            start = temp_game.get_player(1)
-            if not temp_game.can_reach_level(start, 9):
-                print("player 1 can't reach row 9")
-                return None
-            start = temp_game.get_player(2)
-            if not temp_game.can_reach_level(start, -9):
-                print("player 2 can't reach row i")
-                return None
-            start = temp_game.get_player(3)
-            if not temp_game.can_reach_level(start, 1):
-                print("player 3 can't reach row 1")
-                return None
-            start = temp_game.get_player(4)
-            if not temp_game.can_reach_level(start, -1):
-                print("player 4 can't reach row a")
-                return None
-        self.board[wallx][wally].set_wall_v()
-        print("successfully placed a vertical wall at " + str(wall))
+        # if all players pass, place wall in actual game
+        if temp_game.all_players_can_reach():
+            self.get(wall).set_wall_h()
+            print("successfully placed a horizontal wall at " + str(wall))
 
+    # places vertical walls while checking for valid path
+    def place_wall_v(self, wall):
+        # makes copy of game with added wall
+        temp_game = copy.deepcopy(self)
+        wall_tile = temp_game.get(wall)
+
+        # check if a wall can be placed there
+        if wall_tile.can_place:
+            wall_tile.set_wall_v()
+        else:
+            print("a wall is already placed there")
+            return None
+        # print(temp_game.__repr__())
+        # if all players pass, place wall in actual game
+        if temp_game.all_players_can_reach():
+            self.get(wall).set_wall_v()
+            print("successfully placed a vertical wall at " + str(wall))
+
+    # check that all player can reach their desired end
+    def all_players_can_reach(self):
+        # checks for 2 player game
+        if self.num_players == 2:
+            # print("player 1 is " + self.players[0].__str__())
+            # print("player 1 is at " + self.get_player(1))
+            # checks if player 1 can reach the end, if not fails
+            start = self.get_player(1)
+            if not self.can_reach_level(start, 9):
+                print("player 1 can't reach row 1")
+                return False
+            # checks if player 2 can reach the end, if not fails
+            start = self.get_player(2)
+            if not self.can_reach_level(start, 1):
+                print("player 2 can't reach row 9")
+                return False
+        # checks for 4 player game
+        elif self.num_players == 4:
+            # checks if player 1 can reach the end, if not fails
+            start = self.get_player(1)
+            if not self.can_reach_level(start, 9):
+                print("player 1 can't reach row 9")
+                return False
+            # checks if player 2 can reach the end, if not fails
+            start = self.get_player(2)
+            if not self.can_reach_level(start, -9):
+                print("player 2 can't reach row i")
+                return False
+            # checks if player 3 can reach the end, if not fails
+            start = self.get_player(3)
+            if not self.can_reach_level(start, 1):
+                print("player 3 can't reach row 1")
+                return False
+            # checks if player 4 can reach the end, if not fails
+            start = self.get_player(4)
+            if not self.can_reach_level(start, -1):
+                print("player 4 can't reach row a")
+                return False
+        return True
+
+    # check if player at given tile can reach the specified level
+    # use positive level value for y direction, and negative values for x direction
     def can_reach_level(self, player, level):
         self.checked = []
         return self.reached(player, player, level, 0)
 
     def reached(self, player, checking, level, iterations):
+        # if tile checking doesnt exist, return false
         if checking == None:
             # print("Node is None")
             return False
+        # if tile already checked, return false, otherwise, add to checked
         if checking.__repr__() in self.checked:
             return False
         self.checked.append(checking.__repr__())
+        # check if tile is at desired level
         if int(checking.y) == level:
             return True
         elif int(checking.x) == -level:
             return True
+        # if checked 81 tiles (entire board) return false
         if iterations >= 9 * 9:
             return False
+        # otherwise check all other tile directions
 
         # print(
         #    "checking "
