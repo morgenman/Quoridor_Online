@@ -97,11 +97,11 @@ for x in results:
     player4 = player4.replace("'", "")
     # sets in new_game
     if player3 == "None":
-        new_game.set_two_player(player(player1), player(player2))
+        new_game.players = [player(player1), player(player2)]
     else:
-        new_game.set_four_player(
+        new_game.players = [
             player(player1), player(player2), player(player3), player(player4)
-        )
+        ]
     # adds game
     games.add(new_game)
 
@@ -385,14 +385,15 @@ print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 #    print("e9 cannot reach 1")
 
 #test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 10 / 1 ")
-#test_game.place_wall_h('h6')
+#test_game.players = [player('One'), player('Two')]
+#test_game.place_wall_h('h6') #should fail
 #print(test_game.__repr__())
-#test_game.place_wall_h('h5')
+#test_game.place_wall_h('g6') #should work
 #print(test_game.__repr__())
 #test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 10 / 1 ")
-#test_game.place_wall_v('h5')
+#test_game.place_wall_v('h5') #should fail
 #print(test_game.__repr__())
-#test_game.place_wall_v('h3')
+#test_game.place_wall_v('h4') #should work
 #print(test_game.__repr__())
 
 
