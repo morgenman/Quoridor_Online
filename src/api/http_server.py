@@ -245,14 +245,47 @@ class MyServer(BaseHTTPRequestHandler):
                             "utf-8",
                         )
                     )
-                #case "/wall":
-                    #curr_game = games.get(post_body["id"])
-                    #try:
-                        #if post_body[is_horizontal] == "True":
-                            #curr_game.place_wall_h(post_body["wall"])
-                        #else:
-                            #curr_game.place_wall_v(post_body["wall"])
-                        
+
+                case "/wall":
+                    curr_game = games.get(post_body["id"])
+                    try:
+                        print(
+                            "Attempting to place a "
+                            + str(post_body["direction"])
+                            + " wall for player ID "
+                            + str(post_body["playerid"])
+                            + " at "
+                            + str(post_body["wall"])
+                        )
+                        if post_body["direction"] == "horizontal":
+                            curr_game.place_wall_h(post_body["wall"])
+                        elif post_body["direction"] == "vertical":
+                            curr_game.place_wall_v(post_body["wall"])
+
+                        # updating curr_game in database
+                        sql = "UPDATE games SET str_rep= %s WHERE id = %s"
+                        val = (curr_game.__repr__(), post_body["id"])
+                        db_cursor.execute(sql, val)
+                        db.commit()
+                        self.send_response(200)
+                    except AssertionError as e:
+                        self.send_response(400)
+                        print(str(e))
+                        print("Invalid move")
+                    self.send_header("Content-type", "application/json; charset=utf-8")
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                    self.send_header(
+                        "Access-Control-Allow-Headers", "Content-Type, Authorization"
+                    )
+                    self.end_headers()
+                    self.wfile.write(
+                        bytes(
+                            games.get(post_body["id"]).__repr__(),
+                            "utf-8",
+                        )
+                    )
+
                 case "/get":
                     try:
                         curr_game = games.get(post_body["id"])
