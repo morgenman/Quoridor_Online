@@ -219,7 +219,8 @@ class MyServer(BaseHTTPRequestHandler):
                             + " to "
                             + str(post_body["move"])
                         )
-                        curr_game.check_player(post_body["playerid"], post_body["move"])
+                        curr_game.check_player(post_body["playerid"])
+                        curr_game.check_piece(post_body["move"])
                         curr_game.move(post_body["move"])
 
                         # updating curr_game in database
@@ -257,6 +258,7 @@ class MyServer(BaseHTTPRequestHandler):
                             + " at "
                             + str(post_body["wall"])
                         )
+                        curr_game.check_player(post_body["playerid"])
                         if post_body["direction"] == "horizontal":
                             curr_game.place_wall_h(post_body["wall"])
                         elif post_body["direction"] == "vertical":
@@ -424,23 +426,42 @@ myServer = HTTPServer((hostName, hostPort), MyServer)
 
 print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 
+print()
+print("--------------------tests--------------------")
 # test_game = shorthand_to_game(" a4c4e4g4h6  / h5  / e1 e9 / 10 10 / 1 ")
 # if test_game.can_reach_level(test_game.get("e9"), 1):
 #    print("e9 can reach 1")
 # else:
 #    print("e9 cannot reach 1")
 
-# test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 10 / 1 ")
-# test_game.players = [player('One'), player('Two')]
-# test_game.place_wall_h('h6') #should fail
-# print(test_game.__repr__())
-# test_game.place_wall_h('g6') #should work
-# print(test_game.__repr__())
-# test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 10 / 1 ")
-# test_game.place_wall_v('h5') #should fail
-# print(test_game.__repr__())
-# test_game.place_wall_v('h4') #should work
-# print(test_game.__repr__())
+
+print("testing horizontal wall placement")
+test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 0 / 1 ")
+test_game.players = [player('One'), player('Two')]
+print("starting with this game representation: " + test_game.__repr__())
+print("this one should fail because it blocks player 1's path")
+test_game.place_wall_h('h6') #should fail
+print(test_game.__repr__())
+print("this one should pass")
+test_game.place_wall_h('g6') #should work
+print(test_game.__repr__())
+print("this one should fail because player2 doesn't have any walls")
+test_game.place_wall_h('a2') #should fail due to player having no walls
+print(test_game.__repr__())
+
+print()
+print("testing vertical wall placement")
+test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 0 / 1 ")
+print("starting with this game representation: " + test_game.__repr__())
+print("this one should fail because it blocks player 1's path")
+test_game.place_wall_v('h5') #should fail
+print(test_game.__repr__())
+print("this one should pass")
+test_game.place_wall_v('h4') #should work
+print(test_game.__repr__())
+print("this one should fail because player2 doesn't have any walls")
+test_game.place_wall_h('a2') #should fail due to player having no walls
+print(test_game.__repr__())
 
 
 try:

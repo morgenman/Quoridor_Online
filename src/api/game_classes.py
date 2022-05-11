@@ -184,9 +184,7 @@ class game:
             print("hmm2")
             player.set_player(0)
             destination.set_player(int(move[1]))
-            self.turn += 1
-            if self.turn == self.num_players + 1:
-                self.turn = 1
+            self.next()
 
     # function that checks if the player move is valid or not
     def valid_player_move(self, player, target):
@@ -356,12 +354,16 @@ class game:
 
     # places horizintal walls while checking for valid path
     def place_wall_h(self, wall):
+        # fails if the player doesn't have any walls to place
+        if int(self.walls[int(self.get_turn()) - 1]) < 1:
+            print("player" + str(self.get_turn()) + " has no more walls")
+            return None
         # makes copy of game with added wall
         temp_game = copy.deepcopy(self)
         wall_tile = temp_game.get(wall)
 
         # check if a wall can be placed there
-        if wall_tile.can_place and (wall_tile.get_true_east().get_noth() != None):
+        if wall_tile.can_place and (wall_tile.get_true_east().get_north() != None):
             wall_tile.set_wall_h()
         else:
             print("a wall cannot be placed there")
@@ -370,10 +372,18 @@ class game:
         # if all players pass, place wall in actual game
         if temp_game.all_players_can_reach():
             self.get(wall).set_wall_h()
+            self.walls[int(self.get_turn()) - 1] = (
+                int(self.walls[int(self.get_turn()) - 1]) - 1
+            )
+            self.next()
             print("successfully placed a horizontal wall at " + str(wall))
 
     # places vertical walls while checking for valid path
     def place_wall_v(self, wall):
+        # fails if the player doesn't have any walls to place
+        if int(self.walls[int(self.get_turn()) - 1]) < 1:
+            print("player" + str(self.get_turn()) + " has no more walls")
+            return None
         # makes copy of game with added wall
         temp_game = copy.deepcopy(self)
         wall_tile = temp_game.get(wall)
@@ -388,6 +398,10 @@ class game:
         # if all players pass, place wall in actual game
         if temp_game.all_players_can_reach():
             self.get(wall).set_wall_v()
+            self.walls[int(self.get_turn()) - 1] = (
+                int(self.walls[int(self.get_turn()) - 1]) - 1
+            )
+            self.next()
             print("successfully placed a vertical wall at " + str(wall))
 
     # check that all player can reach their desired end
@@ -484,7 +498,7 @@ class game:
         return False
 
     # checks who's turn it is to who's sending the move request
-    def check_player(self, playerid, move):
+    def check_player(self, playerid):
         curr_player = self.players[int(self.get_turn()) - 1]
         print(
             "Current Player ID: "
@@ -495,10 +509,12 @@ class game:
         assert int(curr_player.get_id()) == int(
             playerid
         ), f"it is not {playerid}'s turn"
+
+    def check_piece(self, move):
         print(str(self.get_turn()) + " and " + move[1])
         assert int(self.get_turn()) == int(
             move[1]
-        ), f"{playerid} cannot move {curr_player.get_id()}'s piece"
+        ), f"player{str(self.get_turn())} cannot move player{move[1]}'s piece"
 
     def set_walls(self, walls):
         self.walls = walls
@@ -513,7 +529,7 @@ class game:
         if self.turn == self.num_players:
             self.turn = 1
         else:
-            self.turn += 1
+            self.turn = int(self.turn) + 1
 
     def get_turn(self):
         return self.turn
