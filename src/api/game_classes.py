@@ -486,7 +486,12 @@ class game:
     # checks who's turn it is to who's sending the move request
     def check_player(self, playerid, move):
         curr_player = self.players[int(self.get_turn()) - 1]
-        print(str(curr_player.get_id()) + " and " + str(playerid))
+        print(
+            "Current Player ID: "
+            + str(curr_player.get_id())
+            + "; Player attempting to make move: "
+            + str(playerid)
+        )
         assert int(curr_player.get_id()) == playerid, f"it is not {playerid}'s turn"
         print(str(self.get_turn()) + " and " + move[1])
         assert int(self.get_turn()) == int(

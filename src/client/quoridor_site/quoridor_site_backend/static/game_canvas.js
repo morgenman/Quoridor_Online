@@ -470,5 +470,8 @@ async function makeMove(x, y) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ "move": move, "id": id, "playerid": player })
     })
-    console.log(response.text());
+    //console.log(response.text());
+    Promise.resolve(response).then(function (response) {
+        document.getElementById('state').value = response.text();
+    });
 }

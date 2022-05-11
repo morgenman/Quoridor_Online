@@ -100,7 +100,10 @@ for x in results:
         new_game.players = [player(player1), player(player2)]
     else:
         new_game.players = [
-            player(player1), player(player2), player(player3), player(player4)
+            player(player1),
+            player(player2),
+            player(player3),
+            player(player4),
         ]
     # adds game
     games.add(new_game)
@@ -210,13 +213,14 @@ class MyServer(BaseHTTPRequestHandler):
                 case "/move":
                     curr_game = games.get(post_body["id"])
                     try:
-                        print("got this far1")
-
+                        print(
+                            "Attempting to move player ID "
+                            + str(post_body["playerid"])
+                            + " to "
+                            + str(post_body["move"])
+                        )
                         curr_game.check_player(post_body["playerid"], post_body["move"])
-                        print("got this far")
-
                         curr_game.move(post_body["move"])
-                        print("got this far2")
 
                         # updating curr_game in database
                         sql = "UPDATE games SET str_rep= %s WHERE id = %s"
@@ -224,8 +228,9 @@ class MyServer(BaseHTTPRequestHandler):
                         db_cursor.execute(sql, val)
                         db.commit()
                         self.send_response(200)
-                    except AssertionError:
+                    except AssertionError as e:
                         self.send_response(400)
+                        print(str(e))
                         print("Invalid move")
                     self.send_header("Content-type", "application/json; charset=utf-8")
                     self.send_header("Access-Control-Allow-Origin", "*")
@@ -378,23 +383,23 @@ myServer = HTTPServer((hostName, hostPort), MyServer)
 
 print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 
-#test_game = shorthand_to_game(" a4c4e4g4h6  / h5  / e1 e9 / 10 10 / 1 ")
-#if test_game.can_reach_level(test_game.get("e9"), 1):
+# test_game = shorthand_to_game(" a4c4e4g4h6  / h5  / e1 e9 / 10 10 / 1 ")
+# if test_game.can_reach_level(test_game.get("e9"), 1):
 #    print("e9 can reach 1")
-#else:
+# else:
 #    print("e9 cannot reach 1")
 
-#test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 10 / 1 ")
-#test_game.players = [player('One'), player('Two')]
-#test_game.place_wall_h('h6') #should fail
-#print(test_game.__repr__())
-#test_game.place_wall_h('g6') #should work
-#print(test_game.__repr__())
-#test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 10 / 1 ")
-#test_game.place_wall_v('h5') #should fail
-#print(test_game.__repr__())
-#test_game.place_wall_v('h4') #should work
-#print(test_game.__repr__())
+# test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 10 / 1 ")
+# test_game.players = [player('One'), player('Two')]
+# test_game.place_wall_h('h6') #should fail
+# print(test_game.__repr__())
+# test_game.place_wall_h('g6') #should work
+# print(test_game.__repr__())
+# test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 10 / 1 ")
+# test_game.place_wall_v('h5') #should fail
+# print(test_game.__repr__())
+# test_game.place_wall_v('h4') #should work
+# print(test_game.__repr__())
 
 
 try:
