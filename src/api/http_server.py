@@ -240,6 +240,14 @@ class MyServer(BaseHTTPRequestHandler):
                             "utf-8",
                         )
                     )
+                #case "/wall":
+                    #curr_game = games.get(post_body["id"])
+                    #try:
+                        #if post_body[is_horizontal] == "True":
+                            #curr_game.place_wall_h(post_body["wall"])
+                        #else:
+                            #curr_game.place_wall_v(post_body["wall"])
+                        
                 case "/get":
                     try:
                         curr_game = games.get(post_body["id"])
