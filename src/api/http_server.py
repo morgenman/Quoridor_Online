@@ -291,8 +291,8 @@ class MyServer(BaseHTTPRequestHandler):
                 case "/get":
                     try:
                         curr_game = games.get(post_body["id"])
-                        print("Sending game " + post_body["id"])
-                        print("Game State: " + curr_game.__repr__())
+                        # print("Sending game " + post_body["id"])
+                        # print("Game State: " + curr_game.__repr__())
 
                         self.send_response(200)
                     except AssertionError:

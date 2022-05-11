@@ -6,15 +6,17 @@ var p1;
 var p2;
 var p3;
 var p4;
+var wall_group;
+
 
 let timerId = setTimeout(function request() {
     var board = document.getElementById('state');
-    console.log('Requesting...');
+    //console.log('Requesting...');
     try {
         board = refreshBoard();
     }
     catch (error) {
-        console.log(error);
+        //console.log(error);
         // increase the interval to the next run
         delay *= 2;
     }
@@ -28,9 +30,10 @@ let timerId = setTimeout(function request() {
 
 
 function update() {
+    wall_group = this.add.group();
     if (global_board != document.getElementById('state').value) {
         global_board = document.getElementById('state').value;
-        console.log("Changed global board");
+        //console.log("Changed global board");
         let scaleX = this.cameras.main.width / 2048
         let scaleY = this.cameras.main.height / 2048
         let scale = Math.max(scaleX, scaleY)
@@ -40,14 +43,14 @@ function update() {
         var x = 0;
         var y = 0;
         var shorthand = document.getElementById('state').value;
-        console.log('Shorthand: ' + shorthand.text);
+        //console.log('Shorthand: ' + shorthand.text);
         var temp = shorthand.split("/");
         var play_piece = (String(temp[2]).trim()).split(" ");
         for (var i = 0; i < play_piece.length; i++) {
             var end = play_piece[i].split("");
             x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
             y = end[1]; // y position   
-            console.log("player: " + i + "; x: " + x + "; y: " + y);
+            //console.log("player: " + i + "; x: " + x + "; y: " + y);
             let coor = coor_2_abs(x, y);
             switch (i) {
                 case 0: // Player 1
@@ -78,6 +81,66 @@ function update() {
                     p4.setInteractive({ pixelPerfect: true });
                     this.input.setDraggable(p4);
             }
+
+
+
+
+            wall_group.clear(true, true);
+            var banned_walls = [];
+            let temp_h_wall = [];
+            let temp_v_wall = [];
+            var h_walls = (String(temp[0]).trim()).match(/.{2}/g);
+            for (var wall in h_walls) {
+                var strng = h_walls[wall].split("");
+                x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+                y = strng[1]; // y position
+                temp_h_wall.push({ x: x, y: parseInt(y) });
+                temp_h_wall.push({ x: x + 1, y: parseInt(y) });
+                temp_h_wall.push({ x: x - 1, y: parseInt(y) });
+                temp_v_wall.push({ x: x, y: parseInt(y) });
+                //console.log("making h wall: " + x + "; y: " + y);
+                let coor = coor_2_abs(x, y);
+                var h_wall_1 = this.add.sprite(coor.x, coor.y - 40, 'h_wall', x, y);
+                wall_group.add(h_wall_1);
+                //h_wall_1.setScale(1.2);
+            }
+
+            var v_walls = (String(temp[1]).trim()).match(/.{2}/g);
+            //console.log(h_walls + ";" + v_walls);
+            for (var wall in v_walls) {
+                var strng = v_walls[wall].split("");
+                x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+                y = strng[1]; // y position
+                temp_v_wall.push({ x: x, y: parseInt(y) });
+                temp_v_wall.push({ x: x, y: parseInt(y) + 1 });
+                temp_v_wall.push({ x: x, y: parseInt(y) - 1 });
+                temp_h_wall.push({ x: x, y: parseInt(y) });
+                let coor = coor_2_abs(x, y);
+
+                //console.log("making v_wall from '", wall, "' at " + x + "," + y);
+                var v_wall_1 = this.add.sprite(coor.x + 40, coor.y, 'v_wall', x, y);
+                wall_group.add(v_wall_1);
+                //v_wall_1.setScale(1.2);
+            }
+            banned_walls.push(temp_h_wall);
+            banned_walls.push(temp_v_wall);
+            for (let i = 1; i <= 8; i++) {
+                for (let j = 1; j <= 8; j++) {
+                    let coor = coor_2_abs(i, j);
+                    if (!banned_walls[0].filter(function (e) { return (e.x === i) && (e.y === j); }).length > 0) {
+                        var sprite = this.add.wall_sprite(coor.x, coor.y, 'h_wall', i, j);
+                        wall_group.add(sprite);
+                        //this.input.enableDebug(sprite);
+                    }
+                    coor = coor_2_abs(j, i);
+                    if (!banned_walls[1].filter(function (e) { return (e.x === j) && (e.y === i); }).length > 0) {
+                        var sprite = this.add.wall_sprite(coor.x, coor.y, 'v_wall', i, j);
+                        wall_group.add(sprite);
+                        //this.input.enableDebug(sprite, 0x0000FF);
+                    }
+                }
+
+            }
         }
         function coor_2_abs(x, y) {
             return {
@@ -94,13 +157,15 @@ function update() {
         }
     }
 
+
 }
 
 
 
 
-class h_wall_sprite extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, name) {
+class wall_sprite extends Phaser.GameObjects.Sprite {
+    constructor(scene, x, y, name, i, j) {
+        var visible_wall = false;
         if (name === 'h_wall') {
             super(scene, x, y - 40, name);
             this.setInteractive(new Phaser.Geom.Rectangle(84, 28, 60, 16), Phaser.Geom.Rectangle.Contains);
@@ -111,26 +176,49 @@ class h_wall_sprite extends Phaser.GameObjects.Sprite {
             //this.setScale(1.2);
             this.setInteractive(new Phaser.Geom.Rectangle(28, 84, 16, 60), Phaser.Geom.Rectangle.Contains);
         }
+        this.i = i;
+        this.j = j;
         this.visible = false;
         this.on('pointerover', function (pointer) {
+            // console.log(pointer.x + "," + pointer.y);
+            // let coor = abs_2_coor(pointer.x, pointer.y - 40);
+            // console.log(coor.x + "," + coor.y);
             if (interactive) this.visible = true;
         });
         this.on('pointerout', function (pointer) {
-            if (interactive) this.visible = false;
+            if (interactive) if (!visible_wall) this.visible = false;
         });
 
         this.input.topOnly = true;
         this.input.alwaysEnabled = true;
         this.setAlpha(0.5);
+        let center = { x: config.width / 2, y: config.height / 2 + 6 }
+        let tile_size = config.width / 12.45;
+        function abs_2_coor(x, y) {
+            return {
+                x: Math.floor((x - center.x) / tile_size) + 6,
+                y: Math.floor((-1 * (y - center.y)) / tile_size) + 5
+            }
+        }
 
-        this.on('pointerdown', function (pointer) {
+        this.on('pointerdown', function (pointer, gameObject) {
             if (interactive) {
                 this.setInteractive(false);
                 this.visible = true;
                 this.setAlpha(1);
+                let coor = abs_2_coor(pointer.x, pointer.y + 40);
+                //let coor = abs_2_coor(pointer.x - gameObject.width / 4, (pointer.y - 40) - gameObject.height / 4);
+                if (name === 'h_wall') {
+                    placeWall(this.i, this.j, true);
+                }
+                else if (name === 'v_wall') {
+                    placeWall(this.j, this.i, false);
+                }
             }
         });
     }
+
+
 }
 
 class CustomPlugin extends Phaser.Plugins.BasePlugin {
@@ -138,11 +226,11 @@ class CustomPlugin extends Phaser.Plugins.BasePlugin {
     constructor(pluginManager) {
         super(pluginManager);
         //  Register our new Game Object type
-        pluginManager.registerGameObject('h_wall_sprite', this.createHWall, this);
+        pluginManager.registerGameObject('wall_sprite', this.createWall, this);
     }
 
-    createHWall(x, y, name) {
-        return this.displayList.add(new h_wall_sprite(this.scene, x, y, name));
+    createWall(x, y, name, i, j) {
+        return this.displayList.add(new wall_sprite(this.scene, x, y, name, i, j));
     }
 
 }
@@ -218,6 +306,7 @@ function preload() {
 
 
 function create() {
+    wall_group = this.add.group();
     // Logic for full screen image. Keep the frame square
     let image = this.add.image(config.width / 2, config.height / 2, 'bg');
     let scaleX = this.cameras.main.width / image.width
@@ -270,14 +359,14 @@ function create() {
     var x = 0;
     var y = 0;
     var shorthand = document.getElementById('state').value;
-    console.log('Shorthand: ' + shorthand.text);
+    //console.log('Shorthand: ' + shorthand.text);
     var temp = shorthand.split("/");
     var play_piece = (String(temp[2]).trim()).split(" ");
     for (var i = 0; i < play_piece.length; i++) {
         var end = play_piece[i].split("");
         x = String(end[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
         y = end[1]; // y position   
-        console.log("player: " + i + "; x: " + x + "; y: " + y);
+        //console.log("player: " + i + "; x: " + x + "; y: " + y);
         let coor = coor_2_abs(x, y);
         switch (i) {
             case 0: // Player 1
@@ -322,7 +411,8 @@ function create() {
         temp_v_wall.push({ x: x, y: parseInt(y) });
         console.log("making h wall: " + x + "; y: " + y);
         let coor = coor_2_abs(x, y);
-        let h_wall_1 = this.add.sprite(coor.x, coor.y - 40, 'h_wall');
+        var h_wall_1 = this.add.sprite(coor.x, coor.y - 40, 'h_wall', x, y);
+        wall_group.add(h_wall_1);
         //h_wall_1.setScale(1.2);
     }
 
@@ -339,7 +429,8 @@ function create() {
         let coor = coor_2_abs(x, y);
 
         console.log("making v_wall from '", wall, "' at " + x + "," + y);
-        let v_wall_1 = this.add.sprite(coor.x + 40, coor.y, 'v_wall');
+        var v_wall_1 = this.add.sprite(coor.x + 40, coor.y, 'v_wall', x, y);
+        wall_group.add(v_wall_1);
         //v_wall_1.setScale(1.2);
     }
     banned_walls.push(temp_h_wall);
@@ -374,12 +465,14 @@ function create() {
         for (let j = 1; j <= 8; j++) {
             let coor = coor_2_abs(i, j);
             if (!banned_walls[0].filter(function (e) { return (e.x === i) && (e.y === j); }).length > 0) {
-                var sprite = this.add.h_wall_sprite(coor.x, coor.y, 'h_wall');
+                var sprite = this.add.wall_sprite(coor.x, coor.y, 'h_wall', i, j);
+                wall_group.add(sprite);
                 //this.input.enableDebug(sprite);
             }
             coor = coor_2_abs(j, i);
             if (!banned_walls[1].filter(function (e) { return (e.x === j) && (e.y === i); }).length > 0) {
-                var sprite = this.add.h_wall_sprite(coor.x, coor.y, 'v_wall');
+                var sprite = this.add.wall_sprite(coor.x, coor.y, 'v_wall', i, j);
+                wall_group.add(sprite);
                 //this.input.enableDebug(sprite, 0x0000FF);
             }
         }
@@ -469,6 +562,27 @@ async function makeMove(x, y) {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ "move": move, "id": id, "playerid": player })
+    })
+    //console.log(response.text());
+    Promise.resolve(response).then(function (response) {
+        document.getElementById('state').value = response.text();
+    });
+}
+
+async function placeWall(x, y, isHorizontal) {
+    var id = document.getElementById('game-id').value;
+    var player = document.getElementById('player-id').value;
+    var wall = String.fromCharCode((x + 96)) + y;
+    var direction = isHorizontal ? "horizontal" : "vertical";
+
+    // console.log("placing wall: " + wall);
+    // console.log("id: " + id);
+    // console.log("player: " + player);
+
+    const response = await fetch("http://localhost:9696/wall", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ "wall": wall, "id": id, "playerid": player, "direction": direction })
     })
     //console.log(response.text());
     Promise.resolve(response).then(function (response) {
