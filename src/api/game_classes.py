@@ -492,7 +492,9 @@ class game:
             + "; Player attempting to make move: "
             + str(playerid)
         )
-        assert int(curr_player.get_id()) == playerid, f"it is not {playerid}'s turn"
+        assert int(curr_player.get_id()) == int(
+            playerid
+        ), f"it is not {playerid}'s turn"
         print(str(self.get_turn()) + " and " + move[1])
         assert int(self.get_turn()) == int(
             move[1]
