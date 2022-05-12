@@ -322,7 +322,11 @@ class MyServer(BaseHTTPRequestHandler):
 
                         player_obj = curr_game.get_player_by_id(user_id)
                         assert player_obj != None
-                        hint = curr_game.return_valid_moves(player_obj)
+
+                        player_tile = curr_game.get_player(
+                            curr_game.players.index(player_obj)
+                        )
+                        hint = curr_game.return_valid_moves(player_tile)
                         self.send_response(200)
                     except AssertionError:
                         self.send_response(400)

@@ -309,7 +309,12 @@ function preload() {
 
     this.load.image('target', '/static/Target.png');
     try {
-        refreshHints();
+        let get_hints = refreshHints();
+        Promise.resolve(get_hints).then(function (get_hints) {
+            hints = get_hints;
+            console.log(hints);
+        })
+
     }
     catch (e) {
         console.log(e);
@@ -566,10 +571,8 @@ async function refreshHints() {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ "id": id, 'playerid': player }),
-    }).then(function (response) {
-        hints = response.text();
-        console.log("hints: " + hints);
-    });
+    })
+    return response.text();
 
 }
 

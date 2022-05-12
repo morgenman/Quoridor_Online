@@ -712,6 +712,8 @@ class game:
                 return i
         return None
 
+    
+
     # legacy code
     # ascii art representation of board
     def draw(self):
