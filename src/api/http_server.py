@@ -324,7 +324,7 @@ class MyServer(BaseHTTPRequestHandler):
                         assert player_obj != None
 
                         player_tile = curr_game.get_player(
-                            curr_game.players.index(player_obj)
+                            curr_game.players.index(player_obj) + 1
                         )
                         hint = curr_game.return_valid_moves(player_tile)
                         self.send_response(200)

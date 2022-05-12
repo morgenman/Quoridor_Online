@@ -702,17 +702,15 @@ class game:
     def get_player(self, player):
         for y in self.board:
             for x in y:
-                if x.player == player:
+                if int(x.player) == int(player):
                     return x
         return None
 
     def get_player_by_id(self, playerid):
         for i in self.players:
-            if i.get_id() == playerid:
+            if str(i.get_id()) == str(playerid):
                 return i
         return None
-
-    
 
     # legacy code
     # ascii art representation of board
