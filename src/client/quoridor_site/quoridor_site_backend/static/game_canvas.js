@@ -16,7 +16,6 @@ let timerId = setTimeout(function request() {
     //console.log('Requesting...');
     try {
         board = refreshBoard();
-        get_hints = refreshHints();
     }
     catch (error) {
         //console.log(error);
@@ -26,10 +25,7 @@ let timerId = setTimeout(function request() {
     Promise.resolve(board).then(function (board) {
         document.getElementById('state').value = board;
     });
-    Promise.resolve(get_hints).then(function (get_hints) {
-        hints = get_hints;
-        console.log("hints: " + hints);
-    });
+
 
     timerId = setTimeout(request, delay);
 
@@ -312,7 +308,12 @@ function preload() {
     this.load.spritesheet('v_wall', '/static/v_wall.png', { frameWidth: 77, frameHeight: 230, endFrame: 0 });
 
     this.load.image('target', '/static/Target.png');
-
+    try {
+        refreshHints();
+    }
+    catch (e) {
+        console.log(e);
+    }
 }
 
 
@@ -449,8 +450,7 @@ function create() {
 
 
     //This handles the potential moves
-    var highlight = " e2f1d1 "
-    var active_tiles = (String(highlight).trim()).match(/.{2}/g);
+    var active_tiles = (String(hints).trim()).match(/.{2}/g);
     var x = 0;
     var y = 0;
     for (var tile in active_tiles) {
@@ -566,8 +566,11 @@ async function refreshHints() {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ "id": id, 'playerid': player }),
-    })
-    return response.text();
+    }).then(function (response) {
+        hints = response.text();
+        console.log("hints: " + hints);
+    });
+
 }
 
 async function makeMove(x, y) {
