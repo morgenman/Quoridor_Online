@@ -319,15 +319,9 @@ class MyServer(BaseHTTPRequestHandler):
                     try:
                         curr_game = games.get(post_body["id"])
                         user_id = post_body["playerid"]
-                        in_game = False
-                        player_obj = None
 
-                        for plyr in curr_game.players:
-                            if plyr.get_id() == user_id:
-                                in_game = True
-                                player_obj = plyr
-
-                        assert in_game
+                        player_obj = curr_game.get_player_by_id(user_id)
+                        assert player_obj != None
                         hint = curr_game.return_valid_moves(player_obj)
                         self.send_response(200)
                     except AssertionError:

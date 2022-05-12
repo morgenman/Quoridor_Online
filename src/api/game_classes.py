@@ -706,6 +706,12 @@ class game:
                     return x
         return None
 
+    def get_player_by_id(self, playerid):
+        for i in self.players:
+            if i.get_id() == playerid:
+                return i
+        return None
+
     # legacy code
     # ascii art representation of board
     def draw(self):
