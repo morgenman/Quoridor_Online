@@ -219,7 +219,7 @@ class game:
         if distance == 2:
             # if target is north of player
             if target.x == user.x and target.y == user.y + 2:
-                location = copy.deepcopy(player.get_north())
+                location = player.get_north()
                 if self.check_walls(player, location):
                     if self.check_walls(location, target):
                         if location.get_player() != 0:
@@ -227,7 +227,7 @@ class game:
                             return True
             # if target is east of player
             elif target.x == user.x + 2 and target.y == user.y:
-                location = copy.deepcopy(player.get_east())
+                location = player.get_east()
                 if self.check_walls(player, location):
                     if self.check_walls(location, target):
                         if location.get_player() != 0:
@@ -235,7 +235,7 @@ class game:
                             return True
             # if target is south of player
             elif target.x == user.x and target.y == user.y - 2:
-                location = copy.deepcopy(player.get_south())
+                location = player.get_south()
                 if self.check_walls(player, location):
                     if self.check_walls(location, target):
                         if location.get_player() != 0:
@@ -243,7 +243,7 @@ class game:
                             return True
             # if target is west of player
             elif target.x == user.x - 2 and target.y == user.y:
-                location = copy.deepcopy(player.get_west())
+                location = player.get_west()
                 if self.check_walls(player, location):
                     if self.check_walls(location, target):
                         if location.get_player() != 0:
@@ -258,7 +258,7 @@ class game:
                 print("Northeast Diagonal Check")
                 # If the opposing player is to the east
                 if player.get_east().get_player() != 0:
-                    location = copy.deepcopy(player.get_east())
+                    location = player.get_east()
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
                         if location.if_east():
@@ -268,7 +268,7 @@ class game:
                                     return True
                 # If the opposing player is to the north
                 elif player.get_north().get_player() != 0:
-                    location = copy.deepcopy(player.get_north())
+                    location = player.get_north()
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
                         if location.if_north():
@@ -283,7 +283,7 @@ class game:
                 print("Southeast Diagonal Check")
                 # If the opposing player is to the east
                 if player.get_east().get_player() != 0:
-                    location = copy.deepcopy(player.get_east())
+                    location = player.get_east()
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
                         if location.if_east():
@@ -293,7 +293,7 @@ class game:
                                     return True
                 # If the opposing player is to the south
                 elif player.get_south().get_player() != 0:
-                    location = copy.deepcopy(player.get_south())
+                    location = player.get_south()
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
                         if location.if_south():
@@ -308,7 +308,7 @@ class game:
                 print("Southwest Diagonal Check")
                 # If the opposing player is to the west
                 if player.get_west().get_player() != 0:
-                    location = copy.deepcopy(player.get_west())
+                    location = player.get_west()
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
                         if location.if_west():
@@ -318,7 +318,7 @@ class game:
                                     return True
                 # If the opposing player is to the south
                 elif player.get_south().get_player() != 0:
-                    location = copy.deepcopy(player.get_south())
+                    location = player.get_south()
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
                         if location.if_south():
@@ -333,7 +333,7 @@ class game:
                 print("Northwest Diagonal Check")
                 # If the opposing player is to the west
                 if player.get_west().get_player() != 0:
-                    location = copy.deepcopy(player.get_west())
+                    location = player.get_west()
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
                         if location.if_west():
@@ -343,7 +343,7 @@ class game:
                                     return True
                 # If the opposing player is to the north
                 elif player.get_north().get_player() != 0:
-                    location = copy.deepcopy(player.get_north())
+                    location = player.get_north()
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
                         if location.if_north():

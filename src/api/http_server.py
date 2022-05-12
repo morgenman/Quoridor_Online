@@ -294,6 +294,7 @@ class MyServer(BaseHTTPRequestHandler):
                         curr_game = games.get(post_body["id"])
                         # print("Sending game " + post_body["id"])
                         # print("Game State: " + curr_game.__repr__())
+                        #curr_game.return_valid_moves(post_body["playerid"])
 
                         self.send_response(200)
                     except AssertionError:
