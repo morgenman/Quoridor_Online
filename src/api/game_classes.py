@@ -190,20 +190,23 @@ class game:
         self.checked = []
 
     def move(self, move):
-        player = self.get_player(int(move[1]))
+        playerid = int(move[1])
+        player = self.get_player(playerid)
         destination = self.get(move[2:])
         print(self.return_valid_moves(player))
         print("player is " + str(player))
         print("destination is " + str(destination))
+        print("valid moves are " + self.return_valid_moves(player))
         # print("valid move is " + str(self.valid_player_move(player, destination)))
 
         if self.valid_player_move(player, destination):
             print("hmm2")
             player.set_player(0)
-            destination.set_player(int(move[1]))
+            destination.set_player(playerid)
             self.turn += 1
             if self.turn == self.num_players + 1:
                 self.turn = 1
+            print(str(self.if_done(playerid, destination)))
 
     # function that checks if the player move is valid or not
     def valid_player_move(self, player, target):
@@ -448,7 +451,7 @@ class game:
         wall_tile = temp_game.get(wall)
 
         # check if a wall can be placed there
-        if wall_tile.can_place and (wall_tile.get_true_east().get_noth() != None):
+        if wall_tile.can_place and (wall_tile.get_true_east().get_north() != None):
             wall_tile.set_wall_h()
         else:
             print("a wall cannot be placed there")
@@ -568,6 +571,32 @@ class game:
         if self.reached(player, checking.get_west(), level, iterations):
             return True
         # print("Reached the end of " + checking.__repr__())
+        return False
+
+    # Returns true if the player has won, false otherwise
+    def if_done(self, playerid, location):
+        # checks for 2 player game
+        if self.num_players == 2:
+            #checks player 1
+            if str(playerid) == 1:
+                if location.y == 9:
+                    return True
+            else:
+                if location.y == 1:
+                    return True
+        elif self.num_players == 4:
+            if str(playerid) == 1:
+                if location.y == 9:
+                    return True
+            elif str(playerid) == 2:
+                if location.x == 9:
+                    return True
+            elif str(playerid) == 3:
+                if location.y == 1:
+                    return True
+            else:
+                if location.x == 1:
+                    return True
         return False
 
     # checks who's turn it is to who's sending the move request

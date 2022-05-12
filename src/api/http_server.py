@@ -436,41 +436,41 @@ print("--------------------tests--------------------")
 #    print("e9 cannot reach 1")
 
 
-print("testing horizontal wall placement")
-test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 0 / 1 ")
-test_game.players = [player('One'), player('Two')]
-print("starting with this game representation: " + test_game.__repr__())
-print("this one should fail because it blocks player 1's path")
-test_game.place_wall_h('h6') #should fail
-print(test_game.__repr__())
-print("this one should pass")
-test_game.place_wall_h('g6') #should work
-print(test_game.__repr__())
-print("this one should fail because player2 doesn't have any walls")
-test_game.place_wall_h('a2') #should fail due to player having no walls
-print(test_game.__repr__())
+#print("testing horizontal wall placement")
+#test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 0 / 1 ")
+#test_game.players = [player('One'), player('Two')]
+#print("starting with this game representation: " + test_game.__repr__())
+#print("this one should fail because it blocks player 1's path")
+#test_game.place_wall_h('h6') #should fail
+#print(test_game.__repr__())
+#print("this one should pass")
+#test_game.place_wall_h('g6') #should work
+#print(test_game.__repr__())
+#print("this one should fail because player2 doesn't have any walls")
+#test_game.place_wall_h('a2') #should fail due to player having no walls
+#print(test_game.__repr__())
 
-print()
-print("testing vertical wall placement")
-test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 0 / 1 ")
-print("starting with this game representation: " + test_game.__repr__())
-print("this one should fail because it blocks player 1's path")
-test_game.place_wall_v('h5') #should fail
-print(test_game.__repr__())
-print("this one should pass")
-test_game.place_wall_v('h4') #should work
-print(test_game.__repr__())
-print("this one should fail because player2 doesn't have any walls")
-test_game.place_wall_h('a2') #should fail due to player having no walls
-print(test_game.__repr__())
+#print()
+#print("testing vertical wall placement")
+#test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 0 / 1 ")
+#print("starting with this game representation: " + test_game.__repr__())
+#print("this one should fail because it blocks player 1's path")
+#test_game.place_wall_v('h5') #should fail
+#print(test_game.__repr__())
+#print("this one should pass")
+#test_game.place_wall_v('h4') #should work
+#print(test_game.__repr__())
+#print("this one should fail because player2 doesn't have any walls")
+#test_game.place_wall_h('a2') #should fail due to player having no walls
+#print(test_game.__repr__())
 
-print()
-print("testing wall bug")
-test_game = shorthand_to_game(" e4 / f4 / e1 e9 / 9 9 / 1 ")
-print("starting with this game representation: " + test_game.__repr__())
-print("placing a vertical wall at d4")
-test_game.place_wall_v('d4')
-print(test_game.__repr__())
+#print()
+#print("testing wall bug")
+#test_game = shorthand_to_game(" e4 / f4 / e1 e9 / 9 9 / 1 ")
+#print("starting with this game representation: " + test_game.__repr__())
+#print("placing a vertical wall at d4")
+#test_game.place_wall_v('d4')
+#print(test_game.__repr__())
 
 
 try:
