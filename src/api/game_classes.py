@@ -71,19 +71,35 @@ class tile:
     # return True if there is a wall
     # return northern edge
     def if_north(self):
-        return self.w_north
+        north = copy.deepcopy(self)
+        if north.y + 1 > 9:
+            return True
+        else:
+            return self.w_north
 
     # return eastern edge
     def if_east(self):
-        return self.w_east
+        east = copy.deepcopy(self)
+        if east.x + 1 > 9:
+            return True
+        else:
+            return self.w_east
 
     # return southern edge
     def if_south(self):
-        return self.w_south
+        south = copy.deepcopy(self)
+        if south.y - 1 <= 0:
+            return True
+        else:
+            return self.w_south
 
     # return western edge
     def if_west(self):
-        return self.w_west
+        west = copy.deepcopy(self)
+        if west.x - 1 <= 0:
+            return True
+        else:
+            return self.w_west
 
     # return player character if player is present
     def get_player(self):
@@ -97,11 +113,7 @@ class tile:
     # first is a wall north of this tile
     # second is a wall north of the tile east to this wall
     def set_wall_h(self):
-        if (
-            self.can_place
-            and (self.get_true_east().get_north() != None)
-            and self.get_north() != None
-        ):
+        if self.can_place and (self.get_true_east().get_north() != None):
             # print("Horizontal wall at " + self.__repr__())
             self.get_true_north().w_south = True
             self.w_north = True
@@ -114,11 +126,7 @@ class tile:
     # first is a wall east of this tile
     # second is a wall east of the tile north to this wall
     def set_wall_v(self):
-        if (
-            self.can_place
-            and (self.get_true_north().get_east() != None)
-            and self.get_east() != None
-        ):
+        if self.can_place and (self.get_true_north().get_east() != None):
             # print("Vertical wall at " + self.__repr__())
             self.get_true_north().get_true_east().w_west = True
             self.get_true_north().w_east = True
@@ -184,6 +192,7 @@ class game:
     def move(self, move):
         player = self.get_player(int(move[1]))
         destination = self.get(move[2:])
+        print(self.return_valid_moves(player))
         print("player is " + str(player))
         print("destination is " + str(destination))
         # print("valid move is " + str(self.valid_player_move(player, destination)))
@@ -192,14 +201,17 @@ class game:
             print("hmm2")
             player.set_player(0)
             destination.set_player(int(move[1]))
-            self.next()
+            self.turn += 1
+            if self.turn == self.num_players + 1:
+                self.turn = 1
 
     # function that checks if the player move is valid or not
     def valid_player_move(self, player, target):
         distance = player.distance(target)
         user = copy.deepcopy(player)
         print("distance = " + str(distance))
-
+        print("player is " + str(player))
+        print("destination is " + str(target))
         # Jumping over player case
         if distance == 2:
             # if target is north of player
@@ -236,9 +248,11 @@ class game:
                             return True
 
         # Moving diagonal next to another player case
-        if distance != 1:
-            # if target is northeast of player
+        if distance == 1:
+            print("Diagonal Check")
+        # if target is northeast of player
             if target.x == user.x + 1 and target.y == user.y + 1:
+                print("Northeast Diagonal Check")
                 # If the opposing player is to the east
                 if player.get_east().get_player() != 0:
                     location = copy.deepcopy(player.get_east())
@@ -250,7 +264,7 @@ class game:
                                     print("NE Diagonal")
                                     return True
                 # If the opposing player is to the north
-                else:
+                elif player.get_north().get_player() != 0:
                     location = copy.deepcopy(player.get_north())
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
@@ -259,8 +273,11 @@ class game:
                                 if location.get_player() != 0:
                                     print("NE Diagonal")
                                     return True
+                else:
+                    return False
             # if target is southeast of player
             elif target.x == user.x + 1 and target.y == user.y - 1:
+                print("Southeast Diagonal Check")
                 # If the opposing player is to the east
                 if player.get_east().get_player() != 0:
                     location = copy.deepcopy(player.get_east())
@@ -272,7 +289,7 @@ class game:
                                     print("SE Diagonal")
                                     return True
                 # If the opposing player is to the south
-                else:
+                elif player.get_south().get_player() != 0:
                     location = copy.deepcopy(player.get_south())
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
@@ -281,8 +298,11 @@ class game:
                                 if location.get_player() != 0:
                                     print("SE Diagonal")
                                     return True
+                else:
+                    return False
             # if target is southwest of player
             elif target.x == user.x - 1 and target.y == user.y - 1:
+                print("Southwest Diagonal Check")
                 # If the opposing player is to the west
                 if player.get_west().get_player() != 0:
                     location = copy.deepcopy(player.get_west())
@@ -294,7 +314,7 @@ class game:
                                     print("SW Diagonal")
                                     return True
                 # If the opposing player is to the south
-                else:
+                elif player.get_south().get_player() != 0:
                     location = copy.deepcopy(player.get_south())
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
@@ -303,8 +323,11 @@ class game:
                                 if location.get_player() != 0:
                                     print("SW Diagonal")
                                     return True
+                else:
+                    return False
             # if target is northwest of player
             elif target.x == user.x - 1 and target.y == user.y + 1:
+                print("Northwest Diagonal Check")
                 # If the opposing player is to the west
                 if player.get_west().get_player() != 0:
                     location = copy.deepcopy(player.get_west())
@@ -316,7 +339,7 @@ class game:
                                     print("NW Diagonal")
                                     return True
                 # If the opposing player is to the north
-                else:
+                elif player.get_north().get_player() != 0:
                     location = copy.deepcopy(player.get_north())
                     if self.check_walls(player, location):
                         # Check for the wall behind the opposing player, required for this case
@@ -325,6 +348,8 @@ class game:
                                 if location.get_player() != 0:
                                     print("NW Diagonal")
                                     return True
+                else:
+                    return False
 
         # Checks if the tile you want to travel to is too far or not.
         if distance > 1:
@@ -360,22 +385,70 @@ class game:
             return not player.if_west()
         return True
 
+    def return_valid_moves(self, player):
+        valid_moves = ""
+        #Moves related to the north
+        if not player.if_north():
+            ntile = player.get_north()
+            if self.valid_player_move(player, player.get_north()):
+                valid_moves += self.tile_string(ntile)
+            if not ntile.if_north():
+                if self.valid_player_move(player, ntile.get_north()):
+                    valid_moves += self.tile_string(ntile.get_north())
+            if not ntile.if_east():
+                if self.valid_player_move(player, ntile.get_east()):
+                    valid_moves += self.tile_string(ntile.get_east())
+            if not ntile.if_west():
+                if self.valid_player_move(player, ntile.get_west()):
+                    valid_moves += self.tile_string(ntile.get_west())
+        # Moves related to the south
+        if not player.if_south():
+            stile = player.get_south()
+            if self.valid_player_move(player, player.get_south()):
+                valid_moves += self.tile_string(stile)
+            if not stile.if_south():
+                if self.valid_player_move(player, stile.get_south()):
+                    valid_moves += self.tile_string(stile.get_south())
+            if not stile.if_east():
+                if self.valid_player_move(player, stile.get_east()):
+                    valid_moves += self.tile_string(stile.get_east())
+            if not stile.if_west():
+                if self.valid_player_move(player, stile.get_west()):
+                    valid_moves += self.tile_string(stile.get_west())
+        #Moves related to the east
+        if not player.if_east():
+            etile = player.get_east()
+            if self.valid_player_move(player, player.get_east()):
+                valid_moves += self.tile_string(etile)
+            if not etile.if_east():
+                if self.valid_player_move(player, etile.get_east()):
+                    valid_moves += self.tile_string(etile.get_east())
+        #Moves related to the west
+        if not player.if_west():
+            wtile = player.get_west()
+            if self.valid_player_move(player, player.get_west()):
+                valid_moves += self.tile_string(wtile)
+            if not wtile.if_west():
+                if self.valid_player_move(player, wtile.get_west()):
+                    valid_moves += self.tile_string(wtile.get_west())
+        return valid_moves
+
+
+    # sends tile coordinates in string form, ex: "a1"
+    def tile_string(self, target):
+        x = chr(target.x + ord("a") - 1)
+        y = target.y
+        return str(x) + str(y)
+
+
     # places horizintal walls while checking for valid path
     def place_wall_h(self, wall):
-        # fails if the player doesn't have any walls to place
-        if int(self.walls[int(self.get_turn()) - 1]) < 1:
-            print("player" + str(self.get_turn()) + " has no more walls")
-            return None
         # makes copy of game with added wall
         temp_game = copy.deepcopy(self)
         wall_tile = temp_game.get(wall)
 
         # check if a wall can be placed there
-        if (
-            wall_tile.can_place
-            and (wall_tile.get_true_east().get_north() != None)
-            and wall_tile.get_north() != None
-        ):
+        if wall_tile.can_place and (wall_tile.get_true_east().get_noth() != None):
             wall_tile.set_wall_h()
         else:
             print("a wall cannot be placed there")
@@ -384,29 +457,16 @@ class game:
         # if all players pass, place wall in actual game
         if temp_game.all_players_can_reach():
             self.get(wall).set_wall_h()
-            self.walls[int(self.get_turn()) - 1] = (
-                int(self.walls[int(self.get_turn()) - 1]) - 1
-            )
-            self.next()
             print("successfully placed a horizontal wall at " + str(wall))
 
     # places vertical walls while checking for valid path
     def place_wall_v(self, wall):
-        # fails if the player doesn't have any walls to place
-        if int(self.walls[int(self.get_turn()) - 1]) < 1:
-            print("player" + str(self.get_turn()) + " has no more walls")
-            return None
         # makes copy of game with added wall
         temp_game = copy.deepcopy(self)
         wall_tile = temp_game.get(wall)
-        print(str(wall_tile))
 
         # check if a wall can be placed there
-        if (
-            wall_tile.can_place
-            and (wall_tile.get_true_north().get_east() != None)
-            and wall_tile.get_east() != None
-        ):
+        if wall_tile.can_place and (wall_tile.get_true_north().get_east() != None):
             wall_tile.set_wall_v()
         else:
             print("a wall cannot be placed there")
@@ -414,12 +474,7 @@ class game:
         # print(temp_game.__repr__())
         # if all players pass, place wall in actual game
         if temp_game.all_players_can_reach():
-            print(str(self.get(wall)))
             self.get(wall).set_wall_v()
-            self.walls[int(self.get_turn()) - 1] = (
-                int(self.walls[int(self.get_turn()) - 1]) - 1
-            )
-            self.next()
             print("successfully placed a vertical wall at " + str(wall))
 
     # check that all player can reach their desired end
@@ -516,7 +571,7 @@ class game:
         return False
 
     # checks who's turn it is to who's sending the move request
-    def check_player(self, playerid):
+    def check_player(self, playerid, move):
         curr_player = self.players[int(self.get_turn()) - 1]
         print(
             "Current Player ID: "
@@ -527,12 +582,10 @@ class game:
         assert int(curr_player.get_id()) == int(
             playerid
         ), f"it is not {playerid}'s turn"
-
-    def check_piece(self, move):
         print(str(self.get_turn()) + " and " + move[1])
         assert int(self.get_turn()) == int(
             move[1]
-        ), f"player{str(self.get_turn())} cannot move player{move[1]}'s piece"
+        ), f"{playerid} cannot move {curr_player.get_id()}'s piece"
 
     def set_walls(self, walls):
         self.walls = walls
@@ -547,7 +600,7 @@ class game:
         if self.turn == self.num_players:
             self.turn = 1
         else:
-            self.turn = int(self.turn) + 1
+            self.turn += 1
 
     def get_turn(self):
         return self.turn
@@ -631,9 +684,6 @@ class game:
                         ignore_h = True
                     else:
                         ignore_h = False
-        for x in range(size):
-            for y in range(size):
-                tile = self.get(x + 1, y + 1)
                 if tile.w_east is True:
                     code = tile.get_coor()
                     if not ignore_v:

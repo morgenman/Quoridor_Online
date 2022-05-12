@@ -56,6 +56,12 @@ class move_checker:
         return True
 
 
+    def valid_wall_placement_v(location):
+        if location.if_north():
+            if location.
+        return True
+
+
 # prints the Instance of the User
 
 user1 = move_checker("a1", 2, "b3", "b1")
