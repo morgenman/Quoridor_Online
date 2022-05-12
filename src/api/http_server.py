@@ -258,7 +258,7 @@ class MyServer(BaseHTTPRequestHandler):
                             + " at "
                             + str(post_body["wall"])
                         )
-                        # curr_game.check_player(post_body["playerid"])
+                        curr_game.check_player(post_body["playerid"])
 
                         if post_body["direction"] == "horizontal":
                             curr_game.place_wall_h(post_body["wall"])

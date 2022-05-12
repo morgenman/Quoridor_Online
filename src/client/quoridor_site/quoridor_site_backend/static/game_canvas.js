@@ -7,6 +7,7 @@ var p2;
 var p3;
 var p4;
 var wall_group;
+var hint_group;
 var count = 0;
 var hints;
 
@@ -158,7 +159,33 @@ function update() {
                 y: Math.floor((-1 * (y - center.y)) / tile_size) + 5
             }
         }
+        try {
+            let get_hints = refreshHints();
+            Promise.resolve(get_hints).then(function (get_hints) {
+                hints = get_hints;
+                console.log(hints);
+            })
+            hint_group.clear(true, true);
+            var active_tiles = (String(hints).trim()).match(/.{2}/g);
+            var x = 0;
+            var y = 0;
+            for (var tile in active_tiles) {
+                var strng = active_tiles[tile].split("");
+                x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+                y = strng[1]; // y position
+                let coor = coor_2_abs(x, y);
+    
+                hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3));
+            }
+    
+    
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
+    
+
 
 
 }
@@ -324,6 +351,7 @@ function preload() {
 
 function create() {
     wall_group = this.add.group();
+    hint_group = this.add.group();
     // Logic for full screen image. Keep the frame square
     let image = this.add.image(config.width / 2, config.height / 2, 'bg');
     let scaleX = this.cameras.main.width / image.width
@@ -464,7 +492,7 @@ function create() {
         y = strng[1]; // y position
         let coor = coor_2_abs(x, y);
 
-        this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3);
+        hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3));
     }
 
     // Rainbow Grid
