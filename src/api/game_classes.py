@@ -97,7 +97,11 @@ class tile:
     # first is a wall north of this tile
     # second is a wall north of the tile east to this wall
     def set_wall_h(self):
-        if self.can_place and (self.get_true_east().get_north() != None):
+        if (
+            self.can_place
+            and (self.get_true_east().get_north() != None)
+            and self.get_north() != None
+        ):
             # print("Horizontal wall at " + self.__repr__())
             self.get_true_north().w_south = True
             self.w_north = True
@@ -110,7 +114,11 @@ class tile:
     # first is a wall east of this tile
     # second is a wall east of the tile north to this wall
     def set_wall_v(self):
-        if self.can_place and (self.get_true_north().get_east() != None):
+        if (
+            self.can_place
+            and (self.get_true_north().get_east() != None)
+            and self.get_east() != None
+        ):
             # print("Vertical wall at " + self.__repr__())
             self.get_true_north().get_true_east().w_west = True
             self.get_true_north().w_east = True
@@ -363,7 +371,11 @@ class game:
         wall_tile = temp_game.get(wall)
 
         # check if a wall can be placed there
-        if wall_tile.can_place and (wall_tile.get_true_east().get_north() != None):
+        if (
+            wall_tile.can_place
+            and (wall_tile.get_true_east().get_north() != None)
+            and wall_tile.get_north() != None
+        ):
             wall_tile.set_wall_h()
         else:
             print("a wall cannot be placed there")
@@ -387,9 +399,14 @@ class game:
         # makes copy of game with added wall
         temp_game = copy.deepcopy(self)
         wall_tile = temp_game.get(wall)
+        print(str(wall_tile))
 
         # check if a wall can be placed there
-        if wall_tile.can_place and (wall_tile.get_true_north().get_east() != None):
+        if (
+            wall_tile.can_place
+            and (wall_tile.get_true_north().get_east() != None)
+            and wall_tile.get_east() != None
+        ):
             wall_tile.set_wall_v()
         else:
             print("a wall cannot be placed there")
@@ -397,6 +414,7 @@ class game:
         # print(temp_game.__repr__())
         # if all players pass, place wall in actual game
         if temp_game.all_players_can_reach():
+            print(str(self.get(wall)))
             self.get(wall).set_wall_v()
             self.walls[int(self.get_turn()) - 1] = (
                 int(self.walls[int(self.get_turn()) - 1]) - 1
@@ -613,6 +631,9 @@ class game:
                         ignore_h = True
                     else:
                         ignore_h = False
+        for x in range(size):
+            for y in range(size):
+                tile = self.get(x + 1, y + 1)
                 if tile.w_east is True:
                     code = tile.get_coor()
                     if not ignore_v:

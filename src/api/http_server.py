@@ -258,7 +258,8 @@ class MyServer(BaseHTTPRequestHandler):
                             + " at "
                             + str(post_body["wall"])
                         )
-                        curr_game.check_player(post_body["playerid"])
+                        #curr_game.check_player(post_body["playerid"])
+
                         if post_body["direction"] == "horizontal":
                             curr_game.place_wall_h(post_body["wall"])
                         elif post_body["direction"] == "vertical":
@@ -461,6 +462,14 @@ test_game.place_wall_v('h4') #should work
 print(test_game.__repr__())
 print("this one should fail because player2 doesn't have any walls")
 test_game.place_wall_h('a2') #should fail due to player having no walls
+print(test_game.__repr__())
+
+print()
+print("testing wall bug")
+test_game = shorthand_to_game(" e4 / f4 / e1 e9 / 9 9 / 1 ")
+print("starting with this game representation: " + test_game.__repr__())
+print("placing a vertical wall at d4")
+test_game.place_wall_v('d4')
 print(test_game.__repr__())
 
 
