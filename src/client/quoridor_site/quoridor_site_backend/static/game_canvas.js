@@ -8,6 +8,7 @@ var p3;
 var p4;
 var wall_group;
 var count = 0;
+var hints;
 
 
 let timerId = setTimeout(function request() {
@@ -15,6 +16,7 @@ let timerId = setTimeout(function request() {
     //console.log('Requesting...');
     try {
         board = refreshBoard();
+        get_hints = refreshHints();
     }
     catch (error) {
         //console.log(error);
@@ -23,6 +25,10 @@ let timerId = setTimeout(function request() {
     }
     Promise.resolve(board).then(function (board) {
         document.getElementById('state').value = board;
+    });
+    Promise.resolve(get_hints).then(function (get_hints) {
+        hints = get_hints;
+        console.log("hints: " + hints);
     });
 
     timerId = setTimeout(request, delay);
@@ -549,6 +555,17 @@ async function refreshBoard() {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ "id": id })
+    })
+    return response.text();
+}
+
+async function refreshHints() {
+    var id = document.getElementById('game-id').value;
+    var player = document.getElementById('player-id').value;
+    const response = await fetch("http://localhost:9696/get_hint", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ "id": id, 'playerid': player }),
     })
     return response.text();
 }

@@ -258,7 +258,7 @@ class MyServer(BaseHTTPRequestHandler):
                             + " at "
                             + str(post_body["wall"])
                         )
-                        curr_game.check_player(post_body["playerid"])
+                        # curr_game.check_player(post_body["playerid"])
 
                         if post_body["direction"] == "horizontal":
                             curr_game.place_wall_h(post_body["wall"])
@@ -294,7 +294,7 @@ class MyServer(BaseHTTPRequestHandler):
                         curr_game = games.get(post_body["id"])
                         # print("Sending game " + post_body["id"])
                         # print("Game State: " + curr_game.__repr__())
-                        #curr_game.return_valid_moves(post_body["playerid"])
+                        # curr_game.return_valid_moves(post_body["playerid"])
 
                         self.send_response(200)
                     except AssertionError:
@@ -310,6 +310,39 @@ class MyServer(BaseHTTPRequestHandler):
                     self.wfile.write(
                         bytes(
                             games.get(post_body["id"]).__repr__(),
+                            "utf-8",
+                        )
+                    )
+
+                case "/get_hint":
+                    hint = ""
+                    try:
+                        curr_game = games.get(post_body["id"])
+                        user_id = post_body["playerid"]
+                        in_game = False
+                        player_obj = None
+
+                        for plyr in curr_game.players:
+                            if plyr.get_id() == user_id:
+                                in_game = True
+                                player_obj = plyr
+
+                        assert in_game
+                        hint = curr_game.return_valid_moves(player_obj)
+                        self.send_response(200)
+                    except AssertionError:
+                        self.send_response(400)
+                        print("Something went wrong with getting hints")
+                    self.send_header("Content-type", "text/html; charset=utf-8")
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                    self.send_header(
+                        "Access-Control-Allow-Headers", "Content-Type, Authorization"
+                    )
+                    self.end_headers()
+                    self.wfile.write(
+                        bytes(
+                            hint,
                             "utf-8",
                         )
                     )
@@ -437,41 +470,41 @@ print("--------------------tests--------------------")
 #    print("e9 cannot reach 1")
 
 
-#print("testing horizontal wall placement")
-#test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 0 / 1 ")
-#test_game.players = [player('One'), player('Two')]
-#print("starting with this game representation: " + test_game.__repr__())
-#print("this one should fail because it blocks player 1's path")
-#test_game.place_wall_h('h6') #should fail
-#print(test_game.__repr__())
-#print("this one should pass")
-#test_game.place_wall_h('g6') #should work
-#print(test_game.__repr__())
-#print("this one should fail because player2 doesn't have any walls")
-#test_game.place_wall_h('a2') #should fail due to player having no walls
-#print(test_game.__repr__())
+# print("testing horizontal wall placement")
+# test_game = shorthand_to_game(" a4c4e4g4  / h5  / e1 e9 / 10 0 / 1 ")
+# test_game.players = [player('One'), player('Two')]
+# print("starting with this game representation: " + test_game.__repr__())
+# print("this one should fail because it blocks player 1's path")
+# test_game.place_wall_h('h6') #should fail
+# print(test_game.__repr__())
+# print("this one should pass")
+# test_game.place_wall_h('g6') #should work
+# print(test_game.__repr__())
+# print("this one should fail because player2 doesn't have any walls")
+# test_game.place_wall_h('a2') #should fail due to player having no walls
+# print(test_game.__repr__())
 
-#print()
-#print("testing vertical wall placement")
-#test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 0 / 1 ")
-#print("starting with this game representation: " + test_game.__repr__())
-#print("this one should fail because it blocks player 1's path")
-#test_game.place_wall_v('h5') #should fail
-#print(test_game.__repr__())
-#print("this one should pass")
-#test_game.place_wall_v('h4') #should work
-#print(test_game.__repr__())
-#print("this one should fail because player2 doesn't have any walls")
-#test_game.place_wall_h('a2') #should fail due to player having no walls
-#print(test_game.__repr__())
+# print()
+# print("testing vertical wall placement")
+# test_game = shorthand_to_game(" a4c4e4g4h6  /  / e1 e9 / 10 0 / 1 ")
+# print("starting with this game representation: " + test_game.__repr__())
+# print("this one should fail because it blocks player 1's path")
+# test_game.place_wall_v('h5') #should fail
+# print(test_game.__repr__())
+# print("this one should pass")
+# test_game.place_wall_v('h4') #should work
+# print(test_game.__repr__())
+# print("this one should fail because player2 doesn't have any walls")
+# test_game.place_wall_h('a2') #should fail due to player having no walls
+# print(test_game.__repr__())
 
-#print()
-#print("testing wall bug")
-#test_game = shorthand_to_game(" e4 / f4 / e1 e9 / 9 9 / 1 ")
-#print("starting with this game representation: " + test_game.__repr__())
-#print("placing a vertical wall at d4")
-#test_game.place_wall_v('d4')
-#print(test_game.__repr__())
+# print()
+# print("testing wall bug")
+# test_game = shorthand_to_game(" e4 / f4 / e1 e9 / 9 9 / 1 ")
+# print("starting with this game representation: " + test_game.__repr__())
+# print("placing a vertical wall at d4")
+# test_game.place_wall_v('d4')
+# print(test_game.__repr__())
 
 
 try:
