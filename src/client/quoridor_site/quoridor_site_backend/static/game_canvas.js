@@ -7,6 +7,7 @@ var p2;
 var p3;
 var p4;
 var wall_group;
+var count = 0;
 
 
 let timerId = setTimeout(function request() {
@@ -165,6 +166,7 @@ function update() {
 
 class wall_sprite extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, name, i, j) {
+        count++;
         var visible_wall = false;
         if (name === 'h_wall') {
             super(scene, x, y - 40, name);
@@ -181,9 +183,8 @@ class wall_sprite extends Phaser.GameObjects.Sprite {
         this.visible = false;
         this.on('pointerover', function (pointer) {
             // console.log(pointer.x + "," + pointer.y);
-            // let coor = abs_2_coor(pointer.x, pointer.y - 40);
-            // console.log(coor.x + "," + coor.y);
             if (interactive) this.visible = true;
+
         });
         this.on('pointerout', function (pointer) {
             if (interactive) if (!visible_wall) this.visible = false;
@@ -201,17 +202,20 @@ class wall_sprite extends Phaser.GameObjects.Sprite {
             }
         }
 
-        this.on('pointerdown', function (pointer, gameObject) {
+        this.on('pointerup', function (pointer) {
             if (interactive) {
                 this.setInteractive(false);
                 this.visible = true;
                 this.setAlpha(1);
-                let coor = abs_2_coor(pointer.x, pointer.y + 40);
+                visible_wall = true;
                 //let coor = abs_2_coor(pointer.x - gameObject.width / 4, (pointer.y - 40) - gameObject.height / 4);
                 if (name === 'h_wall') {
+                    let coor = abs_2_coor(pointer.x, pointer.y + 40);
                     placeWall(this.i, this.j, true);
                 }
                 else if (name === 'v_wall') {
+                    let coor = abs_2_coor(pointer.x - 40, pointer.y);
+
                     placeWall(this.j, this.i, false);
                 }
             }
@@ -241,6 +245,7 @@ var config = {
     parent: 'board',
     width: 1000,
     height: 1000,
+    inputActivePointers: 1,
     scale: {
         // Or set parent divId here
         parent: 'board',
@@ -396,45 +401,45 @@ function create() {
     }
 
 
-    var banned_walls = [];
+    // var banned_walls = [];
 
-    let temp_h_wall = [];
-    let temp_v_wall = [];
-    var h_walls = (String(temp[0]).trim()).match(/.{2}/g);
-    for (var wall in h_walls) {
-        var strng = h_walls[wall].split("");
-        x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
-        y = strng[1]; // y position
-        temp_h_wall.push({ x: x, y: parseInt(y) });
-        temp_h_wall.push({ x: x + 1, y: parseInt(y) });
-        temp_h_wall.push({ x: x - 1, y: parseInt(y) });
-        temp_v_wall.push({ x: x, y: parseInt(y) });
-        console.log("making h wall: " + x + "; y: " + y);
-        let coor = coor_2_abs(x, y);
-        var h_wall_1 = this.add.sprite(coor.x, coor.y - 40, 'h_wall', x, y);
-        wall_group.add(h_wall_1);
-        //h_wall_1.setScale(1.2);
-    }
+    // let temp_h_wall = [];
+    // let temp_v_wall = [];
+    // var h_walls = (String(temp[0]).trim()).match(/.{2}/g);
+    // for (var wall in h_walls) {
+    //     var strng = h_walls[wall].split("");
+    //     x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+    //     y = strng[1]; // y position
+    //     temp_h_wall.push({ x: x, y: parseInt(y) });
+    //     temp_h_wall.push({ x: x + 1, y: parseInt(y) });
+    //     temp_h_wall.push({ x: x - 1, y: parseInt(y) });
+    //     temp_v_wall.push({ x: x, y: parseInt(y) });
+    //     console.log("making h wall: " + x + "; y: " + y);
+    //     let coor = coor_2_abs(x, y);
+    //     var h_wall_1 = this.add.sprite(coor.x, coor.y - 40, 'h_wall', x, y);
+    //     wall_group.add(h_wall_1);
+    //     //h_wall_1.setScale(1.2);
+    // }
 
-    var v_walls = (String(temp[1]).trim()).match(/.{2}/g);
-    console.log(h_walls + ";" + v_walls);
-    for (var wall in v_walls) {
-        var strng = v_walls[wall].split("");
-        x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
-        y = strng[1]; // y position
-        temp_v_wall.push({ x: x, y: parseInt(y) });
-        temp_v_wall.push({ x: x, y: parseInt(y) + 1 });
-        temp_v_wall.push({ x: x, y: parseInt(y) - 1 });
-        temp_h_wall.push({ x: x, y: parseInt(y) });
-        let coor = coor_2_abs(x, y);
+    // var v_walls = (String(temp[1]).trim()).match(/.{2}/g);
+    // console.log(h_walls + ";" + v_walls);
+    // for (var wall in v_walls) {
+    //     var strng = v_walls[wall].split("");
+    //     x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+    //     y = strng[1]; // y position
+    //     temp_v_wall.push({ x: x, y: parseInt(y) });
+    //     temp_v_wall.push({ x: x, y: parseInt(y) + 1 });
+    //     temp_v_wall.push({ x: x, y: parseInt(y) - 1 });
+    //     temp_h_wall.push({ x: x, y: parseInt(y) });
+    //     let coor = coor_2_abs(x, y);
 
-        console.log("making v_wall from '", wall, "' at " + x + "," + y);
-        var v_wall_1 = this.add.sprite(coor.x + 40, coor.y, 'v_wall', x, y);
-        wall_group.add(v_wall_1);
-        //v_wall_1.setScale(1.2);
-    }
-    banned_walls.push(temp_h_wall);
-    banned_walls.push(temp_v_wall);
+    //     console.log("making v_wall from '", wall, "' at " + x + "," + y);
+    //     var v_wall_1 = this.add.sprite(coor.x + 40, coor.y, 'v_wall', x, y);
+    //     wall_group.add(v_wall_1);
+    //     //v_wall_1.setScale(1.2);
+    // }
+    // banned_walls.push(temp_h_wall);
+    // banned_walls.push(temp_v_wall);
 
 
     //This handles the potential moves
@@ -459,25 +464,25 @@ function create() {
     //   }
     // }
 
-    console.log(banned_walls);
+    // console.log(banned_walls);
 
-    for (let i = 1; i <= 8; i++) {
-        for (let j = 1; j <= 8; j++) {
-            let coor = coor_2_abs(i, j);
-            if (!banned_walls[0].filter(function (e) { return (e.x === i) && (e.y === j); }).length > 0) {
-                var sprite = this.add.wall_sprite(coor.x, coor.y, 'h_wall', i, j);
-                wall_group.add(sprite);
-                //this.input.enableDebug(sprite);
-            }
-            coor = coor_2_abs(j, i);
-            if (!banned_walls[1].filter(function (e) { return (e.x === j) && (e.y === i); }).length > 0) {
-                var sprite = this.add.wall_sprite(coor.x, coor.y, 'v_wall', i, j);
-                wall_group.add(sprite);
-                //this.input.enableDebug(sprite, 0x0000FF);
-            }
-        }
+    // for (let i = 1; i <= 8; i++) {
+    //     for (let j = 1; j <= 8; j++) {
+    //         let coor = coor_2_abs(i, j);
+    //         if (!banned_walls[0].filter(function (e) { return (e.x === i) && (e.y === j); }).length > 0) {
+    //             var sprite = this.add.wall_sprite(coor.x, coor.y, 'h_wall', i, j);
+    //             wall_group.add(sprite);
+    //             //this.input.enableDebug(sprite);
+    //         }
+    //         coor = coor_2_abs(j, i);
+    //         if (!banned_walls[1].filter(function (e) { return (e.x === j) && (e.y === i); }).length > 0) {
+    //             var sprite = this.add.wall_sprite(coor.x, coor.y, 'v_wall', i, j);
+    //             wall_group.add(sprite);
+    //             //this.input.enableDebug(sprite, 0x0000FF);
+    //         }
+    //     }
 
-    }
+    // }
 
 
 
@@ -574,7 +579,6 @@ async function placeWall(x, y, isHorizontal) {
     var player = document.getElementById('player-id').value;
     var wall = String.fromCharCode((x + 96)) + y;
     var direction = isHorizontal ? "horizontal" : "vertical";
-
     // console.log("placing wall: " + wall);
     // console.log("id: " + id);
     // console.log("player: " + player);
@@ -583,9 +587,7 @@ async function placeWall(x, y, isHorizontal) {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ "wall": wall, "id": id, "playerid": player, "direction": direction })
-    })
-    //console.log(response.text());
-    Promise.resolve(response).then(function (response) {
+    }).then(function (response) {
         document.getElementById('state').value = response.text();
     });
 }
