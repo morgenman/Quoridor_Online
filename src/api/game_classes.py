@@ -635,6 +635,7 @@ class game:
         assert int(curr_player.get_id()) == int(
             playerid
         ), f"it is not {playerid}'s turn"
+        return None
 
     # checks if the piece being moved belongs to the current user
     def check_piece(self, move):
@@ -642,6 +643,7 @@ class game:
         assert int(self.get_turn()) == int(
             move[1]
         ), f"player{str(self.get_turn())} cannot move player{move[1]}'s piece"
+        return None
 
     def set_walls(self, walls):
         self.walls = walls
@@ -653,7 +655,7 @@ class game:
         self.turn = turn
 
     def next(self):
-        if self.turn == self.num_players:
+        if int(self.turn) == int(self.num_players):
             self.turn = 1
         else:
             self.turn = int(self.turn) + 1
