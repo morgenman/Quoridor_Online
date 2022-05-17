@@ -153,8 +153,8 @@ def make_move(request):
 
 # adds a win to all profiles and goes back to home page
 def win(request):
-    Profile.objects.all().update(wins=F("wins") + 1)
-
+    #Profile.objects.all().update(wins=F("wins") + 1)
+    Profile.objects.filter(user=request.user).update(wins=F("wins") + 1)
     # Put some sort of error message to user here
     return render(request, "home.html")
 
