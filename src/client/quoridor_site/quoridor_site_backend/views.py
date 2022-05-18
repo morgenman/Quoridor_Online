@@ -55,22 +55,6 @@ def register(request):
     return render(request, "registration/register.html", {"form": form})
 
 
-# requests name from user (should probably be removed)
-def getName(request):
-    return render(request, "get_name.html")
-
-
-# sends name to api by user and displays response (should probably be removed)
-def showName(request):
-    name = request.POST["name"]
-    headers = requests.structures.CaseInsensitiveDict()
-    headers["Content-Type"] = "application/json"
-    url = "http://api:8080"
-    data = {"name": name}
-    x = requests.post(url, headers=headers, data=json.dumps(data))
-    return HttpResponse(x)
-
-
 # starts a new game
 def new_game(request):
 
@@ -153,7 +137,7 @@ def make_move(request):
 
 # adds a win to all profiles and goes back to home page
 def win(request):
-    #Profile.objects.all().update(wins=F("wins") + 1)
+    # Profile.objects.all().update(wins=F("wins") + 1)
     Profile.objects.filter(user=request.user).update(wins=F("wins") + 1)
     # Put some sort of error message to user here
     return render(request, "home.html")
