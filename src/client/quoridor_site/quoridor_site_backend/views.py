@@ -21,10 +21,13 @@ from . import utils
 
 # home page
 def home(request):
-    playerid = str(Profile.objects.filter(user=request.user).first().id)
-    active_games = Game.objects.filter(Q(player1=playerid) | Q(player2=playerid))
-    active_games = active_games.filter(is_active=True)
-    context = {"active_games": active_games}
+    if request.user.is_anonymous == False:
+        playerid = str(Profile.objects.filter(user=request.user).first().id)
+        active_games = Game.objects.filter(Q(player1=playerid) | Q(player2=playerid))
+        active_games = active_games.filter(is_active=True)
+        context = {"active_games": active_games}
+    else:
+        context = {"active_games": []}
     return render(request, "home.html", context=context)
 
 
