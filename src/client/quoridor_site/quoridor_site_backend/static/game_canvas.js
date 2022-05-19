@@ -6,6 +6,9 @@ var p1;
 var p2;
 var p3;
 var p4;
+var current_player;
+var p_track_1;
+var p_track_2;
 var wall_group;
 var hint_group;
 var count = 0;
@@ -45,17 +48,23 @@ function update() {
             y: center.y + (-1 * (y - 5) * tile_size)
         }
     }
+    var turn = document.getElementById('player-turn').value;
+    var current_turn = String(document.getElementById('state').value.split("/")[4]).trim();
+
     var active_tiles = (String(hints).trim()).match(/.{2}/g);
     var x = 0;
     var y = 0;
+    var alpha = 0;
+    if (turn == current_turn) var alpha = 0.3;
     for (var tile in active_tiles) {
         var strng = active_tiles[tile].split("");
         x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
         y = strng[1]; // y position
         let coor = coor_2_abs(x, y);
 
-        hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3));
+        hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, alpha));
     }
+
     if (global_board != document.getElementById('state').value) {
         global_board = document.getElementById('state').value;
         //console.log("Changed global board");
@@ -70,6 +79,37 @@ function update() {
         var shorthand = document.getElementById('state').value;
         //console.log('Shorthand: ' + shorthand.text);
         var temp = shorthand.split("/");
+
+
+
+        let coorup = coor_2_abs(1, 10.7);
+        let coordn = coor_2_abs(1, 10.2);
+        p_track_1.destroy();
+        p_track_2.destroy();
+        current_player.destroy();
+        if (turn === '1') {
+            p_track_1 = this.add.sprite(coorup.x, coorup.y - 15, 'p1_idle').play('p1_idle_animation');
+            p_track_2 = this.add.sprite(coordn.x, coordn.y - 15, 'p2_idle').play('p2_idle_animation');
+        }
+        else if (turn === '2') {
+            p_track_1 = this.add.sprite(coorup.x, coorup.y - 15, 'p2_idle').play('p2_idle_animation');
+            p_track_2 = this.add.sprite(coordn.x, coordn.y - 15, 'p1_idle').play('p1_idle_animation');
+        }
+        this.add.text(coorup.x + 30, coorup.y - 11, document.getElementById('username').value, { fontFamily: '"Baloo 2"', fontSize: '34px', fill: '#000' });
+        this.add.text(coordn.x + 30, coordn.y - 11, document.getElementById('username2').value, { fontFamily: '"Baloo 2"', fontSize: '34px', fill: '#000' });
+        let coorturn = coor_2_abs(8.56, 10.44);
+
+        if (current_turn == '1') {
+            current_player = this.add.sprite(coorturn.x, coorturn.y - 15, 'p1_idle').play('p1_idle_animation');
+        }
+        else {
+            current_player = this.add.sprite(coorturn.x, coorturn.y - 15, 'p2_idle').play('p2_idle_animation');
+        }
+
+
+
+
+
         var play_piece = (String(temp[2]).trim()).split(" ");
         for (var i = 0; i < play_piece.length; i++) {
             var end = play_piece[i].split("");
@@ -244,7 +284,11 @@ class wall_sprite extends Phaser.GameObjects.Sprite {
         }
 
         this.on('pointerup', function (pointer) {
-            if (interactive) {
+            var turn = document.getElementById('player-turn').value;
+            var current_turn = String(document.getElementById('state').value.split("/")[4]).trim();
+
+
+            if (interactive && turn === current_turn) {
                 this.setInteractive(false);
                 this.visible = true;
                 this.setAlpha(1);
@@ -384,12 +428,55 @@ function create() {
     this.anims.create(p3_idle_config);
     this.anims.create(p4_idle_config);
 
+
+    var turn = document.getElementById('player-turn').value;
+    let coorup = coor_2_abs(1, 10.7);
+    let coordn = coor_2_abs(1, 10.2);
+    if (turn === '1') {
+        p_track_1 = this.add.sprite(coorup.x, coorup.y - 15, 'p1_idle').play('p1_idle_animation');
+        p_track_2 = this.add.sprite(coordn.x, coordn.y - 15, 'p2_idle').play('p2_idle_animation');
+
+
+
+    }
+    else if (turn === '2') {
+        p_track_1 = this.add.sprite(coorup.x, coorup.y - 15, 'p2_idle').play('p2_idle_animation');
+        p_track_2 = this.add.sprite(coordn.x, coordn.y - 15, 'p1_idle').play('p1_idle_animation');
+
+    }
+    this.add.text(coorup.x + 30, coorup.y - 11, document.getElementById('username').value, { fontFamily: '"Baloo 2"', fontSize: '34px', fill: '#000' });
+    this.add.text(coordn.x + 30, coordn.y - 11, document.getElementById('username2').value, { fontFamily: '"Baloo 2"', fontSize: '34px', fill: '#000' });
+
+
     //Player pieces 
     var x = 0;
     var y = 0;
     var shorthand = document.getElementById('state').value;
     //console.log('Shorthand: ' + shorthand.text);
     var temp = shorthand.split("/");
+
+    let coorturn = coor_2_abs(8.56, 10.44);
+    var current_turn = String(temp[4]).trim();
+
+    if (current_turn == '1') {
+        current_player = this.add.sprite(coorturn.x, coorturn.y - 15, 'p1_idle').play('p1_idle_animation');
+    }
+    else {
+        current_player = this.add.sprite(coorturn.x, coorturn.y - 15, 'p2_idle').play('p2_idle_animation');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     var play_piece = (String(temp[2]).trim()).split(" ");
     for (var i = 0; i < play_piece.length; i++) {
         var end = play_piece[i].split("");
@@ -471,15 +558,19 @@ function create() {
         var active_tiles = (String(hints).trim()).match(/.{2}/g);
         var x = 0;
         var y = 0;
+        var alpha = 0;
+        if (turn == current_turn) var alpha = 0.3;
         for (var tile in active_tiles) {
             var strng = active_tiles[tile].split("");
             x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
             y = strng[1]; // y position
             let coor = coor_2_abs(x, y);
 
-            hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3));
+            hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, alpha));
         }
     });
+
+
 
 
     // Rainbow Grid
@@ -524,6 +615,7 @@ function create() {
 
     //gives red tint when being dragged
     this.input.on('dragstart', function (pointer, gameObject) {
+
         interactive = false;
         gameObject.setTint(0xff0000);
 

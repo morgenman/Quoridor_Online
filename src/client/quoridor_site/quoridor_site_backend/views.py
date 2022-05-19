@@ -224,6 +224,11 @@ def get_game(request, pk):
         game.save()
         playerid = str(Profile.objects.filter(user=request.user).first().id)
         turn = game.get_player_turn(playerid)
+        username = request.user.username
+        if username == game.player1.user.username:
+            username2 = game.player2.user.username
+        else:
+            username2 = game.player1.user.username
         # render new board
         return render(
             request,
@@ -234,6 +239,8 @@ def get_game(request, pk):
                 "state": new_state,
                 "turn": turn,
                 "playerid": playerid,
+                "username": username,
+                "username2": username2,
             },
         )
 
