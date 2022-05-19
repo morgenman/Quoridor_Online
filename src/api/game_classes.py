@@ -738,6 +738,8 @@ class game:
         player_listNum = []
         player_piece = []
         ignore_h = ignore_v = False
+
+        # Horizontal
         for y in range(size):
             for x in range(size):
                 tile = self.get(x + 1, y + 1)
@@ -748,6 +750,8 @@ class game:
                         ignore_h = True
                     else:
                         ignore_h = False
+
+        # Vertical
         for x in range(size):
             for y in range(size):
                 tile = self.get(x + 1, y + 1)
@@ -761,10 +765,6 @@ class game:
                 if tile.get_player() > 0:
                     player_piece.append(tile)
 
-        # print(h_walls)
-        # print(v_walls)
-        # h_walls = h_walls[::2]
-        # v_walls = v_walls[1::2]
         h_walls.sort()
         v_walls.sort()
         temp = [None for i in range(self.num_players)]

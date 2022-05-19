@@ -39,11 +39,13 @@ div#container {
   margin-right: auto;
 }
 #board {
-  width: inherit;
-  height: inherit;
-  flex-grow: 1;
-  flex-basis: 100px;
-  margin: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90% !important;
+}
+canvas {
+  border-radius: 20px;
 }
 #forms {
   flex-grow: 0;
@@ -55,5 +57,5 @@ html {
 }
 body {
   height: 90%;
-  margin-top: 0px;
+  /* margin-top: 0px; */
 }

@@ -2,14 +2,19 @@ h1 {
   padding-bottom: 20px;
   font-size: 500%;
   text-align: center;
-  font-family: Garamond;
   color: #4b0b0b;
   font-weight: bold;
 }
 
+.logo {
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 h3 {
   font-size: 200%;
-  font-family: Garamond;
   color: #4b0b0b;
   font-weight: bold;
 }
@@ -19,7 +24,6 @@ h3 {
   position: fixed;
   bottom: 0;
   right: 0;
-  font-family: Garamond;
 }
 
 .flex-container {
@@ -33,22 +37,37 @@ h3 {
 }
 
 body {
-  background: url("parchmentPaper.png") no-repeat center center fixed;
+  background: url("background.png") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   overflow: auto;
 
-  font-family: Garamond;
-  font-size: 110%;
+  font-family: "Baloo 2", cursive;
+  font-size: 20px;
 }
 
-.custom_button,.custom_button_disabled {
+.centerbox {
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 40px;
+  border-radius: 40px;
+  min-width: 800px;
+  max-height: 90%;
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.custom_button,
+.custom_button_disabled {
   margin: 10px;
   width: 400px;
 }
-
 
 .custom_button:hover {
   filter: brightness(80%);
@@ -57,4 +76,189 @@ body {
 
 .custom_button:active {
   filter: brightness(120%);
+}
+
+.myButton {
+  background-color: #8cc744;
+  border-radius: 40px;
+  border: 1px solid #18ab29;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: "Fredoka One", cursive;
+  font-size: 50px;
+  padding: 32px 62px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+.myButton:hover {
+  background-color: #5cbf2a;
+}
+.myButton:active {
+  position: relative;
+  top: 1px;
+}
+span.helptext {
+  font-style: italic;
+  color: grey;
+  margin-left: 25px;
+}
+
+button {
+  background-color: #8cc744;
+  border-radius: 28px;
+  border: 1px solid #18ab29;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 17px;
+  padding: 16px 31px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+}
+button:hover {
+  background-color: #5cbf2a;
+}
+button:active {
+  position: relative;
+  top: 1px;
+}
+
+#menu {
+  background: #8cc744;
+  background: linear-gradient(to bottom, #8cc765, #7a9951);
+  color: #fff;
+  height: 65px;
+  padding-left: 18px;
+  border-radius: 27px;
+  box-shadow: 0px 2px 5px #000;
+  margin-bottom: 70px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
+#menu ul,
+#menu li {
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+#menu ul {
+  width: 100%;
+}
+#menu li {
+  float: left;
+  display: inline;
+  position: relative;
+}
+#menu a {
+  display: block;
+  line-height: 65px;
+  padding: 0 14px;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 18px;
+}
+#menu a.dropdown-arrow:after {
+  content: "\25BE";
+  margin-left: 5px;
+}
+#menu li a:hover {
+  color: #ffffff;
+  background: #8cc744;
+  border-radius: 10px;
+}
+#menu input {
+  display: none;
+  margin: 0;
+  padding: 0;
+  height: 71px;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+#menu label {
+  display: none;
+  line-height: 65px;
+  text-align: center;
+  position: absolute;
+  left: 35px;
+}
+#menu label:before {
+  font-size: 1.6em;
+  content: "\2261";
+  margin-left: 20px;
+}
+#menu ul.sub-menus {
+  height: auto;
+  overflow: hidden;
+  width: 170px;
+  background: #587d2b;
+  position: absolute;
+  z-index: 99;
+  display: none;
+  border-radius: 10px;
+}
+#menu ul.sub-menus li {
+  display: block;
+  width: 100%;
+}
+#menu ul.sub-menus a {
+  color: #ffffff;
+  font-size: 18px;
+}
+#menu li:hover ul.sub-menus {
+  display: block;
+}
+#menu ul.sub-menus a:hover {
+  background: #8cc744;
+  color: #f2f2f2;
+}
+@media screen and (max-width: 800px) {
+  #menu {
+    position: relative;
+  }
+  #menu ul {
+    background: #111;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 3;
+    height: auto;
+    display: none;
+  }
+  #menu ul.sub-menus {
+    width: 100%;
+    position: static;
+  }
+  #menu ul.sub-menus a {
+    padding-left: 30px;
+  }
+  #menu li {
+    display: block;
+    float: none;
+    width: auto;
+  }
+  #menu input,
+  #menu label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+  }
+  #menu input {
+    z-index: 4;
+  }
+  #menu input:checked + label {
+    color: white;
+  }
+  #menu input:checked + label:before {
+    content: "\00d7";
+  }
+  #menu input:checked ~ ul {
+    display: block;
+  }
 }

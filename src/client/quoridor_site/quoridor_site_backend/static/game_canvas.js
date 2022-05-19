@@ -35,6 +35,27 @@ let timerId = setTimeout(function request() {
 
 function update() {
     wall_group = this.add.group();
+    hint_group.clear(true, true);
+    let center = { x: config.width / 2, y: config.height / 2 + 6 };
+    let tile_size = config.width / 12.45;
+    function coor_2_abs(x, y) {
+
+        return {
+            x: center.x + (x - 5) * tile_size,
+            y: center.y + (-1 * (y - 5) * tile_size)
+        }
+    }
+    var active_tiles = (String(hints).trim()).match(/.{2}/g);
+    var x = 0;
+    var y = 0;
+    for (var tile in active_tiles) {
+        var strng = active_tiles[tile].split("");
+        x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+        y = strng[1]; // y position
+        let coor = coor_2_abs(x, y);
+
+        hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3));
+    }
     if (global_board != document.getElementById('state').value) {
         global_board = document.getElementById('state').value;
         //console.log("Changed global board");
@@ -166,25 +187,16 @@ function update() {
                 console.log(hints);
             })
             hint_group.clear(true, true);
-            var active_tiles = (String(hints).trim()).match(/.{2}/g);
-            var x = 0;
-            var y = 0;
-            for (var tile in active_tiles) {
-                var strng = active_tiles[tile].split("");
-                x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
-                y = strng[1]; // y position
-                let coor = coor_2_abs(x, y);
-    
-                hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3));
-            }
-    
-    
+
+
+
         }
         catch (e) {
             console.log(e);
         }
+
     }
-    
+
 
 
 
@@ -276,35 +288,8 @@ var config = {
     height: 1000,
     inputActivePointers: 1,
     scale: {
-        // Or set parent divId here
         parent: 'board',
-
         mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-
-        // Or put game size here
-        // width: 1024,
-        // height: 768,
-
-        // Minimum size
-        min: {
-            width: 50,
-            height: 50
-        },
-        // Or set minimum size like these
-        // minWidth: 800,
-        // minHeight: 600,
-
-        // Maximum size
-        max: {
-            width: 1600,
-            height: 1600
-        },
-        // Or set maximum size like these
-        // maxWidth: 1600,
-        // maxHeight: 1200,
-
-        zoom: 1,  // Size of game canvas = game size * zoom
     },
     autoRound: false,
     antialias: false,
@@ -483,17 +468,20 @@ function create() {
 
 
     //This handles the potential moves
-    var active_tiles = (String(hints).trim()).match(/.{2}/g);
-    var x = 0;
-    var y = 0;
-    for (var tile in active_tiles) {
-        var strng = active_tiles[tile].split("");
-        x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
-        y = strng[1]; // y position
-        let coor = coor_2_abs(x, y);
+    Promise.resolve(hints).finally(function () {
+        var active_tiles = (String(hints).trim()).match(/.{2}/g);
+        var x = 0;
+        var y = 0;
+        for (var tile in active_tiles) {
+            var strng = active_tiles[tile].split("");
+            x = String(strng[0]).charCodeAt(0) - 96; //gives you the number of the letter. 
+            y = strng[1]; // y position
+            let coor = coor_2_abs(x, y);
 
-        hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3));
-    }
+            hint_group.add(this.add.rectangle(coor.x, coor.y, tile_size - 2, tile_size - 2, 0x00FF08, 0.3));
+        }
+    });
+
 
     // Rainbow Grid
     // for (let i = 1; i <= 9; i++) {

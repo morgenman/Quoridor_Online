@@ -4,44 +4,31 @@
         <script type="module" src="{% static 'game_canvas.js' %}"></script>
         {% endcompress %}
 <a href="{% url 'home' %}">
-  <h3>Go Back to Home</h3>
+    <img class="logo" src="../static/css/logo.png" />
 </a>
+</br>
 <link rel="stylesheet" href="{% static 'css/board.css' %}" />
 <meta charset="utf-8" />
 
 
-<div id="container">
-<div id="board"></div>
-<div id="forms">
-<!-- <form action="{% url 'make_move' %}" method="POST" >
-  <select name="player"type="hidden">
-    <option value="1">Player 1</option>
-    <option value="2">Player 2</option>
-    <option value="3">Player 3</option>
-    <option value="4">Player 4</option>
-  </select>
-  </br></br> -->
-  <!-- {% csrf_token %} Make a Move: <input name="tile" pattern="[a-z]{1}[1-9]{1}" minlength="2" maxlength="2" required  type="hidden"/> -->
-  <input id="state" name="state" value="{{state}}" />
+<div id="board"></div> 
+
+  <input id="state" name="state" value="{{state}}" type="hidden"/>
   <input id="game-id" name="id" value="{{id}}" type="hidden" />
   <input id="player-id" name="pid" value="{{ user.id }}" type="hidden" />
   <input id="player-turn" name="turn" value="{{ turn }}" type="hidden" />
-  <p>You are player {{ turn }}</p>
 
 
 
-  <!-- <p></p> -->
-  <!-- <p><button type="hidden">Submit</button></p> -->
+
+<form action="{% url 'win' %}" method="POST" style="display: none;">
+  {% csrf_token %}<p ><button type="win">Win</button></p>
 </form>
 
-<form action="{% url 'win' %}" method="POST">
-  {% csrf_token %}<p><button type="win">Win</button></p>
-</form>
-
-<form action="{% url 'lose' %}" method="POST">
+<form action="{% url 'lose' %}" method="POST" style="display: none;">
   {% csrf_token %}<p><button type="lose">Lose</button></p>
 </form>
-</div>
+
 
 </div>
 {% endblock %}
