@@ -23,7 +23,7 @@ h3 {
   font-size: 150%;
   position: fixed;
   bottom: 0;
-  right: 0;
+  right: 10px;
 }
 
 .flex-container {

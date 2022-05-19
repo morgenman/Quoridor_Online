@@ -46,8 +46,16 @@
       New Game
     </a>
   </div>
-
-  {% endif %}
+  {% endif %} {% if active_games %}
+  <h3 style="text-align: center">My Current Games</h3>
+  {% endif %} {% for game in active_games %}
+  <p style="text-align: center">
+    <strong>{{game.get_players}} </strong>-
+    <a href="{{ game.get_absolute_url }}"
+      > {{ game.get_date }}</a
+    >
+  </p>
+  {% endfor %}
 </body>
 
 {% endblock %}

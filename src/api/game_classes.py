@@ -632,9 +632,7 @@ class game:
         #    + "; Player attempting to make move: "
         #    + str(playerid)
         # )
-        assert int(curr_player.get_id()) == int(
-            playerid
-        ), f"it is not {playerid}'s turn"
+        assert curr_player.get_id() == playerid, f"it is not {playerid}'s turn"
         return None
 
     # checks if the piece being moved belongs to the current user

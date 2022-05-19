@@ -351,8 +351,7 @@ function create() {
 
     this.data.set('coordinates', "x,y");
     let coor = coor_2_abs(0, 10);
-    var text = this.add.text(coor.x, coor.y, '', { font: '30px IBM Plex Mono', fill: '#00ff00' });
-    text.setText(this.data.get('coordinates'));
+
 
     // Players
     var p1_idle_config = {
@@ -535,8 +534,7 @@ function create() {
 
         gameObject.x = dragX;
         gameObject.y = dragY;
-        let coor = abs_2_coor(dragX - gameObject.width / 4, dragY - gameObject.height / 4);
-        text.setText(coor.x + "," + coor.y);
+
 
     });
 
@@ -549,7 +547,7 @@ function create() {
         let coor = coor_2_abs(xy.x, xy.y);
         gameObject.x = coor.x;
         gameObject.y = coor.y - 15;
-        text.setText(xy.x + "," + xy.y);
+
         makeMove(xy.x, xy.y);
 
     });

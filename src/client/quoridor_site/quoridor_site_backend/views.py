@@ -6,6 +6,7 @@ import requests, json
 from django.views import generic
 from .models import Profile, Game, User
 from .forms import *
+from django.db.models import Q
 from .admin import *
 from django.db.models import F
 from django.contrib.auth import login, authenticate
@@ -20,7 +21,11 @@ from . import utils
 
 # home page
 def home(request):
-    return render(request, "home.html")
+    playerid = str(Profile.objects.filter(user=request.user).first().id)
+    active_games = Game.objects.filter(Q(player1=playerid) | Q(player2=playerid))
+    active_games = active_games.filter(is_active=True)
+    context = {"active_games": active_games}
+    return render(request, "home.html", context=context)
 
 
 def help(request):
@@ -31,7 +36,7 @@ def help(request):
 def second_player(request):
     context = {}
     context["dataset"] = Profile.objects.exclude(user=request.user)
-    context["player_id"] = request.user.id
+    context["player_id"] = str(Profile.objects.get(user=request.user).id)
     return render(request, "second_player.html", context)
 
 
@@ -62,7 +67,7 @@ def new_game(request):
     # adds both players (player1 being the current user)
     p1 = Profile.objects.filter(user=request.user).first()
     p2name = request.POST["id"]
-    p2 = Profile.objects.filter(user=p2name).first()
+    p2 = Profile.objects.filter(id=p2name).first()
     if p1 != p2:
         game = Game(player1=p1, player2=p2)
         game.save()
@@ -73,8 +78,8 @@ def new_game(request):
         headers["charset"] = "UTF-8"
         # sets data to game's info (id, player1, player2)
         id = str(game.id)
-        player1 = game.player1.id
-        player2 = game.player2.id
+        player1 = str(game.player1.id)
+        player2 = str(game.player2.id)
         data = {
             "id": id,
             "player1": player1,
@@ -101,7 +106,8 @@ def make_move(request):
     tile = request.POST["tile"].lower()
     player = request.POST["player"]
     curr_player = Profile.objects.filter(user=request.user).first()
-    playerid = curr_player.id
+
+    playerid = str(Profile.objects.filter(player=curr_player).first().id)
     id = request.POST["id"]
     current_state = request.POST["state"]
     # send move request to api
@@ -213,12 +219,19 @@ def get_game(request, pk):
         game = Game.objects.filter(id=id).first()
         game.state = new_state
         game.save()
-        turn = game.get_player_turn(request.user.id)
+        playerid = str(Profile.objects.filter(user=request.user).first().id)
+        turn = game.get_player_turn(playerid)
         # render new board
         return render(
             request,
             "board.html",
-            {"board": "board", "id": id, "state": new_state, "turn": turn},
+            {
+                "board": "board",
+                "id": id,
+                "state": new_state,
+                "turn": turn,
+                "playerid": playerid,
+            },
         )
 
     # # else if illegal move

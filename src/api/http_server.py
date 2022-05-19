@@ -316,6 +316,8 @@ class MyServer(BaseHTTPRequestHandler):
 
                 case "/get_hint":
                     hint = ""
+                    print("Getting hint for game " + post_body["id"])
+                    print("playerid: " + post_body["playerid"])
                     try:
                         curr_game = games.get(post_body["id"])
                         user_id = post_body["playerid"]
@@ -398,7 +400,7 @@ class MyServer(BaseHTTPRequestHandler):
                     print(user_queue.__repr__())
                     print(removed_from_queue)
                     print("Queue incoming player_id: " + post_body["player_id"])
-                    player_id = int(post_body["player_id"])
+                    player_id = post_body["player_id"]
                     self.send_response(200)
 
                     self.send_header("Content-type", "application/json; charset=utf-8")
@@ -459,8 +461,8 @@ myServer = HTTPServer((hostName, hostPort), MyServer)
 
 print(time.asctime(), "Server Starting - %s:%s" % (hostName, hostPort))
 
-#print()
-#print("--------------------tests--------------------")
+# print()
+# print("--------------------tests--------------------")
 # test_game = shorthand_to_game(" a4c4e4g4h6  / h5  / e1 e9 / 10 10 / 1 ")
 # if test_game.can_reach_level(test_game.get("e9"), 1):
 #    print("e9 can reach 1")
