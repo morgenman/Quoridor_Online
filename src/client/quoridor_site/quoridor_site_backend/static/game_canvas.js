@@ -363,7 +363,7 @@ function preload() {
     this.load.spritesheet('h_wall', '/static/h_wall.png', { frameWidth: 230, frameHeight: 77, endFrame: 0 });
     this.load.spritesheet('v_wall', '/static/v_wall.png', { frameWidth: 77, frameHeight: 230, endFrame: 0 });
 
-    this.load.image('target', '/static/Target.png');
+    //this.load.image('target', '/static/Target.png');
     try {
         let get_hints = refreshHints();
         Promise.resolve(get_hints).then(function (get_hints) {
