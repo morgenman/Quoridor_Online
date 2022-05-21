@@ -1,5 +1,9 @@
 # Quoridor Online
 
+> As a FYI to somebody browsing my github: this was an academic project done with three other students. Some of the code is not my own, and there was an enormous time pressure on the project. 
+
+For personal use only, all rights reserved.
+
 Notes:
 * All source files are located in the src directory
 * Resources includes external licensed assets
